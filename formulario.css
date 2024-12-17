@@ -1,0 +1,147 @@
+/* Centraliza o body */
+body {
+    margin: 0; /* Remove margem padrão */
+    padding: 0; /* Remove padding padrão */
+    box-sizing: border-box; /* Garante que padding e border sejam incluídos nas dimensões do elemento */
+    display: flex; /* Flexbox para centralizar o conteúdo */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    height: 100vh; /* Define altura como 100% da viewport */
+    font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+    background-color: #f4f4f4; /* Define a cor de fundo */
+    background: #e0f7fa; /* Cor do fundo */
+}
+
+/* Container principal que envolve a logo e o formulário */
+.container-formulario {
+    display: flex; /* Flexbox para posicionar logo e formulário lado a lado */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    width: 80%; /* Ajusta a largura do container */
+    max-width: 1400px; /* Limita a largura máxima */
+    padding: 5rem; /* Espaçamento interno do container */
+    border: 1px solid #F8BBD0; /* Borda do container */
+    box-shadow: 0px 8px 20px rgb(248, 187, 208, 0.8); /* Sombra ao redor */
+    background-color: #ffffff; /* Cor de fundo branco */
+    border-radius: 10px; /* Arredonda os cantos do container */
+}
+
+/* Estiliza a imagem da logo */
+.form-iamge {
+    width: 40%; /* Ajuste da largura da logo */
+    display: flex; /* Flexbox para centralizar a imagem */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+}
+
+.form-iamge img {
+    width: 100%; /* A imagem ocupa toda a largura do container */
+    height: auto; /* Mantém a proporção da altura */
+    border-radius: 10px; /* Arredonda os cantos da imagem */
+}
+
+/* Estilização do formulário */
+.form {
+    width: 60%; /* Ajuste da largura do formulário */
+    padding: 2rem; /* Espaçamento interno do formulário */
+    background-color: #ffffff; /* Cor de fundo branco */
+    border-radius: 10px; /* Arredonda os cantos do formulário */
+}
+
+/* .form-header - Cabeçalho do formulário */
+.form-header {
+    text-align: center; /* Centraliza o texto */
+    margin-bottom: 1.5rem; /* Espaçamento inferior do cabeçalho */
+}
+
+/* .input-group - Agrupamento dos inputs */
+.input-group {
+    display: flex; /* Flexbox para os inputs */
+    flex-wrap: wrap; /* Permite que os elementos quebrem linha se necessário */
+    justify-content: space-between; /* Espaça uniformemente os inputs */
+}
+
+/* .input-box - Caixa dos inputs individuais */
+.input-box {
+    width: 45%; /* Largura dos inputs para ficarem lado a lado */
+    margin-bottom: 1rem; /* Espaçamento inferior entre os inputs */
+}
+
+.input-box input {
+    width: 100%; /* O input ocupa toda a largura da caixa */
+    padding: 0.8rem; /* Espaçamento interno dos inputs */
+    border: 1px solid rgb(248, 187, 208, 0.8); /* Borda leve ao redor dos inputs */
+    border-radius: 5px; /* Arredonda os cantos dos inputs */
+    font-size: 1rem; /* Tamanho da fonte dos inputs */
+}
+
+input:focus {
+    outline: 2px solid #F8BBD0; /* Altera a borda de foco para a cor coral */ 
+    /*outline-offset: 1px; /* Adiciona um espaçamento extra ao contorno */
+}
+
+/* Container da senha e do ícone */
+.password-container {
+    position: relative; /* Necessário para posicionar o ícone dentro do input */
+}
+
+/* Estiliza o ícone de olho mágico */
+.toggle-password {
+    position: absolute;
+    right: 10px;  /* Ajusta o ícone para o canto direito */
+    top: 50%;
+    transform: translateY(-50%); /* Centraliza verticalmente */
+    cursor: pointer; /* Indica que é interativo */
+    color: #333;  /* Cor padrão do ícone */
+    font-size: 10px; /* Tamanho do ícone */
+}
+
+/* Muda a cor do ícone quando o mouse passa sobre ele */
+.toggle-password:hover {
+    color: rgb(248, 187, 208, 0.5); /* Altera a cor para azul ao passar o mouse */
+}
+
+/* Adiciona padding no input para acomodar o ícone de olho mágico */
+.password-container input {
+    padding-right: 10px; /* Adiciona espaço à direita para o ícone */
+}
+
+/* .continue-button - Botão de envio */
+.continue-button {
+    text-align: center; /* Centraliza o botão */
+}
+
+.continue-button button {
+    width: 100%; /* O botão ocupa toda a largura do container */
+    padding: 0.8rem; /* Espaçamento interno do botão */
+    background-color: #F8BBD0; /* Cor de fundo azul */
+    color: #ffffff; /* Cor do texto */
+    border: none; /* Remove a borda padrão */
+    border-radius: 5px; /* Arredonda os cantos do botão */
+    cursor: pointer; /* Altera o cursor para pointer ao passar sobre o botão */
+}
+
+.continue-button button:hover {
+    background-color: rgb(248, 187, 208, 0.5); /* Altera a cor ao passar o mouse (opcional) */
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .container-formulario {
+        flex-direction: column; /* Empilha logo e formulário em telas pequenas */
+        padding: 1rem; /* Diminui o padding para melhor ajuste */
+    }
+
+    .form-iamge {
+        width: 100%; /* A imagem ocupa toda a largura em telas pequenas */
+        margin-bottom: 1rem; /* Espaçamento inferior entre a logo e o formulário */
+    }
+
+    .form {
+        width: 100%; /* O formulário ocupa toda a largura em telas pequenas */
+    }
+
+    .input-box {
+        width: 100%; /* Inputs ocupam toda a largura em telas menores */
+    }
+}

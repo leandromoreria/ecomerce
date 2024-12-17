@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Acompanhamento do Pedido</title>
+
+    <link rel="stylesheet" href="acompanharpedido.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+
+    <div class="acompanharpedido-container">
+        <div class="timeline">
+            <div class="step">Pedido Recebido</div>
+            <div class="step">Preparação</div>
+            <div class="step">Enviado</div>
+            <div class="step">Em Trânsito</div>
+            <div class="step">Entregue</div>
+        </div>
+
+        <!-- Resumo Detalhado do Pedido -->
+        <div class="order-details">
+            <h2>Resumo do Pedido</h2>
+            <div id="products-summary"></div> <!-- Produtos carregados do checkout -->
+            <p>Total: R$ <span id="order-total">0.00</span></p>
+            <button id="download-pdf">Baixar NF-e</button>
+        </div>
+
+        <!-- Histórico de Pedidos -->
+        <div class="history">
+            <h2>Histórico de Pedidos</h2>
+            <div id="history-list"></div> <!-- Lista de pedidos anteriores -->
+        </div>
+
+        <!-- FAQ e Suporte -->
+        <div class="faq-support">
+            <h2>FAQ e Suporte</h2>
+            <div id="faq-list">
+
+                <div class="faq-item">
+                    <button class="faq-question">Qual o prazo de entrega?</button>
+                    <div class="faq-answer">O prazo de entrega varia de acordo com sua região, mas em média é de 5 a 10 dias úteis.</div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">Como rastrear meu pedido?</button>
+                    <div class="faq-answer">Você pode rastrear seu pedido usando o link de rastreamento enviado para seu e-mail ou whatsapp cadastrado em nosso site após a sua compra.</div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">O que faço em caso de atraso?</button>
+                    <div class="faq-answer">Em caso de atraso, entre em contato com nosso suporte ao cliente para obter mais informações.</div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">O que faço em caso de troca?</button>
+                    <div class="faq-answer">Se precisar trocar seu produto, entre em contato com nosso suporte para instruções sobre o procedimento.</div>
+                </div>
+
+            </div>
+            
+            
+            <a href="https://wa.me/message/7XS7DGTNCKBWG1" target="_blank" rel="external"><button><i class='bx bxl-whatsapp'>Entrar em Contato com o Suporte</i></button></a>
+                        
+        </div>
+    </div>
+
+    <script src="acompanharpedido.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="pdf.js"></script>
+
+
+</body>
+</html>

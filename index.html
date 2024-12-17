@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="politica-de-cookies.css"> 
+  
+            
+    <title>AEIELLO ATELIÊ</title>
+   
+
+</head>
+
+<body>
+    
+    <header>
+        <a href="#" class="logo"><img src="bolsas/Logo 2.jpg" width="50" height="50"></i> Atelie Aiello </a>
+        
+        <ul class="navegação">
+            <li><a href="#visao-geral">Visão Geral</a></li>
+            <li><a href="#produtos">Produtos</a></li>
+            <li><a href="#quem-somos">Quem somos</a></li>
+        </ul>
+
+        <div class="btn-social">
+            <a href="https://www.instagram.com/lucimar.moreira01?igsh=Z2VrenJ5ZW5lbnBs" target="_blank" rel="external"><button><i class='bx bxl-instagram' ></i></button></a>
+            <a href="https://www.facebook.com/lucimar.moreira.146?mibextid=LQQJ4d" target="_blank" rel="external"><button><i class='bx bxl-facebook-circle'></i></button></a>
+            <a href="https://wa.me/message/7XS7DGTNCKBWG1" target="_blank" rel="external"><button><i class='bx bxl-whatsapp' ></i></button></a>         
+
+        </div>
+        
+        <!--Seção do login-->
+        <div class="my_account_info">
+            <a href="/conta/login" class="my_account-title">
+                <div class="newUser">
+                    <span class="userName">Olá, bem-vindo(a)</span>
+                </div>
+            </a>
+            <span class="my_account-subtitle">
+                <a href="formulario.html" id="loginBtn">Entre</a> ou <a href="#" id="registerBtn">Cadastre-se</a>
+            </span> 
+            
+            <div id="modalContainer"></div> <!-- Container onde o modal será inserido -->
+
+            <!-- Modal de Redefinição de Senha -->
+            <div id="resetPasswordModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Redefinir Senha</h2>
+                    <p>Preencha os campos abaixo para redefinir sua senha.</p>
+                    <input type="email" id="email" placeholder="Digite seu e-mail" required>
+                    <input type="email" id="confirmEmail" placeholder="Confirme seu e-mail" required>
+                    <input type="password" id="newPassword" placeholder="Digite sua nova senha" required>
+                    <input type="password" id="confirmNewPassword" placeholder="Confirme sua nova senha" required>
+                    <button id="savePasswordButton">Salvar</button>
+                </div>
+            </div>
+
+           
+            <!-- Dropdown Menu -->
+            <ul class="dropdown-menu">
+                <li class="listAccount"><a href="carrinho.html">Meus pedidos</a></li>
+                <li class="shipping"><a href="acompanharpedido.html" data-toggle="modal" data-target="#modalRastreio">Acompanhar Pedido</a></li>
+                <li class="listAccount"><a href="conta.html">Minha Conta</a></li>
+                
+            </ul>
+        </div>         
+        
+    </header>
+
+        <!-- slide da home -->
+        <section class="slider">
+            
+            <div class="slider-content">
+                <input type="radio" name="btn-radio" id="radio1" checked>
+                <input type="radio" name="btn-radio" id="radio2">
+                <input type="radio" name="btn-radio" id="radio3">
+                <input type="radio" name="btn-radio" id="radio4">
+                
+                <div class="slide-box primeiro">
+                    <img src="bolsas/slider1.png" alt="slide1">
+                </div>   
+                <div class="slide-box">
+                    <img src="bolsas/slider2.png" alt="slide2">
+                </div>
+                <div class="slide-box">
+                    <img src="bolsas/slider3.png" alt="slide3">
+                </div>
+                <div class="slide-box">
+                    <img src="bolsas/slider4.png" alt="slide4">
+                </div>
+            </div>
+
+            <div class="nav-manual">
+                <label for="radio1" class="manual-btn"></label>
+                <label for="radio2" class="manual-btn"></label>
+                <label for="radio3" class="manual-btn"></label>
+                <label for="radio4" class="manual-btn"></label>
+            </div>
+            
+        </section>  
+
+        <section id="produtos" class="produtos">
+            <h2>Nossos Produtos</h2>
+            <div class="produtos-lista">
+                <!-- Produtos serão inseridos aqui -->
+                <div class="message-container" style="display: none;"></div>
+            </div>
+        </section>
+        
+
+        <section id="quem-somos" class="quem-somos">
+            <h2>Quem somos</h2>
+            <div class="quem-somos-container">
+                <p class="texto-grande">
+                    ATELIÊ “ BOLSAS E ARTESANATOS. “<br>
+                    SOMOS UMA FAMÍLIA DE MULHERES ARTESÃS E HÁ 1 ANO CONFECCIONANDO BOLSAS DE CROCHÊ MODERNO, COM MODELOS E ACABAMENTOS INCRÍVEIS PARA VOCÊ QUE GOSTA DE ANDAR NA MODA, COM ESTILO E ELEGÂNCIA.<br>
+                    OS MODELOS SÃO PRODUZIDOS ARTESANALMENTE COM FIOS DE MALHA PREMIUM, FIO NÁUTICO E ACESSÓRIOS EM METAL, MADEIRA, COURO ECOLÓGICO ENTRE OUTROS.<br>
+                    TEMOS COMO FOCO PRINCIPAL A ENTREGA DE PEÇAS MODERNAS E VERSÁTEIS PARA VOCÊ ARRASAR NO SEU LOOK.<br>
+                    NOSSO COMPROMISSO É PROPORCIONAR A VOCÊ UMA EXPERIÊNCIA APAIXONANTE NO MUNDO DO CROCHÊ. AO ADQUIRIR UMA PEÇA EM CROCHÊ, VOCÊ ESTARÁ INCENTIVANDO O ARTESANATO BRASILEIRO.
+                </p>
+            </div>
+        </section>  
+
+        <div class="cookies-msg" id="cookies-msg">
+            <div class="cookies-txt">
+                <p>Este site usa cookies e outras tecnologias    semelhantes para melhorar a sua experiência em nossos serviços e publicidade. 
+                    Ao utilizar nosso site você está ciente destas funcionalidades. Informamos ainda que atulizamos nosso 
+                    <a href="politica-de-cookies.html" class="privacy-link" target="_blank" rel="external">Aviso de Privacidade</a> e <a href="termos-de-uso.html" class="privacy-link" target="_blank">Leia os Termos e Condições de Uso</a>.
+                </p>
+
+            
+                <div class="cookies-btn">
+                    <button id="accept-cookies">Aceitar</button>
+                </div>
+            </div>
+        </div>         
+
+            <section class="pagamento-selos">
+                <div class="container">
+                <div class="row">
+
+                    <!-- Seção de Pagamento -->
+                    <div class="pagamento col-md-8">
+                    <h2 class="titulo cor-secundaria">Pague com</h2>
+                    <ul class="bandeiras-pagamento">
+                        <li><img src="cartoes/visa.png" alt="Visa" title="Visa"></li>
+                        <li><img src="cartoes/mastercard.png" alt="MasterCard" title="MasterCard"></li>
+                        <li><img src="cartoes/hipercard.png" alt="Hipercard" title="Hipercard"></li>
+                        <li><img src="cartoes/elo.png" alt="Elo" title="Elo"></li>
+                        <li><img src="cartoes/diners.png" alt="Diners Club" title="Diners Club"></li>
+                        <li><img src="cartoes/amex.png" alt="American Express" title="American Express"></li>
+                    </ul>
+            
+            <ul class="gateways-rodape">
+                <li class="col-md-3">
+                <img src="https://cdn.awsli.com.br/production/static/img/formas-de-pagamento/pix-logo.png?v=7cbebeb" 
+                    alt="Pix" 
+                    class="logo-rodape-pix-pagali">
+                </li>
+            </ul>
+            </div>
+    
+            <!-- Seção de Selos -->
+            <div class="selos col-md-4">
+            <h2 class="titulo cor-secundaria">Qualidade e Segurança</h2>
+            <ul>
+                <li>
+                <img src="https://cdn.awsli.com.br/production/static/img/struct/stamp_encryptssl.png" 
+                    alt="Site Seguro">
+                </li>
+            </ul>
+            </div>
+        </div>
+        </div>
+    </section>
+
+        <button id="scrollToTopBtn" class="scroll-to-top">TOPO<!--<i class='bx bx-up-arrow-alt'></i>--></button>
+
+
+    <script src="scripts/menu.js"></script>
+    <script src="scripts/modal.js"></script>
+    <script src="scripts/slider.js"></script>
+    <script src="scripts/cookies.js"></script>
+    <script src="script.js"></script>
+    <script src="carrinho.js"></script>
+    <script src="conta.js"></script>
+    <script src="formulario.js"></script>
+    <script src="checkout.js"></script>
+    <script src="acompanharpedido.js"></script>
+    <script src="pdf.js"></script>
+    
+       
+    </body>  
+   
+</html>
+    

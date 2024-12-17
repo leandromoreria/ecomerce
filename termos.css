@@ -1,0 +1,76 @@
+/* Estilização geral do corpo */
+body {
+    font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+    line-height: 1.6; /* Espaçamento entre linhas */
+    margin: 0; /* Remove a margem padrão */
+    padding: 0; /* Remove o padding padrão */
+    background: linear-gradient(135deg, #E0F7FA, #f4f4f48e); /* Degradê do azul claro para o cinza */
+    color: #333; /* Cor do texto */
+}
+
+/* Estilo do cabeçalho */
+header {
+    color: #000; /* Cor do texto do cabeçalho */
+    padding: 20px; /* Espaçamento interno do cabeçalho */
+    text-align: center; /* Centraliza o texto do cabeçalho */
+}
+
+/* Estilo do contêiner */
+.container {
+    padding: 50px; /* Reduzindo o padding para 30px */
+    max-width: 1750px; /* Definindo uma largura máxima */
+    background-color: #ffffff; /* Cor de fundo do contêiner */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para destaque */
+    margin: 20px auto; /* Margem externa para espaçamento em relação ao restante da página */
+    border-radius: 10px; /* Bordas arredondadas para um visual mais suave */
+}
+
+/* Estilo dos títulos principais */
+h1 {
+    font-size: 2em; /* Tamanho da fonte para o título principal */
+    margin-bottom: 10px; /* Espaçamento inferior do título */
+}
+
+/* Estilo dos subtítulos */
+h2 {
+    font-size: 1.5em; /* Tamanho da fonte para subtítulos */
+    margin-top: 20px; /* Espaçamento superior dos subtítulos */
+    margin-bottom: 10px; /* Espaçamento inferior dos subtítulos */
+}
+
+/* Estilo dos subtítulos de terceiro nível */
+h3 {
+    font-size: 1.2em; /* Tamanho da fonte para subtítulos de terceiro nível */
+    margin-top: 15px; /* Espaçamento superior dos subtítulos de terceiro nível */
+    margin-bottom: 5px; /* Espaçamento inferior dos subtítulos de terceiro nível */
+}
+
+/* Estilo dos parágrafos */
+p {
+    margin: 15px 0; /* Margem superior e inferior dos parágrafos */
+    text-align: justify; /* Justifica o texto dos parágrafos */
+}
+
+/* Estilo das listas ordenadas */
+ol {
+    margin: 10px 0 20px 20px; /* Margem para a lista ordenada (superior, inferior, esquerda) */
+}
+
+/* Estilo do rodapé */
+footer {
+    color: #000; /* Cor do texto do rodapé */
+    text-align: center; /* Centraliza o texto do rodapé */
+    padding: 30px; /* Espaçamento interno do rodapé */
+    position: relative; /* Posicionamento relativo para o rodapé */
+    bottom: 0; /* Alinha o rodapé ao fundo da página */
+    width: 100%; /* Largura total do rodapé */
+    margin-top: 20px; /* Margem superior do rodapé */
+    margin-left: 750px; /* Ajuste o valor conforme necessário */
+}
+
+/* Estilo adicional para a data de atualização */
+header p {
+    margin: 0; /* Remove a margem padrão */
+    font-size: 1em; /* Tamanho da fonte para a data de atualização */
+    text-align: center; /* Centraliza a data de atualização */
+}

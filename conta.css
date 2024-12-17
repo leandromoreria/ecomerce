@@ -1,0 +1,123 @@
+/* Estilo geral do corpo 
+   Define o plano de fundo e centraliza o conteúdo da página */
+   body {
+    background-color: #F8BBD0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Altura mínima para ocupar a tela toda */
+    background: #E0F7FA; /* Cor do fundo*/
+    font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+}
+
+/* Container principal 
+   Estilo da caixa principal, com fundo branco, borda azul e sombra */
+.container {
+    background-color: #ffffff;
+    border-radius: 10px; /* Cantos arredondados */
+    box-shadow: 10px 10px 20px rgb(248, 187, 208, 0.8); /* Sombra suave */
+    padding: 20px;
+    max-width: 700px;
+    width: 100%;
+    border: 1px solid #F8BBD0; /* Borda do conteiner */
+}
+
+/* Estilo para títulos 
+   Centraliza o texto dos títulos e define a cor azul */
+h2, h3 {
+    text-align: center;
+    color: #000;
+    margin-bottom: 20px; /* Espaçamento inferior para separar do conteúdo */
+}
+
+/* Espaçamento inferior entre as seções */
+.form-section {
+    margin-bottom: 30px; /* Margem inferior para espaçamento entre as seções */
+}
+
+/* Estilo para o grupo de inputs 
+   Define o layout flexível para organizar os inputs lado a lado */
+.form-group {
+    display: flex;
+    justify-content: space-between; /* Espaço entre os elementos */
+    gap: 15px; /* Espaçamento entre os inputs */
+    margin-bottom: 15px; /* Espaçamento inferior entre os grupos de inputs */
+}
+
+/* Reduz a largura dos inputs 
+   Define a largura dos inputs para ocuparem metade do contêiner */
+.input-group {
+    flex-basis: 48%; /* Largura de 48% para que os inputs fiquem lado a lado */
+}
+
+/* Rótulos e inputs 
+   Estiliza os rótulos e os inputs com cores e espaçamento */
+.input-group label {
+    display: block;
+    margin-bottom: 5px; /* Espaçamento inferior para separar o rótulo do input */
+    color: #333; /* Cor do texto dos rótulos */
+}
+
+input, select {
+    width: 80%; /* Tamanho dos inputs */
+    padding: 8px; /* Espaçamento interno do input */
+    border-radius: 5px; /* Cantos arredondados */
+    border: 1px solid #F8BBD0; /* Borda cinza clara */
+    font-size: 1rem; /* Tamanho da fonte dos inputs */
+    background-color: #f9f9f9; /* Fundo dos inputs */
+}
+
+input::placeholder {
+    color: #c0c0c0; /* Placeholder em cinza claro */
+}
+
+input:focus, select:focus {
+    border-color: #F8BBD0; /* Borda azul quando o input está focado */
+    box-shadow: 5px 5px 5px rgb(248, 187, 208, 0.8); /* Sombra azul quando o input está focado */
+    outline: none; /* Remove a borda azul extra ao focar */
+}
+
+/* Estilo dos inputs de senha 
+   Aplica o mesmo espaçamento entre "Digite sua senha", "Nova senha" e "Confirme sua senha" */
+#senhaAtual, #novaSenha, #confirmarSenha {
+    margin-bottom: 20px; /* Mantém o espaçamento entre os inputs de senha e o salvar*/
+}
+
+/* Botão de envio 
+   Centraliza o botão e aplica estilo azul */
+.continue-button {
+    text-align: center; /* Centraliza o botão */
+    margin-top: 20px; /* Espaçamento superior para separar o botao salvar do cpf */
+}
+
+.continue-button button {
+    width: 100%; /* O botão ocupa toda a largura do contêiner */
+    padding: 15px 0; /* Aumenta o tamanho do botão verticalmente */
+    background-color: #F8BBD0; /* Cor de fundo azul */
+    color: #ffffff; /* Texto branco */
+    border: none; /* Remove a borda padrão */
+    border-radius: 5px; /* Cantos arredondados */
+    font-size: 1.2rem; /* Aumenta o tamanho do texto no botão */
+    cursor: pointer; /* Cursor pointer ao passar sobre o botão */
+    transition: background-color 0.3s ease; /* Transição suave ao mudar a cor */
+}
+
+.continue-button button:hover {
+    background-color: rgb(248, 187, 208, 0.5); /* Cor de fundo azul escuro ao passar o mouse */
+}
+
+/* Estilo para o campo de data de nascimento e vencimento do cartão */
+input[type="date"] {
+    width: 100%; /* O input ocupa toda a largura disponível */
+    padding: 8px; /* Espaçamento interno */
+    border-radius: 5px; /* Cantos arredondados */
+    border: 1px solid #F8BBD0; /* Borda cinza clara */
+    font-size: 1rem; /* Tamanho da fonte */
+    background-color: #f9f9f9; /* Fundo do input */
+}
+
+input[type="date"]:focus {
+    border-color: #F8BBD0; /* Borda azul ao focar */
+    box-shadow: 5px 5px 5px rgb(248, 187, 208, 0.5); /* Sombra azul ao focar */
+}

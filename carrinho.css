@@ -1,0 +1,267 @@
+/* Resetando alguns estilos padrão */
+* {
+    margin: 0; /* Remove a margem padrão de todos os elementos */
+    padding: 0; /* Remove o preenchimento padrão de todos os elementos */
+    box-sizing: border-box; /* Inclui bordas e preenchimento nas dimensões dos elementos */
+}
+
+body {
+    font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+    background-color: #E0F7FA; /* Define a cor de fundo do corpo */
+    color: #333; /* Define a cor do texto */
+}
+
+/*cabeçalho*/
+header {
+    background-color: #F8BBD0; /* Cor de fundo do cabeçalho */
+    padding: 50px; /* Espaçamento interno do cabeçalho */
+    text-align: center; /* Centraliza o texto no cabeçalho */
+    font-size: 2rem; /* Tamanho da fonte do cabeçalho */
+    color: #ffffff; /* Cor do texto do cabeçalho */
+    font-weight: bold; /* Define o texto como negrito */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); /* Sombra do cabeçalho */
+    border-bottom: 4px solid rgb(255, 112, 67); /* Coral */
+}
+
+main {
+    padding: 20px; /* Espaçamento interno da área principal */
+}
+
+/* Conteiner do título*/
+.page-title {
+    text-align: center; /* Centraliza o título da página */
+    font-size: 2rem; /* Tamanho da fonte do título */
+    margin-bottom: 30px; /* Espaço abaixo do título */
+    font-weight: bold; /* Define o texto como negrito */
+    color: #000; /* Cor do título */
+}
+
+.content {
+    display: flex; /* Usa flexbox para layout */
+    justify-content: space-between; /* Espaça os itens igualmente */
+    gap: 20px; /* Espaçamento entre os itens */
+    flex-wrap: wrap; /* Permite que os itens quebrem para a linha seguinte */
+}
+
+section {
+    flex: 2; /* A seção ocupa duas partes do espaço disponível */
+}
+
+aside {
+    flex: 1; /* O aside ocupa uma parte do espaço disponível */
+    background-color: #ffffff; /* Cor de fundo do aside */
+    padding: 20px; /* Espaçamento interno do aside */
+    border-radius: 10px; /* Cantos arredondados do aside */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); /* Sombra do aside */
+    max-width: 300px; /* Largura máxima do aside */
+}
+
+/* Tabela de produtos */
+table {
+    width: 100%; /* Largura total da tabela */
+    border-collapse: collapse; /* Remove espaços entre bordas da tabela */
+    background-color: #ffffff; /* Cor de fundo da tabela */
+    border-radius: 10px; /* Cantos arredondados da tabela */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); /* Sombra da tabela */
+}
+
+/* Estilo para as linhas no cabeçalho */
+thead tr {
+    color: #ffffff; /* Cor branca para o texto */
+    font-weight: bold; /* Texto em negrito */
+    text-transform: uppercase; /* Texto em letras maiúsculas */
+    border-collapse: collapse; /* Remove espaços entre bordas da tabela */
+    font-size: 24px; /* Tamanho da fonte */
+}
+
+table thead {
+    background-color: #F8BBD0; /* Cor de fundo do cabeçalho da tabela */
+    color: #ffffff; /* Cor do texto no cabeçalho da tabela */
+}
+
+table th, table td {
+    padding: 15px; /* Espaçamento interno das células da tabela */
+    text-align: left; /* Alinhamento do texto à esquerda */
+    border-bottom: 2px solid rgb(255, 112, 67); /* Coral */
+}
+
+table tbody tr:nth-child(even) {
+    background-color: rgb(248, 187, 208, 0.5); /* Cor de fundo para linhas pares da tabela */
+}
+
+.product {
+    display: flex; /* Usa flexbox para layout do produto */
+    align-items: center; /* Alinha os itens ao centro verticalmente */
+    gap: 15px; /* Espaçamento entre os itens do produto */
+}
+
+.product img {
+    width: 100px; /* Largura da imagem do produto */
+    height: 120px; /* Altura da imagem do produto */
+    object-fit: cover; /* Cobre a área definida sem distorcer a imagem */
+    border-radius: 8px; /* Cantos arredondados da imagem do produto */
+}
+
+.product .info {
+    display: flex; /* Usa flexbox para layout da informação do produto */
+    flex-direction: column; /* Alinha os itens verticalmente */
+}
+
+.product .info .name {
+    font-weight: bold; /* Define o nome do produto como negrito */
+    font-size: 1rem; /* Tamanho da fonte do nome do produto */
+}
+
+.product .info .category {
+    color: #666; /* Cor do texto da categoria do produto */
+    font-size: 0.9rem; /* Tamanho da fonte da categoria do produto */
+}
+
+.qty {
+    display: flex; /* Usa flexbox para layout da quantidade */
+    align-items: center; /* Alinha os itens ao centro verticalmente */
+    gap: 10px; /* Espaçamento entre os itens da quantidade */
+    margin-left: 40px; /* Espaçamento entre o preço e a quantidade */
+}
+
+.qty button {
+    background-color: #FF7043; /* Cor de fundo do botão de quantidade */
+    border: none; /* Remove a borda do botão */
+    color: #ffffff; /* Cor do texto do botão */
+    padding: 5px; /* Espaçamento interno do botão */
+    border-radius: 5px; /* Cantos arredondados do botão */
+    cursor: pointer; /* Cursor pointer ao passar o mouse */
+    font-size: 1rem; /* Tamanho da fonte do botão */
+}
+
+.qty button:hover {
+    background-color: rgb(255, 112, 67, 0.8); /* Cor de fundo do botão ao passar o mouse */
+}
+
+.qty span {
+    font-size: 1rem; /* Tamanho da fonte do número da quantidade */
+}
+
+/*estilização do botao remover*/
+button.remove {
+    font-size: 1.5rem;
+    background-color: transparent; /* Fundo transparente para o botão de remoção */
+    border: none; /* Remove a borda do botão */
+    color: #FF7043; /* Cor do texto do botão de remoção */
+    cursor: pointer; /* Cursor pointer ao passar o mouse */
+}
+
+button.remove:hover {
+    color: rgb(255, 112, 67, 0.5); /* Cor do texto do botão de remoção ao passar o mouse */
+}
+
+/* Resumo da compra */
+.box {
+    background-color: #ffffff; /* Cor de fundo do cabeçalho */
+    padding: 20px; /* Espaçamento interno do cabeçalho */
+    text-align: center; /* Centraliza o texto no cabeçalho */
+    font-size: 1rem; /* Tamanho da fonte do cabeçalho */
+    color: #000; /* Cor do texto do cabeçalho */
+    font-weight: bold; /* Define o texto como negrito */  
+}
+
+/* Resumo da compra */
+aside .box header {
+    font-size: 1.2rem; /* Tamanho da fonte do cabeçalho do resumo */
+    font-weight: bold; /* Define o cabeçalho como negrito */
+    margin-bottom: 15px; /* Espaço abaixo do cabeçalho do resumo */
+    color: #FF7043; /* Cor do texto do cabeçalho do resumo */
+}
+
+aside .box .info {
+    margin-bottom: 40px; /* Espaço abaixo da seção de informações */
+}
+
+aside .box .info div {
+    display: flex; /* Usa flexbox para layout das informações */
+    justify-content: space-between; /* Espaça os itens igualmente */
+    padding: 10px 0; /* Espaçamento vertical das informações */
+    border-bottom: 1px solid #FF7043; /* Linha de separação abaixo das informações */
+}
+
+aside .box .info button {
+    background-color: #FF7043; /* Cor de fundo do botão de cupom */
+    color: #ffffff; /* Cor do texto do botão de cupom */
+    border: none; /* Remove a borda do botão */
+    padding: 10px; /* Espaçamento interno do botão de cupom */
+    cursor: pointer; /* Cursor pointer ao passar o mouse */
+    border-radius: 5px; /* Cantos arredondados do botão de cupom */
+    width: 100%; /* Largura total do botão de cupom */
+    display: flex; /* Exibe como flexbox */
+    justify-content: space-between; /* Espaça os itens igualmente */
+    align-items: center; /* Alinha os itens ao centro verticalmente */
+}
+
+aside .box .info button input {
+    border: none; /* Remove a borda do input */
+    padding: 10px; /* Espaçamento interno do input */
+    width: 100%; /* Largura total do input */
+    border-radius: 5px; /* Cantos arredondados do input */
+    outline: none; /* Remove o contorno padrão ao focar */
+    background-color: transparent; /* Fundo transparente para o input */
+    color: #ffffff; /* Cor do texto do input */
+}
+
+aside .box .info button input::placeholder {
+    color: rgba(255, 255, 255, 0.9); /* Cor do texto do placeholder */
+    font-size: 16px; /* Tamanho do placeholder */
+}
+
+
+aside .box .info button:hover {
+    background-color: rgb(255, 112, 67, 0.8); /* Cor de fundo do botão de cupom ao passar o mouse */
+}
+
+aside footer {
+    display: flex; /* Usa flexbox para layout do rodapé */
+    justify-content: space-between; /* Espaça os itens igualmente */
+    padding-top: 15px; /* Espaçamento acima do rodapé */
+    font-weight: bold; /* Define o texto do rodapé como negrito */
+    border-top: 2px solid #FF7043; /* Linha de separação acima do rodapé */
+    font-size: 1.2rem; /* Tamanho da fonte do rodapé */
+}
+
+aside button {
+    width: 100%; /* Largura total do botão de finalizar compra */
+    padding: 15px; /* Espaçamento interno do botão */
+    background-color: #FF7043; /* Cor de fundo do botão de finalizar compra */
+    color: #ffffff; /* Cor do texto do botão de finalizar compra */
+    border: none; /* Remove a borda do botão */
+    border-radius: 5px; /* Cantos arredondados do botão */
+    font-size: 1rem; /* Tamanho da fonte do botão de finalizar compra */
+    cursor: pointer; /* Cursor pointer ao passar o mouse */
+    margin-top: 15px; /* Espaço acima do botão de finalizar compra */
+}
+
+aside button:hover {
+    background-color: rgb(255, 112, 67, 0.8); /* Cor de fundo do botão de finalizar compra ao passar o mouse */
+}
+
+/* Media query para responsividade */
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column; /* Altera a direção do flex para coluna em telas menores */
+    }
+
+    aside {
+        max-width: none; /* Remove a largura máxima do aside em telas menores */
+    }
+
+    header {
+        padding: 15px; /* Reduz o espaçamento do cabeçalho em telas menores */
+    }
+
+    .page-title {
+        font-size: 1.5rem; /* Reduz o tamanho do título em telas menores */
+    }
+
+    table th, table td {
+        font-size: 0.9rem; /* Reduz o tamanho da fonte na tabela em telas menores */
+    }
+}
+    

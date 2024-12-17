@@ -1,0 +1,507 @@
+/* Estilos básicos */
+body {
+    font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+    margin: 0;
+    padding: 0;
+    background: #e0f7fa; /* Cor de fundo geral */
+    background-size: cover;
+    background-attachment: fixed; /* Faz o fundo se manter fixo */
+}
+
+/* Container do checkout */
+.checkout-container {
+    max-width: 800px; /* Largura máxima do container */
+    margin: 50px auto; /* Centralização do container */
+    padding: 20px; /* Espaçamento interno */
+    background: rgba(255, 255, 255, 0.9); /* Fundo branco semi-transparente */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 2px 10px rgb(248, 187, 208, 0.9); /* Sombra para destaque */
+}
+
+/* Certifique-se de que outros containers não tenham fundo que sobrepõe o degradê */
+.step-container, .summary-container, .payment-container {
+    background: none; /* Remover qualquer cor de fundo nas outras seções */
+}
+
+/* Linha do tempo */
+.timeline {
+    display: flex; /* Alinhamento em linha */
+    justify-content: space-between; /* Espaço entre os itens */
+    position: relative; /* Para posicionamento correto */
+    margin-bottom: 60px; /* Maior espaçamento inferior para evitar sobreposição */
+    padding-top: 20px; /* Espaçamento superior para afastar do topo */
+}
+
+/* Etapas da linha do tempo */
+.step {
+    flex: 1; /* Cada etapa ocupa espaço igual */
+    text-align: center; /* Centraliza o texto */
+    position: relative; /* Necessário para o posicionamento dos ícones */
+}
+
+/* Estilização da linha do tempo */
+.step:before {
+    content: ''; /* Adiciona um conteúdo vazio */
+    position: absolute; /* Posicionamento absoluto */
+    left: 0%; /* Centraliza horizontalmente */
+    top: 20px; /* Espaço acima do ícone */
+    height: 2px; /* Espessura da linha */
+    background-color: #ccc; /* Cor da linha */
+    width: 100%; /* Largura da linha */
+    z-index: 1; /* A linha fica atrás do ícone */
+    margin-top: 10px; /* Espaço entre a linha do tempo e os títulos */
+}
+
+/* Estilos do ícone da etapa */
+.step.active:before {
+    background-color: #F8BBD0; /* Cor da linha ativa */
+}
+
+.step.active {
+    color: #F8BBD0; /* Cor do texto ativo */
+    font-weight: bold; /* Negrito no texto ativo */
+}
+
+/* Estilo dos ícones da linha do tempo */
+.step:after {
+    content: ''; /* Adiciona um ícone de etapa */
+    display: block; /* Mostra o ícone */
+    width: 20px; /* Tamanho da largura da bolinha do ícone */
+    height: 20px; /* Tamanho da bolinha do ícone */
+    background-color: #ddd; /* Cor padrão do ícone */
+    border-radius: 50%; /* Arredonda o ícone */
+    position: absolute; /* Posicionamento absoluto */
+    left: 50%; /* Centraliza o ícone */
+    top: 10px; /* Posiciona acima da linha */
+    transform: translateX(-50%); /* Centraliza o ícone */
+    z-index: 2; /* Ícone acima da linha */
+    margin-top: 10px; /* Espaço entre a linha do tempo e bolinha */
+}
+
+/* Estilo do ícone ativo */
+.step.active:after {
+    background-color: #F8BBD0; /* Cor do ícone ativo */
+}
+
+/* Estilos do painel do checkout */
+.checkout-panel {
+    background-color: #Fff; /* Cor de fundo do painel */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.9); /* Sombra */
+    margin-top: 40px; /* Aumentei o espaço entre a linha do tempo e o painel de checkout */
+}
+
+/* Campos de entrada */
+.input-fields {
+    margin-bottom: 20px; /* Espaçamento inferior */
+}
+
+/* Estilo das labels */
+.input-fields label {
+    display: block; /* Exibe como bloco */
+    margin-bottom: 5px; /* Espaçamento inferior */
+    font-weight: bold; /* Negrito */
+}
+
+/* Estilo dos inputs */
+.input-fields input {
+    width: 80%; /* Largura ajustada para 80% do contêiner pai */
+    max-width: 300px; /* Limite máximo de largura para inputs */
+    padding: 8px; /* Ajuste do espaçamento interno */
+    margin-bottom: 10px; /* Espaçamento inferior */
+    border: 1px solid #ccc; /* Borda padrão */
+    border-radius: 4px; /* Bordas arredondadas */
+    box-shadow: 0 5px 5px rgba(255, 255, 255, 0.9); /* Sombra leve */
+    transition: border 0.3s; /* Transição na borda */
+}
+
+/* Foco no input */
+.input-fields input:focus {
+    border-color: #000; /* Cor da borda ao focar */
+    outline: none; /* Remove contorno padrão */
+}
+
+.button-container {
+    display: flex; /* Usar flexbox para organizar os botões */
+    justify-content: space-between; /* Espaço igual entre os botões */
+    margin-top: 20px; /* Espaço acima do contêiner */
+    justify-content: flex-start; /* Alinha os botões à esquerda */
+}
+
+/* Botões */
+.btn {
+    background-color: #F8BBD0; /* Cor do botão */
+    color: #ffffff; /* Cor do texto */
+    padding: 10px 20px; /* Espaçamento interno */
+    border: none; /* Remove borda padrão */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 16px; /* Tamanho da fonte */
+    cursor: pointer; /* Cursor de mão */
+    margin: 5px; /* Margem */
+    transition: background-color 0.3s; /* Transição na cor de fundo */
+}
+
+/* Estilo do botão hover */
+.btn:hover {
+    background-color: rgb(248, 187, 208, 0.6); /* Cor ao passar o mouse */
+}
+
+/* Especificidade para o botão Finalizar Compra */
+#finalizar-compra {
+    background-color: #F8BBD0; /* Cor de fundo específica para o botão Finalizar Compra */
+    color: #ffffff; /* Cor do texto */
+    border: none; /* Remover borda preta */
+    border-radius: 5px; /* Garantir que o botão tenha bordas arredondadas */
+    padding: 10px 10px; /* Espaçamento interno */ 
+    font-size: 16px; /* Tamanho da fonte */
+    width: 150px; /* Aumentar a largura do botão */
+    text-align: center; /* Centralizar o texto dentro do botão */
+    cursor: pointer;
+}
+
+/* Estilo hover específico para o botão Finalizar Compra */
+#finalizar-compra:hover {
+    background-color: rgb(248, 187, 208, 0.6); /* Cor ao passar o mouse para o botão Finalizar Compra */
+}
+
+/* Estilos de exibição ocultos */
+.hidden {
+    display: none; /* Esconde o elemento */
+}
+
+/* Estilo do resumo do pedido */
+.order-summary {
+    border: none; /* Borda padrão */
+    border-radius: 4px; /* Bordas arredondadas */
+    padding: 15px; /* Espaçamento interno */
+    margin-top: 20px; /* Margem superior */
+    background-color: #ffffff; /* Cor de fundo */
+}
+
+/* Estilo para a lista de produtos */
+#products-list .product {
+    display: flex; /* Para alinhar os itens em linha */
+    align-items: center; /* Centraliza o conteúdo verticalmente */
+    justify-content: space-between; /* Espaça os elementos dentro do item */
+    padding: 10px 0; /* Adiciona espaçamento interno */
+    border-bottom: 1px solid #F8BBD0; /* Adiciona uma linha inferior para separar os produtos */
+}
+
+/* Estilo para a informação do produto */
+#products-list .product .name {
+    font-size: 16px; /* Define o tamanho da fonte do nome do produto */
+    font-weight: bold; /* Negrito para o nome */
+    color: #333; /* Cor mais escura */
+}
+
+#products-list .product .price {
+    font-size: 14px; /* Define o tamanho da fonte do preço */
+    color: #FF7043; /* Cor */
+}
+
+/* Estilo do resumo do pedido */
+.title {
+    margin-bottom: 10px; /* Espaçamento inferior */
+    font-weight: bold; /* Negrito */
+    color: #333; /* Cor do texto */
+}
+
+/* Estilo da opção de entrega */
+.delivery-options {
+    margin: 10px 0; /* Margem vertical */
+}
+
+/* Estilo do endereço já cadastrado */
+#existing-address {
+    margin-bottom: 10px; /* Margem inferior */
+    padding: 15px; /* Espaçamento interno */
+    background-color: #ffffff; /* Cor de fundo do endereço */
+    border: none; /* Borda padrão */
+    border-radius: 4px; /* Bordas arredondadas */
+}
+
+/* Flexbox para organizar os elementos do endereço */
+.address-row {
+    display: flex; /* Alinhamento em linha */
+    justify-content: space-between; /* Espaço entre os elementos */
+    margin-bottom: 2px; /* Menor espaçamento inferior entre a rua e o número */
+}
+
+/* Estilo para o bairro */
+#bairro {
+    margin: 2px 0; /* Espaço reduzido acima e abaixo do bairro */
+}
+
+/* Estilo para o CEP e bairro lado a lado */
+.zip-city-row {
+    display: flex; /* Alinhamento em linha */
+    justify-content: space-between; /* Espaço entre o CEP e a cidade */
+    margin: 2px 0; /* Espaço reduzido acima e abaixo */
+}
+
+/* Estilo da cidade */
+#cidade {
+    margin-top: 2px; /* Espaço acima da cidade */
+}
+
+#card-form {
+    display: flex; /* Permite que os filhos sejam dispostos em linha */
+    justify-content: space-between; /* Espaço entre inputs e cartão */
+}
+
+.input-fields {
+    width: 60%; /* Ajuste a largura conforme necessário */
+}
+
+/* Contêiner para os inputs e o cartão virtual */
+.payment-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+.payment-form {
+    flex: 1; /* Ocupa a maior parte da largura */
+    margin-right: 20px; /* Espaço entre o formulário e o cartão */
+}
+
+/* Cartão Virtual Estilo Moderno */
+.virtual-card {
+    width: 350px; /* Largura ajustada para parecer mais realista */
+    height: 200px; /* Altura fixa para o formato do cartão */
+    border-radius: 16px; /* Cantos bem arredondados */
+    padding: 20px; /* Espaçamento interno do cartão */
+    background: linear-gradient(145deg, #3a83f1, #1f5dbd); /* Gradiente de fundo semelhante ao cartão da imagem */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidade */
+    display: flex;
+    flex-direction: column; /* Direção da coluna para o layout */
+    justify-content: space-between; /* Espaço entre as seções do cartão */
+    color: #ffffff; /* Cor do texto */
+    font-family: 'Poppins', sans-serif; /* Fonte texto */
+    position: relative; /* Posição relativa para posicionamento interno */
+    margin-left: 20px; /* Espaço entre o cartão e os inputs */
+}
+
+/* Estilo para a bandeira do cartão */
+#card-flag {
+    width: 50px; /* Largura da bandeira */
+    height: auto; /* Mantém a proporção da bandeira */
+    display: none; /* Escondido até que seja identificado */
+    margin-right: 10px; /* Espaço à direita da bandeira */
+}
+
+/* Nome do portador do cartão */
+.cardholder-name {
+    font-size: 16px; /* Tamanho do texto do nome */
+    font-weight: 600; /* Peso da fonte */
+    text-transform: uppercase; /* Tudo em maiúsculas como na referência */
+    margin-bottom: 30px; /* Espaçamento abaixo do nome para separar dos dígitos */
+    margin-top: 100px; /* Espaçamento acima do nome para separar da bandeira */
+}
+
+/* Novo estilo para o número do cartão */
+.card-number {
+    font-size: 16px; /* Aumentar o tamanho do número do cartão */
+    letter-spacing: 2px; /* Espaçamento entre os dígitos */
+    margin: 10px 0; /* Espaçamento entre o número e o restante */
+}
+
+/* Rodapé do Cartão (validade e CVV) */
+.card-footer {
+    display: flex; /* Usar flexbox para o rodapé */
+    justify-content: space-between; /* Espaço entre validade e CVV */
+    font-size: 0.9em; /* Tamanho do texto menor */
+    text-transform: uppercase; /* Maiúsculas para os textos do rodapé */
+}
+
+/* Validade e CVV */
+.validity,
+.cvv {
+    margin: 0; /* Remover espaçamento extra */
+    font-weight: 500; /* Peso de fonte um pouco mais forte */
+}
+
+/* QR Code do Pix */
+.pix-qrcode {
+    width: 200px; /* Largura do QR Code */
+    height: 200px; /* Altura do QR Code */
+    background-color: #f5f5f5; /* Cor de fundo do QR Code */
+    border: 2px solid #ccc; /* Borda do QR Code */
+    display: flex; /* Usar flexbox para centralizar */
+    justify-content: center; /* Centralizar horizontalmente */
+    align-items: center; /* Centralizar verticalmente */
+}
+
+.hidden {
+    display: none; /* Classe para esconder os formulários */
+}
+
+/* Estilo do QR Code */
+#pix-code {
+    margin-top: 20px; /* Margem superior */
+    background: #ffffff; /* Cor de fundo */
+    padding: 15px; /* Espaçamento interno */
+    border-radius: 4px; /* Bordas arredondadas */
+    /*border: 1px solid #F8BBD0; /* Borda do QR code */
+}
+
+/* Estilo para a Confirmação do Pedido */
+.confirmacao-pedido {
+    padding: 15px; /* Espaçamento interno ao redor do conteúdo */
+    background-color: #ffffff; /* Fundo do conteiner */
+    border: none; /* Borda do conteiner */
+    border-radius: 5px; /* Bordas arredondadas */
+    margin-bottom: 20px; /* Margem inferior para espaçar de outros elementos */
+    
+}
+
+/* Estilo para o título da confirmação do pedido */
+.confirmacao-pedido h3 {
+    margin: 0; /* Remove margem padrão */
+    color: #F8BBD0; /* Cor do texto do título */
+    padding-bottom: 20px; /* Adiciona espaço abaixo do título para separação */
+}
+
+/* Estilo para os parágrafos dentro da confirmação do pedido */
+.confirmacao-pedido p {
+    margin: 5px 0; /* Margem superior e inferior de 5px para os parágrafos */
+    text-align: center; /* Centraliza todo o texto dentro do container */
+}
+
+/* Exibe cada produto com um layout flexível, alinha o conteúdo centralmente e coloca uma borda inferior */
+#final-products-list .product {
+    display: flex; /* Alinha os itens em linha horizontal */
+    align-items: center; /* Centraliza verticalmente o conteúdo dentro do container */
+    border-bottom: 1px solid #F8BBD0; /* Adiciona uma borda inferior para separar os itens */
+    padding: 15px 0; /* Adiciona espaçamento interno acima e abaixo */
+    justify-content: center; /* Centraliza horizontalmente os itens dentro do produto */
+}
+
+/* Margem para separar a imagem do conteúdo e um efeito arredondado */
+#final-products-list img {
+    margin-right: 15px; /* Adiciona espaço à direita da imagem */
+    border-radius: 5px; /* Arredonda os cantos da imagem */
+}
+
+/* O elemento "info" ocupa o restante do espaço flexível */
+#final-products-list .info {
+    flex: 1; /* Faz o container ocupar todo o espaço disponível restante */
+}
+
+/* Aumenta o tamanho da fonte do nome e aplica negrito e cor personalizada */
+#final-products-list .name {
+    font-size: 16px; /* Define o tamanho da fonte */
+    font-weight: bold; /* Aplica negrito ao nome do produto */
+    color: #000; /* Cor */
+}
+
+/* Define o estilo da categoria com fonte menor e cor secundária */
+#final-products-list .category {
+    font-size: 14px; /* Tamanho menor da fonte para a categoria */
+    color: #757575; /* Cor cinza claro */
+    margin: 5px 0; /* Espaçamento acima e abaixo da categoria */
+}
+
+/* Define a aparência da quantidade e do total, utilizando uma cor mais chamativa */
+#final-products-list .quantity, 
+#final-products-list .total {
+    font-size: 14px; /* Tamanho da fonte consistente com a categoria */
+    color: #000; /* Cor  */
+}
+
+/* Aplica um fundo claro e bordas arredondadas aos blocos de endereço e pagamento */
+#confirmation-address, 
+#confirmation-payment {
+    background-color: #e0f7fa; /* Fundo azul claro */
+    padding: 10px; /* Espaçamento interno */
+    border-radius: 8px; /* Arredonda os cantos do container */
+    margin-bottom: 15px; /* Adiciona espaçamento inferior */
+    font-size: 16px; /* Tamanho da fonte consistente com o restante do layout */
+    color: #FF7043; /* Cor */
+}
+
+/* Estilização do preço total com fonte grande e destaque na cor */
+#final-total-price {
+    font-size: 20px; /* Tamanho maior da fonte para o valor total */
+    font-weight: bold; /* Negrito para destacar o preço total */
+    color: #FF7043; /* Cor valor total dos produtos */
+    margin-top: 15px; /* Espaçamento superior para separar do restante do conteúdo */
+    display: block; /* Garante que o preço total ocupe uma linha inteira */
+    text-align: center; /* Centraliza o valor total na página */
+}
+
+/* Ajustes no estilo da lista de produtos no resumo do pedido */
+.product {
+    display: flex; /* Exibe os produtos em linha */
+    align-items: center; /* Centraliza os itens verticalmente */
+    margin-bottom: 10px; /* Espaçamento inferior entre os produtos */
+}
+
+.product img {
+    width: 50px; /* Define a largura da imagem para 50px */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-right: 10px; /* Espaçamento entre a imagem e as informações */
+}
+
+.product-info {
+    display: flex; /* Alinha as informações dos produtos em linha */
+    flex-direction: column; /* Alinha os elementos em coluna */
+    font-size: 14px; /* Reduz o tamanho da fonte */
+}
+
+.product-info h3 {
+    font-size: 16px; /* Ajusta o tamanho do nome do produto */
+    margin: 0; /* Remove a margem */
+}
+
+.product-info p {
+    margin: 0; /* Remove a margem */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .checkout-container {
+        padding: 10px; /* Menos espaçamento em telas menores */
+    }
+
+    .timeline {
+        flex-direction: column; /* Alinha a linha do tempo em coluna */
+    }
+
+    .step {
+        margin-bottom: 20px; /* Espaçamento inferior entre as etapas */
+    }
+
+    .checkout-panel {
+        margin-top: 20px; /* Menos espaço entre a linha do tempo e o painel */
+    }
+
+    .input-fields input {
+        font-size: 14px; /* Ajuste no tamanho da fonte para inputs */
+    }
+
+    .btn {
+        font-size: 14px; /* Ajuste no tamanho da fonte para botões */
+        padding: 8px 16px; /* Menos padding em botões */
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-container {
+        padding: 5px; /* Menos padding em telas muito pequenas */
+    }
+
+    .input-fields input {
+        padding: 8px; /* Menos padding para inputs */
+    }
+
+    .btn {
+        padding: 6px 12px; /* Menos padding em botões */
+    }
+
+    .order-summary {
+        font-size: 12px; /* Reduz o tamanho da fonte no resumo */
+    }
+}

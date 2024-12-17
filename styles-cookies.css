@@ -1,0 +1,59 @@
+/* Estilos para a Política de Cookies */
+body {
+    font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
+    line-height: 1.6; /* Aumenta o espaçamento entre linhas */
+    margin: 0; /* Remove margens padrão */
+    padding: 0; /* Remove preenchimento padrão */
+    background: linear-gradient(135deg, #E0F7FA, #f4f4f48e); /* Degradê do azul claro para o cinza */
+}
+
+/* Cabeçalho da Política de Cookies */
+.cookies-header {
+    color: #000; /* Cor do texto */
+    padding: 20px; /* Espaçamento interno */
+    text-align: center; /* Centraliza o texto */
+}
+
+/* Container principal */
+.cookies-container {
+    max-width: 1750px; /* Largura máxima */
+    margin: 20px auto; /* Centraliza o container */
+    padding: 50px; /* Espaçamento interno */
+    background-color: #ffffff; /* Fundo branco */
+    border-radius: 8px; /* Cantos arredondados */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilos para a seção de política de cookies */
+.politica-cookies {
+    margin-bottom: 20px; /* Espaçamento abaixo da seção */
+}
+
+/* Títulos das seções */
+.politica-cookies h2 {
+    color: #333; /* Cor do título */
+    margin-top: 20px; /* Margem acima do título */
+    margin-bottom: 10px; /* Margem abaixo do título */
+}
+
+/* Parágrafos */
+.politica-cookies p {
+    margin-bottom: 15px; /* Espaçamento abaixo dos parágrafos */
+}
+
+/* Lista não ordenada */
+.politica-cookies ul {
+    margin: 10px 0; /* Margem acima e abaixo da lista */
+    padding-left: 20px; /* Espaçamento interno à esquerda */
+}
+
+/* Rodapé */
+.cookies-footer {
+    text-align: center; /* Centraliza o texto */
+    padding: 20px; /* Espaçamento interno */
+    color: #000; /* Cor do texto */
+    position: relative; /* Posição relativa */
+    bottom: 0; /* Alinha ao fundo */
+    width: 100%; /* Largura total */
+}
+
