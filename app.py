@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import mysql.connector
 from bcrypt import hashpw, gensalt, checkpw
-from database import conectar  # Certifique-se de que você está importando a função correta
 
 app = Flask(__name__)
 CORS(app)  # Habilita o CORS para todas as origens
@@ -19,128 +18,157 @@ def conectar_db():
     except mysql.connector.Error as err:
         raise Exception(f"Erro ao conectar ao banco de dados: {str(err)}")
 
-# Endpoint para obter todos os usuários
-@app.route('/usuarios', methods=['GET'])
-def get_usuarios():
-    try:
-        conn = conectar()  # Usando a função importar de database.py
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id, nome, email FROM usuarios")
-        usuarios = cursor.fetchall()
-        return jsonify(usuarios), 200
-    except Exception as err:
-        return jsonify({"error": f"Erro ao buscar usuários: {str(err)}"}), 500
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            conn.close()
-
-# Endpoint para adicionar um novo usuário
-@app.route('/usuarios', methods=['POST'])
-def add_usuario():
+# Endpoint para cadastro do cliente
+@app.route('/api/cadastro', methods=['POST'])
+def cadastrar_cliente():
     try:
         dados = request.get_json()
-        nome = dados.get('nome')
+
+        # Extraindo os dados enviados pelo formulário
+        firstname = dados.get('firstname')
+        lastname = dados.get('lastname')
+        number = dados.get('number')
         email = dados.get('email')
-        senha = dados.get('senha')
+        password = dados.get('password')
 
-        if not nome or not email or not senha:
-            return jsonify({"error": "Todos os campos (nome, email, senha) são obrigatórios!"}), 400
+        # Validações simples
+        if not all([firstname, lastname, number, email, password]):
+            return jsonify({"success": False, "message": "Todos os campos são obrigatórios."}), 400
 
-        senha_hashed = hashpw(senha.encode('utf-8'), gensalt()).decode('utf-8')
+        # Hash da senha
+        senha_hashed = hashpw(password.encode('utf-8'), gensalt()).decode('utf-8')
 
-        conn = conectar()  # Usando a função importar de database.py
+        # Conexão com o banco de dados
+        conn = conectar_db()
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)", (nome, email, senha_hashed))
-        conn.commit()
 
-        return jsonify({"message": "Usuário adicionado com sucesso!"}), 201
-    except Exception as err:
-        return jsonify({"error": f"Erro ao adicionar usuário: {str(err)}"}), 500
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            conn.close()
-
-# Endpoint para atualizar um usuário
-@app.route('/usuarios/<int:id>', methods=['PUT'])
-def update_usuario(id):
-    try:
-        dados = request.get_json()
-        nome = dados.get('nome')
-        email = dados.get('email')
-        senha = dados.get('senha')
-
-        # Validações
-        if not nome or not email or not senha:
-            return jsonify({"error": "Todos os campos (nome, email, senha) são obrigatórios!"}), 400
-
-        # Hash da nova senha
-        senha_hashed = hashpw(senha.encode('utf-8'), gensalt()).decode('utf-8')
-
-        conn = conectar()  # Usando a função importar de database.py
-        cursor = conn.cursor()
+        # Inserção dos dados
         cursor.execute("""
-            UPDATE usuarios
-            SET nome = %s, email = %s, senha = %s
-            WHERE id = %s
-        """, (nome, email, senha_hashed, id))
+            INSERT INTO clientes (firstname, lastname, number, email, senha)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (firstname, lastname, number, email, senha_hashed))
         conn.commit()
 
-        if cursor.rowcount == 0:
-            return jsonify({"error": "Usuário não encontrado!"}), 404
-
-        return jsonify({"message": "Usuário atualizado com sucesso!"}), 200
-    except mysql.connector.Error as err:
-        return jsonify({"error": f"Erro ao atualizar usuário: {str(err)}"}), 500
+        return jsonify({"success": True, "message": "Cliente cadastrado com sucesso."}), 201
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Erro ao cadastrar cliente: {str(e)}"}), 500
     finally:
-        if 'conn' in locals():
+        if 'conn' in locals() and conn.is_connected():
             conn.close()
 
-# Endpoint para excluir um usuário
-@app.route('/usuarios/<int:id>', methods=['DELETE'])
-def delete_usuario(id):
+# Endpoint para login
+@app.route('/api/login', methods=['POST'])
+def login():
     try:
-        conn = conectar()  # Usando a função importar de database.py
-        cursor = conn.cursor()
-        cursor.execute("DELETE FROM usuarios WHERE id = %s", (id,))
-        conn.commit()
+        dados = request.get_json()
+        email = dados.get('email')
+        senha = dados.get('senha')
 
-        if cursor.rowcount == 0:
-            return jsonify({"error": "Usuário não encontrado!"}), 404
+        if not email or not senha:
+            return jsonify({"error": "Email e senha são obrigatórios!"}), 400
 
-        return jsonify({"message": "Usuário excluído com sucesso!"}), 200
-    except mysql.connector.Error as err:
-        return jsonify({"error": f"Erro ao excluir usuário: {str(err)}"}), 500
+        conn = conectar_db()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT id, nome, senha FROM clientes WHERE email = %s", (email,))
+        usuario = cursor.fetchone()
+
+        if usuario and checkpw(senha.encode('utf-8'), usuario['senha'].encode('utf-8')):
+            return jsonify({"message": "Login bem-sucedido!", "cliente": usuario}), 200
+        else:
+            return jsonify({"error": "Email ou senha incorretos!"}), 401
+    except Exception as err:
+        return jsonify({"error": f"Erro ao fazer login: {str(err)}"}), 500
     finally:
-        if 'conn' in locals():
+        if 'conn' in locals() and conn.is_connected():
             conn.close()
 
-# Funcionalidades do carrinho
-carrinho = []
-
-@app.route('/api/carrinho', methods=['GET'])
-def get_carrinho():
-    return jsonify(carrinho), 200
-
+# Endpoint para gerenciar o carrinho de compras
 @app.route('/api/carrinho', methods=['POST'])
 def add_to_carrinho():
-    item = request.json
-    if not item.get('nome') or not item.get('preco') or not item.get('quantidade'):
-        return jsonify({'error': 'Todos os campos (nome, preço, quantidade) são obrigatórios!'}), 400
+    try:
+        dados = request.get_json()
+        cliente_id = dados.get('cliente_id')
+        produtos = dados.get('produtos')  # Lista de produtos
 
-    carrinho.append(item)
-    return jsonify({'message': 'Item adicionado ao carrinho', 'carrinho': carrinho}), 201
+        if not cliente_id or not produtos:
+            return jsonify({"error": "Cliente e produtos são obrigatórios!"}), 400
 
-@app.route('/api/carrinho/<int:index>', methods=['DELETE'])
-def delete_item(index):
-    if 0 <= index < len(carrinho):
-        removido = carrinho.pop(index)
-        return jsonify({'message': 'Item removido', 'item': removido, 'carrinho': carrinho}), 200
-    return jsonify({'error': 'Índice inválido'}), 400
+        conn = conectar_db()
+        cursor = conn.cursor()
 
-@app.route('/api/carrinho/total', methods=['GET'])
-def get_total():
-    total = sum(item['preco'] * item['quantidade'] for item in carrinho)
-    return jsonify({'total': total}), 200
+        for produto in produtos:
+            cursor.execute("""
+                INSERT INTO carrinho (cliente_id, produto_id, quantidade, preco)
+                VALUES (%s, %s, %s, %s)
+            """, (cliente_id, produto['id'], produto['quantidade'], produto['preco']))
+
+        conn.commit()
+        return jsonify({"message": "Produtos adicionados ao carrinho!"}), 201
+    except Exception as err:
+        return jsonify({"error": f"Erro ao adicionar ao carrinho: {str(err)}"}), 500
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
+
+# Endpoint para aplicar cupom de desconto
+@app.route('/api/cupom', methods=['POST'])
+def aplicar_cupom():
+    try:
+        dados = request.get_json()
+        cupom = dados.get('cupom')
+
+        if not cupom:
+            return jsonify({"error": "O código do cupom é obrigatório!"}), 400
+
+        conn = conectar_db()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT desconto FROM cupons WHERE codigo = %s", (cupom,))
+        cupom_data = cursor.fetchone()
+
+        if cupom_data:
+            return jsonify({"message": "Cupom aplicado!", "desconto": cupom_data['desconto']}), 200
+        else:
+            return jsonify({"error": "Cupom inválido!"}), 404
+    except Exception as err:
+        return jsonify({"error": f"Erro ao aplicar cupom: {str(err)}"}), 500
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
+
+# Endpoint para checkout
+@app.route('/api/checkout', methods=['POST'])
+def checkout():
+    try:
+        dados = request.get_json()
+        cliente_id = dados.get('cliente_id')
+        endereco = dados.get('endereco')
+        pagamento = dados.get('pagamento')
+
+        if not cliente_id or not endereco or not pagamento:
+            return jsonify({"error": "Todos os campos são obrigatórios!"}), 400
+
+        conn = conectar_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO pedidos (cliente_id, endereco, pagamento)
+            VALUES (%s, %s, %s)
+        """, (cliente_id, endereco, pagamento))
+        pedido_id = cursor.lastrowid
+
+        cursor.execute("""
+            INSERT INTO produtos_pedido (pedido_id, produto_id, quantidade)
+            SELECT %s, produto_id, quantidade FROM carrinho WHERE cliente_id = %s
+        """, (pedido_id, cliente_id))
+
+        cursor.execute("DELETE FROM carrinho WHERE cliente_id = %s", (cliente_id,))
+        conn.commit()
+
+        return jsonify({"message": "Checkout realizado com sucesso!"}), 201
+    except Exception as err:
+        return jsonify({"error": f"Erro no checkout: {str(err)}"}), 500
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
 
 if __name__ == '__main__':
     app.run(debug=True)

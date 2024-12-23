@@ -1,37 +1,12 @@
-// formulario.js
-
-// Função para validar o formulário antes de enviar
-function validateForm(event) {
-    event.preventDefault(); // Previne o envio padrão do formulário
-
-    // Obtém os valores dos campos
+// Função para enviar os dados do formulário para o backend
+function enviarCadastro() {
+    // Coletando os dados do formulário
     const firstname = document.getElementById('firstname').value;
     const lastname = document.getElementById('lastname').value;
     const number = document.getElementById('number').value;
     const email = document.getElementById('email').value;
-    const confirmEmail = document.getElementById('Confirmemail').value;
     const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('Confirmpassword').value;
 
-    // Validação básica
-    if (firstname === '' || lastname === '' || number === '' || email === '' || 
-        confirmEmail === '' || password === '' || confirmPassword === '') {
-        alert('Por favor, preencha todos os campos.');
-        return;
-    }
-
-    if (email !== confirmEmail) {
-        alert('Os e-mails não coincidem.');
-        return;
-    }
-
-    // Validação das senhas
-    if (password !== confirmPassword) {
-        alert('As senhas não coincidem. Por favor, verifique os campos de senha.');
-        return;
-    }
-
-    // Se tudo estiver correto, envia os dados para o backend Flask
     const userData = {
         firstname: firstname,
         lastname: lastname,
@@ -50,18 +25,44 @@ function validateForm(event) {
     })
     .then(response => response.json())
     .then(data => {
+        console.log('Resposta do servidor:', data); // Verifica a resposta do servidor
         if (data.success) {
-            alert('Formulário enviado com sucesso!');
-            window.location.href = 'pagina_principal.html'; // Redireciona para a página principal após o envio
+            console.log('Cadastro bem-sucedido, redirecionando para a página principal...');
+            
+            // Armazenando a mensagem de boas-vindas no localStorage
+            localStorage.setItem('registrationMessage', `Bem-vindo, ${firstname}! Cadastro realizado com sucesso! Bem-vindo(a) ao nosso site.`);
+            
+            // Redireciona para a página principal
+            window.location.href = 'index.html';
+            // Adiciona um pequeno atraso antes de redirecionar
+        setTimeout(function() {
+            window.location.href = 'index.html';
+        }, 1000);  // Aguarda 1 segundo (1000 ms) para garantir que o localStorage seja salvo
         } else {
+            console.error('Erro ao cadastrar:', data);
             alert('Erro ao enviar os dados. Tente novamente.');
         }
     })
     .catch(error => {
-        console.error('Erro:', error);
+        console.error('Erro de rede ou backend:', error);
         alert('Ocorreu um erro ao enviar os dados. Por favor, tente novamente.');
     });
 }
+
+// Função para exibir a mensagem de boas-vindas na página principal
+document.addEventListener('DOMContentLoaded', () => {
+    // Verifica se há uma mensagem de boas-vindas no localStorage
+    const welcomeMessage = localStorage.getItem('registrationMessage');
+    
+    // Se houver, exibe a mensagem e a remove do localStorage
+    if (welcomeMessage) {
+        const messageContainer = document.getElementById('welcome-message');
+        if (messageContainer) {
+            messageContainer.innerText = welcomeMessage;
+        }
+        localStorage.removeItem('registrationMessage'); // Remove a mensagem após exibi-la
+    }
+});
 
 // Olho mágico das senhas
 function togglePassword(inputId) {
