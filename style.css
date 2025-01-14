@@ -867,155 +867,127 @@ a:hover {
     color: #fff;
 }
 
-/* ================= MEDIA QUERIES ================= */
+/* ================= MEDIA QUERIES ATUALIZADOS ================= */
 
 /* Até 576px - Mobile pequeno */
 @media (max-width: 576px) {
     header {
-        padding: 5px; /* Reduz o espaçamento interno */
+        padding: 10px; /* Ajusta espaçamento interno */
+        text-align: center; /* Centraliza conteúdo */
     }
 
     header .logo {
-        font-size: 16px; /* Ajusta o tamanho da fonte do logo */
+        font-size: 18px; /* Ajusta tamanho da fonte */
+        margin: auto; /* Centraliza a logo */
     }
 
     header .navegação li a {
-        padding: 8px 12px; /* Ajusta o espaçamento interno dos links */
+        padding: 10px 15px; /* Ajusta espaçamento interno dos links */
+        font-size: 1rem; /* Melhor tamanho para leitura */
     }
 
     .header-icons i {
-        font-size: 20px; /* Reduz o tamanho dos ícones */
+        font-size: 22px; /* Ajuste para ícones visíveis */
     }
 
     .home {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .navegação {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        transition: left 0.3s ease;
+        text-align: center;
+        gap: 1rem; /* Espaçamento entre os elementos */
     }
 
-    .navegação.open {
-        left: 0;
+    .home-img img {
+        width: 100%;
+        max-width: 320px; /* Limita tamanho da imagem */
+        margin: auto;
     }
 
-    .navegação a {
-        font-size: 1.8rem;
-        margin: 20px 0;
+    .home-text h1 {
+        font-size: 2rem;
     }
 
     .produtos-lista {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr; /* Um produto por linha */
+        gap: 1rem; /* Espaçamento entre os produtos */
     }
 
     .produto-item {
         width: 100%;
-    }
-
-    .home-img img {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    .home-text h1 {
-        font-size: 2.5rem;
+        margin: 0 auto;
+        text-align: center; /* Centraliza conteúdo */
     }
 
     .slider-content {
         flex-direction: column;
-    }
-
-    .slide-box {
-        width: 100%;
-    }
-
-    .nav-manual {
-        bottom: 10px;
-        transform: translateX(-50%);
+        gap: 1rem;
     }
 }
 
 /* Entre 576px e 768px - Smartphones maiores e tablets pequenos */
 @media (min-width: 576px) and (max-width: 768px) {
     header {
-        padding: 10px 5px; /* Ajusta o espaçamento interno */
-    }
-
-    header .logo {
-        font-size: 18px; /* Ajusta o tamanho da fonte do logo */
-    }
-
-    header .navegação {
-        flex-direction: column;
-        gap: 10px; /* Ajusta o espaçamento entre itens */
-    }
-
-    .header-icons {
-        gap: 10px; /* Ajusta o espaçamento entre ícones */
-    }
-
-    .home {
-        grid-template-columns: 1fr;
+        padding: 15px;
         text-align: center;
     }
 
-    .navegação a {
-        font-size: 1.5rem;
-        margin: 15px 0;
+    header .logo {
+        font-size: 20px;
     }
 
-    .produtos-lista {
-        flex-direction: column;
-    }
-
-    .produto-item {
-        width: 100%;
+    .home {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Dois elementos por linha */
+        gap: 1rem;
+        align-items: center;
+        text-align: center;
     }
 
     .home-img img {
         width: 90%;
+        max-width: 300px;
+        margin: auto;
     }
 
     .home-text h1 {
-        font-size: 2.8rem;
+        font-size: 2.5rem;
+    }
+
+    .produtos-lista {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Dois produtos por linha */
+        gap: 1rem;
+    }
+
+    .produto-item {
+        width: 100%;
     }
 }
 
 /* Entre 768px e 1024px - Tablets e dispositivos intermediários */
 @media (min-width: 768px) and (max-width: 1024px) {
     .home {
-        grid-template-columns: 1fr 1fr;
-        text-align: center;
-    }
-
-    .navegação a {
-        font-size: 1.5rem;
-        margin: 15px 0;
-    }
-
-    .produtos-lista {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .produto-item {
-        width: calc(50% - 1rem);
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Dois elementos por linha */
+        gap: 1.5rem;
     }
 
     .home-img img {
-        margin-left: 0;
         width: 80%;
+        max-width: 400px;
+        margin: auto;
+    }
+
+    .produtos-lista {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Três produtos por linha */
+        gap: 1.5rem;
+    }
+
+    .produto-item {
+        width: 100%;
     }
 
     .home-text h1 {
@@ -1023,61 +995,42 @@ a:hover {
     }
 }
 
-/* Acima de 1024px - Desktops e telas grandes */
+/* Acima de 1024px - Desktops */
 @media (min-width: 1025px) {
     .home {
+        display: grid;
         grid-template-columns: 2fr 1fr;
-    }
-
-    .navegação {
-        position: static;
-        background: none;
-        display: flex;
-        flex-direction: row;
+        gap: 2rem;
         align-items: center;
-        justify-content: center;
     }
 
-    .navegação a {
-        font-size: 1rem;
-        margin: 0 15px;
+    .home-img img {
+        width: 100%;
+        max-width: 600px;
     }
 
     .produtos-lista {
-        flex-direction: row;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* Três produtos por linha */
+        gap: 2rem;
     }
 
     .produto-item {
         width: calc(33.333% - 2rem);
     }
-
-    .home-img img {
-        margin-left: 25%;
-        width: 28rem;
-    }
-
-    .home-text h1 {
-        font-size: 4rem;
-    }
 }
 
-/* Acima de 1200px - Desktops muito grandes */
+/* Acima de 1200px - Desktops grandes */
 @media (min-width: 1200px) {
     .home {
         grid-template-columns: 2fr 1fr;
     }
 
+    .produtos-lista {
+        grid-template-columns: repeat(4, 1fr); /* Quatro produtos por linha */
+    }
+
     .produto-item {
         width: calc(25% - 2rem);
-    }
-
-    .home-img img {
-        margin-left: 20%;
-        width: 30rem;
-    }
-
-    .home-text h1 {
-        font-size: 4.5rem;
     }
 }
