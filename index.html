@@ -39,11 +39,16 @@
         <div class="my_account_info">
             <a href="/conta/login" class="my_account-title">
                 <div class="newUser">
-                    <span class="userName">Olá, bem-vindo(a)</span>
+                    <span class="userName" id="userGreeting">Olá, bem-vindo(a)</span>
                 </div>
             </a>
+
             <span class="my_account-subtitle">
                 <a href="formulario.html" id="loginBtn">Entre</a> ou <a href="#" id="registerBtn">Cadastre-se</a>
+            </span> 
+
+            <span class="my_account-subtitle" id="logoutBtn" style="display: none;">
+                <a href="#" id="logoutLink">Sair</a>
             </span> 
             
             <div id="modalContainer"></div> <!-- Container onde o modal será inserido -->

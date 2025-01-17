@@ -517,6 +517,26 @@ document.addEventListener('DOMContentLoaded', function() {
 // Obtém o botão
 const scrollToTopBtn = document.getElementById("scrollToTopBtn");
 
+// Verifica se o usuário está logado
+window.onload = function() {
+    const userName = localStorage.getItem('userName'); // Obtém o nome do usuário do localStorage
+
+    if (userName) {
+        // Exibe o nome do usuário e as opções de logout
+        document.getElementById('userGreeting').textContent = `Olá, ${userName}!`;
+        document.getElementById('loginBtn').style.display = 'none'; // Esconde o botão "Entrar"
+        document.getElementById('registerBtn').style.display = 'none'; // Esconde o botão "Cadastre-se"
+        document.getElementById('logoutBtn').style.display = 'inline'; // Mostra o botão "Sair"
+    }
+
+    // Função de logout
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.removeItem('userName'); // Remove o nome do usuário do localStorage
+        window.location.href = 'index.html'; // Redireciona para a página inicial
+    });
+};
+
 // Adiciona o evento de rolagem
 window.onscroll = function() {
     const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight; // Altura total rolável
