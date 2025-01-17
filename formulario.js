@@ -1,15 +1,14 @@
 // Função para enviar os dados do formulário para o backend
 function enviarCadastro() {
     // Coletando os dados do formulário
-    const firstname = document.getElementById('firstname').value;
-    const lastname = document.getElementById('lastname').value;
-    const number = document.getElementById('number').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const firstname = document.getElementById('firstname').value.trim();
+    const number = document.getElementById('number').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+
 
     const userData = {
         firstname: firstname,
-        lastname: lastname,
         number: number,
         email: email,
         password: password
@@ -29,15 +28,13 @@ function enviarCadastro() {
         if (data.success) {
             console.log('Cadastro bem-sucedido, redirecionando para a página principal...');
             
-            // Armazenando a mensagem de boas-vindas no localStorage
+            // Armazenando a mensagem de boas-vindas no localStorage e redirecionando a página principal
             localStorage.setItem('registrationMessage', `Bem-vindo, ${firstname}! Cadastro realizado com sucesso! Bem-vindo(a) ao nosso site.`);
             
-            // Redireciona para a página principal
-            window.location.href = 'index.html';
-            // Adiciona um pequeno atraso antes de redirecionar
-        setTimeout(function() {
-            window.location.href = 'index.html';
-        }, 1000);  // Aguarda 1 segundo (1000 ms) para garantir que o localStorage seja salvo
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+              // Aguarda 1 segundo (1000 ms) para garantir que o localStorage seja salvo
         } else {
             console.error('Erro ao cadastrar:', data);
             alert('Erro ao enviar os dados. Tente novamente.');
