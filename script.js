@@ -214,7 +214,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(autoSlide, 5000); // Troca a cada 5 segundos
 });
 
-
 // Código para Menu (scripts/menu.js)
 document.addEventListener('DOMContentLoaded', function() {
     const accountInfo = document.querySelector('.my_account_info');
@@ -230,18 +229,6 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdownMenu.classList.remove('show');
         }
     });
-});
-
-// Código para Cookies (scripts/cookies.js)
-document.addEventListener('DOMContentLoaded', function() {
-    const cookiesMsg = document.getElementById('cookies-msg');
-    const acceptCookiesButton = document.getElementById('accept-cookies');
-    
-    if (acceptCookiesButton) {
-        acceptCookiesButton.addEventListener('click', function() {
-            cookiesMsg.style.display = 'none';
-        });
-    }
 });
 
 // Código para Modal  de login (scripts/modal.js)
@@ -415,6 +402,43 @@ document.addEventListener("DOMContentLoaded", function() {
         passwordContainer.appendChild(passwordIcon);
         passwordContainer.appendChild(loginInputPassword);
 
+        // Função para processar o login (segundo trecho)
+async function handleLogin(event) {
+    event.preventDefault(); // Evita o comportamento padrão do formulário
+
+    // Captura os valores dos inputs de login
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        // Envia os dados para o servidor
+        const response = await fetch('https://seu-servidor-api.com/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Login bem-sucedido
+            const { name } = data; // Supondo que a API retorne o nome do usuário
+            localStorage.setItem('userName', name); // Salva o nome do usuário no localStorage
+            alert(`Bem-vindo(a), ${name}!`);
+            window.location.href = 'index.html'; // Redireciona para a página principal
+        } else {
+            // Exibe a mensagem de erro retornada pela API
+            alert(data.message || 'Erro ao realizar login. Verifique suas credenciais.');
+        }
+    } catch (error) {
+        console.error('Erro ao conectar ao servidor:', error);
+        alert('Ocorreu um erro ao processar seu login. Tente novamente mais tarde.');
+    }
+}
+
+// Configuração do evento de envio do formulário de login
+loginForm.addEventListener('submit', handleLogin);
+
         // Criar o link "Esqueci minha senha"
         const forgotPasswordLink = document.createElement('a');
         forgotPasswordLink.href = '#';
@@ -423,6 +447,26 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault(); // Impede o comportamento padrão do link
             document.getElementById('resetPasswordModal').style.display = 'flex'; // Exibe o modal
         });
+
+        // Verifica se o usuário está logado
+window.onload = function() {
+    const userName = localStorage.getItem('userName'); // Obtém o nome do usuário do localStorage
+
+    if (userName) {
+        // Exibe o nome do usuário e as opções de logout
+        document.getElementById('userGreeting').textContent = `Olá, ${userName}!`;
+        document.getElementById('loginBtn').style.display = 'none'; // Esconde o botão "Entrar"
+        document.getElementById('registerBtn').style.display = 'none'; // Esconde o botão "Cadastre-se"
+        document.getElementById('logoutBtn').style.display = 'inline'; // Mostra o botão "Sair"
+    }
+
+    // Função de logout
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.removeItem('userName'); // Remove o nome do usuário do localStorage
+        window.location.href = 'index.html'; // Redireciona para a página inicial
+    });
+};
 
         // Função para redefinição de senha
     document.getElementById('savePasswordButton').addEventListener('click', function () {
@@ -517,26 +561,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // Obtém o botão
 const scrollToTopBtn = document.getElementById("scrollToTopBtn");
 
-// Verifica se o usuário está logado
-window.onload = function() {
-    const userName = localStorage.getItem('userName'); // Obtém o nome do usuário do localStorage
-
-    if (userName) {
-        // Exibe o nome do usuário e as opções de logout
-        document.getElementById('userGreeting').textContent = `Olá, ${userName}!`;
-        document.getElementById('loginBtn').style.display = 'none'; // Esconde o botão "Entrar"
-        document.getElementById('registerBtn').style.display = 'none'; // Esconde o botão "Cadastre-se"
-        document.getElementById('logoutBtn').style.display = 'inline'; // Mostra o botão "Sair"
-    }
-
-    // Função de logout
-    document.getElementById('logoutLink').addEventListener('click', function(e) {
-        e.preventDefault();
-        localStorage.removeItem('userName'); // Remove o nome do usuário do localStorage
-        window.location.href = 'index.html'; // Redireciona para a página inicial
-    });
-};
-
 // Adiciona o evento de rolagem
 window.onscroll = function() {
     const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight; // Altura total rolável
@@ -551,6 +575,18 @@ window.onscroll = function() {
         scrollToTopBtn.style.opacity = "0"; // Suavidade ao desaparecer
     }
 };
+
+// Código para Cookies (scripts/cookies.js)
+document.addEventListener('DOMContentLoaded', function() {
+    const cookiesMsg = document.getElementById('cookies-msg');
+    const acceptCookiesButton = document.getElementById('accept-cookies');
+    
+    if (acceptCookiesButton) {
+        acceptCookiesButton.addEventListener('click', function() {
+            cookiesMsg.style.display = 'none';
+        });
+    }
+});
 
 // Ao clicar no botão, rola suavemente para o topo
 scrollToTopBtn.onclick = function() {

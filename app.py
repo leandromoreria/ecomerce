@@ -44,9 +44,9 @@ def cadastrar_cliente():
 
         # Inserção dos dados
         cursor.execute("""
-            INSERT INTO clientes (firstname, lastname, number, email, senha)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (firstname, lastname, number, email, senha_hashed))
+            INSERT INTO clientes (firstname, number, email, senha)
+            VALUES (%s, %s, %s, %s)
+        """, (firstname, number, email, senha_hashed))
         conn.commit()
 
         return jsonify({"success": True, "message": "Cliente cadastrado com sucesso."}), 201
