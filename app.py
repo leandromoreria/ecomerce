@@ -69,11 +69,16 @@ def login():
 
         conn = conectar_db()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id, nome, senha FROM clientes WHERE email = %s", (email,))
+        cursor.execute("SELECT id, nome, senha FROM usuarios WHERE email = %s", (email,))
         usuario = cursor.fetchone()
 
         if usuario and checkpw(senha.encode('utf-8'), usuario['senha'].encode('utf-8')):
-            return jsonify({"message": "Login bem-sucedido!", "cliente": usuario}), 200
+            # Login bem-sucedido
+            return jsonify({
+                "message": "Login bem-sucedido!",
+                "cliente": usuario,
+                "autenticado": True
+            }), 200
         else:
             return jsonify({"error": "Email ou senha incorretos!"}), 401
     except Exception as err:
@@ -82,6 +87,42 @@ def login():
         if 'conn' in locals() and conn.is_connected():
             conn.close()
 
+@app.route('/api/redefinir-senha', methods=['POST'])
+def redefinir_senha():
+    try:
+        dados = request.get_json()
+        email = dados.get('email')
+        nova_senha = dados.get('nova_senha')
+
+        if not email or not nova_senha:
+            return jsonify({"error": "Email e nova senha são obrigatórios!"}), 400
+
+        conn = conectar_db()
+        cursor = conn.cursor()
+
+        # Verificar se o email existe no banco
+        cursor.execute("SELECT id FROM usuarios WHERE email = %s", (email,))
+        usuario = cursor.fetchone()
+
+        if usuario:
+            nova_senha_hashed = hashpw(nova_senha.encode('utf-8'), gensalt()).decode('utf-8')
+            cursor.execute("""
+                UPDATE usuarios
+                SET senha = %s
+                WHERE id = %s
+            """, (nova_senha_hashed, usuario['id']))
+            conn.commit()
+
+            return jsonify({"message": "Senha redefinida com sucesso!"}), 200
+        else:
+            return jsonify({"error": "Email não encontrado!"}), 404
+
+    except Exception as err:
+        return jsonify({"error": f"Erro ao redefinir a senha: {str(err)}"}), 500
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
+            
 # Endpoint para gerenciar o carrinho de compras
 @app.route('/api/carrinho', methods=['POST'])
 def add_to_carrinho():
