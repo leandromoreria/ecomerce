@@ -412,7 +412,7 @@ async function handleLogin(event) {
 
     try {
         // Envia os dados para o servidor
-        const response = await fetch('https://seu-servidor-api.com/login', {
+        const response = await fetch('http://127.0.0.1:5000/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password }),

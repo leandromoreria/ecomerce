@@ -26,13 +26,12 @@ def cadastrar_cliente():
 
         # Extraindo os dados enviados pelo formulário
         firstname = dados.get('firstname')
-        lastname = dados.get('lastname')
         number = dados.get('number')
         email = dados.get('email')
         password = dados.get('password')
 
         # Validações simples
-        if not all([firstname, lastname, number, email, password]):
+        if not all([firstname, number, email, password]):
             return jsonify({"success": False, "message": "Todos os campos são obrigatórios."}), 400
 
         # Hash da senha
@@ -122,7 +121,7 @@ def redefinir_senha():
     finally:
         if 'conn' in locals() and conn.is_connected():
             conn.close()
-            
+
 # Endpoint para gerenciar o carrinho de compras
 @app.route('/api/carrinho', methods=['POST'])
 def add_to_carrinho():
