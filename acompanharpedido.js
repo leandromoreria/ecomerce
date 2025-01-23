@@ -38,6 +38,18 @@ async function loadOrderHistory(userId) {
             data.orders.forEach(order => {
                 const historyItem = document.createElement('div');
                 historyItem.textContent = `Pedido #${order.id} - ${order.date}`;
+
+                // Botão de rastreio
+                const trackButton = document.createElement('button');
+                trackButton.textContent = 'Rastrear';
+                trackButton.style.marginLeft = '10px'; // Apenas para espaçamento básico
+
+                // Adiciona o evento de rastreamento ao botão
+                trackButton.addEventListener('click', async () => {
+                    await trackOrder(order.trackingCode);
+                });
+
+                historyItem.appendChild(trackButton);
                 historyList.appendChild(historyItem);
             });
         } else {
@@ -45,6 +57,21 @@ async function loadOrderHistory(userId) {
         }
     } catch (error) {
         console.error("Erro ao carregar o histórico de pedidos:", error);
+    }
+}
+
+// Função para rastrear o pedido
+async function trackOrder(trackingCode) {
+    try {
+        const response = await fetch(`https://api.correios.com.br/track?code=${trackingCode}`);
+        if (!response.ok) throw new Error(`Erro ao rastrear: ${response.status}`);
+        const trackingData = await response.json();
+
+        // Exibir informações de rastreamento (exemplo básico)
+        alert(`Status do pedido: ${trackingData.status}\nÚltima atualização: ${trackingData.lastUpdate}`);
+    } catch (error) {
+        console.error("Erro ao rastrear o pedido:", error);
+        alert('Não foi possível rastrear o pedido. Tente novamente mais tarde.');
     }
 }
 
