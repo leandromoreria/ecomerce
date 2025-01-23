@@ -2,9 +2,13 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import mysql.connector
 from bcrypt import hashpw, gensalt, checkpw
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 CORS(app)  # Habilita o CORS para todas as origens
+
+# Mock de banco de dados
+users = {}
 
 # Função para conectar ao banco de dados
 def conectar_db():
@@ -56,35 +60,33 @@ def cadastrar_cliente():
             conn.close()
 
 # Endpoint para login
-@app.route('/api/login', methods=['POST'])
+@app.route('/api/cadastro', methods=['POST'])
+def cadastro():
+    data = request.json
+    email = data.get('email')
+    if email in users:
+        return jsonify({'success': False, 'message': 'Usuário já cadastrado.'}), 400
+
+    users[email] = {
+        'name': data.get('firstname'),
+        'password': generate_password_hash(data.get('password'))
+    }
+    return jsonify({'success': True}), 201
+
+@app.route('/login', methods=['POST'])
 def login():
-    try:
-        dados = request.get_json()
-        email = dados.get('email')
-        senha = dados.get('senha')
+    data = request.json
+    email = data.get('username')
+    password = data.get('password')
 
-        if not email or not senha:
-            return jsonify({"error": "Email e senha são obrigatórios!"}), 400
+    user = users.get(email)
+    if not user or not check_password_hash(user['password'], password):
+        return jsonify({'success': False, 'message': 'Credenciais inválidas.'}), 401
 
-        conn = conectar_db()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id, nome, senha FROM usuarios WHERE email = %s", (email,))
-        usuario = cursor.fetchone()
+    return jsonify({'success': True, 'name': user['name']}), 200
 
-        if usuario and checkpw(senha.encode('utf-8'), usuario['senha'].encode('utf-8')):
-            # Login bem-sucedido
-            return jsonify({
-                "message": "Login bem-sucedido!",
-                "cliente": usuario,
-                "autenticado": True
-            }), 200
-        else:
-            return jsonify({"error": "Email ou senha incorretos!"}), 401
-    except Exception as err:
-        return jsonify({"error": f"Erro ao fazer login: {str(err)}"}), 500
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            conn.close()
+if __name__ == '__main__':
+    app.run(debug=True)
 
 @app.route('/api/redefinir-senha', methods=['POST'])
 def redefinir_senha():

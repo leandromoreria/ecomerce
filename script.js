@@ -407,8 +407,13 @@ async function handleLogin(event) {
     event.preventDefault(); // Evita o comportamento padrão do formulário
 
     // Captura os valores dos inputs de login
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim;
+    const password = document.getElementById('password').value.trim;
+
+    if (!username || !password) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
 
     try {
         // Envia os dados para o servidor
@@ -423,8 +428,8 @@ async function handleLogin(event) {
         if (response.ok) {
             // Login bem-sucedido
             const { name } = data; // Supondo que a API retorne o nome do usuário
-            localStorage.setItem('userName', name); // Salva o nome do usuário no localStorage
-            alert(`Bem-vindo(a), ${name}!`);
+            localStorage.setItem('userName', data.name); // Salva o nome do usuário no localStorage
+            alert(`Bem-vindo(a), ${data.name}!`);
             window.location.href = 'index.html'; // Redireciona para a página principal
         } else {
             // Exibe a mensagem de erro retornada pela API

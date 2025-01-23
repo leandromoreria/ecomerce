@@ -17,9 +17,7 @@ function enviarCadastro() {
     // Envia os dados para o backend Flask via fetch
     fetch('/api/cadastro', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(userData)
     })
     .then(response => response.json())
