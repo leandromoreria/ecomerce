@@ -436,6 +436,26 @@ async function handleLogin(event) {
     }
 }
 
+// Após criar o formulário, registre o evento de submit
+function createLoginForm() {
+    const loginForm = document.createElement('form');
+    loginForm.id = 'loginForm';
+    loginForm.className = 'form-container';
+
+    // Campos e botão omitidos por brevidade...
+    
+    const loginButton = document.createElement('button');
+    loginButton.type = 'submit'; // Botão de envio do formulário
+    loginButton.innerText = 'Entrar';
+
+    loginForm.appendChild(loginButton);
+
+    // Registra o evento de envio do formulário
+    loginForm.addEventListener('submit', handleLogin);
+
+    return loginForm;
+}
+
 // Configuração do evento de envio do formulário de login
 loginForm.addEventListener('submit', handleLogin);
 
