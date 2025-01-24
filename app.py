@@ -152,6 +152,83 @@ def add_to_carrinho():
         if 'conn' in locals() and conn.is_connected():
             conn.close()
 
+# Função para calcular o frete utilizando a API dos Correios
+def calcular_frete(cep_origem, cep_destino, peso, volume):
+    try:
+        # Configuração dos parâmetros da consulta de frete
+        url = "https://api.correios.com.br/frete/calcular"
+        params = {
+            'cep_origem': cep_origem,
+            'cep_destino': cep_destino,
+            'peso': peso,
+            'volume': volume
+        }
+
+        # Chama a API dos Correios para calcular o frete
+        response = requests.get(url, params=params)
+        response_data = response.json()
+
+        if response.status_code == 200:
+            return response_data
+        else:
+            raise Exception(f"Erro ao calcular o frete: {response_data['erro']}")
+    except Exception as e:
+        raise Exception(f"Erro na integração com os Correios: {str(e)}")
+
+# Endpoint para calcular frete
+@app.route('/api/frete', methods=['POST'])
+def calcular_frete_endpoint():
+    try:
+        dados = request.get_json()
+        cep_origem = dados.get('cep_origem')
+        cep_destino = dados.get('cep_destino')
+        peso = dados.get('peso')
+        volume = dados.get('volume')
+
+        if not all([cep_origem, cep_destino, peso, volume]):
+            return jsonify({"error": "Todos os campos são obrigatórios!"}), 400
+
+        # Chama a função para calcular o frete
+        frete = calcular_frete(cep_origem, cep_destino, peso, volume)
+        
+        return jsonify({"message": "Frete calculado com sucesso!", "frete": frete}), 200
+    except Exception as err:
+        return jsonify({"error": f"Erro ao calcular o frete: {str(err)}"}), 500
+
+# Função para rastrear o pedido usando o código de rastreamento
+def rastrear_pedido(codigo_rastreamento):
+    try:
+        # URL de rastreamento dos Correios
+        url = f"https://api.correios.com.br/rastreamento/{codigo_rastreamento}"
+
+        # Consulta o status do pedido na API dos Correios
+        response = requests.get(url)
+        response_data = response.json()
+
+        if response.status_code == 200:
+            return response_data
+        else:
+            raise Exception(f"Erro ao rastrear o pedido: {response_data['erro']}")
+    except Exception as e:
+        raise Exception(f"Erro na integração com os Correios: {str(e)}")
+
+# Endpoint para rastrear o pedido
+@app.route('/api/rastrear', methods=['POST'])
+def rastrear_pedido_endpoint():
+    try:
+        dados = request.get_json()
+        codigo_rastreamento = dados.get('codigo_rastreamento')
+
+        if not codigo_rastreamento:
+            return jsonify({"error": "Código de rastreamento é obrigatório!"}), 400
+
+        # Chama a função para rastrear o pedido
+        status_pedido = rastrear_pedido(codigo_rastreamento)
+        
+        return jsonify({"message": "Rastreamento realizado com sucesso!", "status": status_pedido}), 200
+    except Exception as err:
+        return jsonify({"error": f"Erro ao rastrear o pedido: {str(err)}"}), 500
+
 # Endpoint para aplicar cupom de desconto
 @app.route('/api/cupom', methods=['POST'])
 def aplicar_cupom():
@@ -214,3 +291,4 @@ def checkout():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

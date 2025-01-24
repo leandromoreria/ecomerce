@@ -107,3 +107,64 @@ def excluir_usuario(id):
     finally:
         if 'conn' in locals() and conn.is_connected():
             conn.close()
+
+# Função para registrar um pedido
+def registrar_pedido(cliente_id, endereco, pagamento, produtos):
+    """
+    Registra um pedido na tabela `pedidos` e insere os produtos na tabela `produtos_pedido`.
+
+    :param cliente_id: ID do cliente
+    :param endereco: Endereço de entrega
+    :param pagamento: Método de pagamento
+    :param produtos: Lista de produtos (dicionários com `id`, `quantidade`, `preco`)
+    """
+    try:
+        conn = conectar()
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO pedidos (cliente_id, endereco, pagamento)
+            VALUES (%s, %s, %s)
+        """, (cliente_id, endereco, pagamento))
+        pedido_id = cursor.lastrowid
+
+        for produto in produtos:
+            cursor.execute("""
+                INSERT INTO produtos_pedido (pedido_id, produto_id, quantidade, preco)
+                VALUES (%s, %s, %s, %s)
+            """, (pedido_id, produto['id'], produto['quantidade'], produto['preco']))
+
+        conn.commit()
+        return pedido_id
+    except mysql.connector.Error as err:
+        raise Exception(f"Erro ao registrar pedido: {str(err)}")
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
+
+
+# Função para rastrear um pedido
+def rastrear_pedido(pedido_id):
+    """
+    Rastreia o status de um pedido com base no seu ID.
+
+    :param pedido_id: ID do pedido
+    :return: Status do pedido ou um erro caso não seja encontrado.
+    """
+    try:
+        conn = conectar()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT status, codigo_rastreamento FROM pedidos WHERE id = %s", (pedido_id,))
+        pedido = cursor.fetchone()
+
+        if pedido:
+            return {
+                "status": pedido['status'],
+                "codigo_rastreamento": pedido['codigo_rastreamento']
+            }
+        else:
+            raise Exception("Pedido não encontrado.")
+    except mysql.connector.Error as err:
+        raise Exception(f"Erro ao rastrear pedido: {str(err)}")
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()

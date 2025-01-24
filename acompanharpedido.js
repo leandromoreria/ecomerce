@@ -98,26 +98,93 @@ async function updateOrderStatus(orderId) {
     }
 }
 
-// Função para simular o progresso do pedido
-function simulateOrderProgression(orderId) {
+// Função para atualizar o status do pedido com dados reais
+async function updateOrderProgression(orderId) {
+    try {
+        // Consulta o status atual do pedido a partir da API real
+        const response = await fetch(`/api/order-status?order_id=${orderId}`);
+        if (!response.ok) throw new Error(`Erro ao obter status do pedido: ${response.status}`);
+        
+        // Recupera o status do pedido da resposta da API
+        const data = await response.json();
+
+        if (data.status) {
+            updateOrderStatus(orderId); // Atualiza o status com a função existente
+
+            // Verifica se o status chegou a "entregue" e não precisa mais atualizar
+            if (data.status === "entregue") {
+                console.log('Pedido entregue com sucesso.');
+                return; // A execução da função termina aqui
+            } else {
+                console.log(`Status atual do pedido: ${data.status}`);
+            }
+        } else {
+            console.log('Status do pedido não encontrado.');
+        }
+    } catch (error) {
+        console.error("Erro ao atualizar o status do pedido:", error);
+    }
+}
+
+// Função para simular a atualização contínua a cada 5 segundos (pode ser substituída com uma lógica mais robusta)
+function startOrderProgressionTracking(orderId) {
+    // A função `setInterval` simula o monitoramento em tempo real
     const interval = setInterval(async () => {
         try {
+            // Consulta o status atual do pedido
+            await updateOrderProgression(orderId); // Atualiza o status do pedido
+
+            // Se o pedido for entregue, interrompe o intervalo
             const response = await fetch(`/api/order-status?order_id=${orderId}`);
-            if (!response.ok) throw new Error(`Erro: ${response.status}`);
             const data = await response.json();
 
-            if (data.status) {
-                updateOrderStatus(orderId); // Atualiza o status com a função existente
-
-                if (data.status === "entregue") {
-                    clearInterval(interval); // Para o intervalo ao atingir "entregue"
-                }
+            if (data.status === "entregue") {
+                clearInterval(interval); // Para o monitoramento contínuo
+                console.log('Pedido entregue. Monitoramento interrompido.');
             }
         } catch (error) {
-            console.error("Erro ao simular o progresso do pedido:", error);
-            clearInterval(interval);
+            console.error("Erro ao rastrear o status do pedido:", error);
+            clearInterval(interval); // Para o intervalo em caso de erro
         }
-    }, 5000); // Verifica a cada 5 segundos
+    }, 5000); // Verifica o status a cada 5 segundos
+}
+
+// Inicia o monitoramento assim que o pedido for realizado, passando o ID do pedido
+const orderId = 123; // Substitua com o ID real do pedido
+startOrderProgressionTracking(orderId);
+
+
+async function updateOrderStatus(orderId) {
+    try {
+        const response = await fetch(`/api/order-status?order_id=${orderId}`);
+        if (!response.ok) throw new Error(`Erro: ${response.status}`);
+        const data = await response.json();
+
+        const statusElements = document.querySelectorAll('.step');
+        const statusEtapas = ["pedido_recebido", "preparacao", "enviado", "em_transito", "entregue"];
+
+        statusElements.forEach((step, index) => {
+            if (index <= statusEtapas.indexOf(data.status)) {
+                step.classList.add("active");
+                step.textContent = statusEtapas[index].replace("_", " ").toUpperCase();
+            } else {
+                step.classList.remove("active");
+            }
+        });
+
+        // Verifica se o status é "Enviado" para exibir o rastreio
+        if (data.status === "enviado" && data.trackingCode) {
+            const trackingInfo = document.getElementById('tracking-info');
+            const trackingCodeElement = document.getElementById('tracking-code');
+            const trackingLink = document.getElementById('tracking-link');
+
+            trackingCodeElement.textContent = data.trackingCode;
+            trackingLink.href = `https://rastreamento.correios.com.br/app/index.php?objeto=${data.trackingCode}`;
+            trackingInfo.style.display = 'block'; // Exibe a seção de rastreio
+        }
+    } catch (error) {
+        console.error("Erro ao atualizar o status do pedido:", error);
+    }
 }
 
 // Função para configurar o link de download da NF-e
