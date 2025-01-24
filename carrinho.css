@@ -242,6 +242,41 @@ aside button:hover {
     background-color: rgb(255, 112, 67, 0.8); /* Cor de fundo do botão de finalizar compra ao passar o mouse */
 }
 
+/* Campo de entrada para o CEP */
+#cep {
+    width: 100%; /* Largura total para ocupar todo o espaço disponível */
+    padding: 8px; /* Espaçamento interno para conforto visual */
+    margin-top: 10px; /* Espaço acima do campo */
+    border: 1px solid #ccc; /* Borda cinza clara para separação */
+    border-radius: 5px; /* Bordas arredondadas para design moderno */
+    /* Caso necessário, ajustar a largura e o espaçamento para layouts responsivos */
+}
+
+/* Botão para calcular o frete */
+#calcularFrete {
+    background-color: #FF7043; /* Cor de fundo padrão */
+    color: #ffffff; /* Texto branco para contraste */
+    border: none; /* Remove bordas padrão */
+    padding: 2px 6px; /* Espaçamento interno para melhor clique */
+    margin-top: 10px; /* Espaço acima do botão */
+    cursor: pointer; /* Indica interatividade ao usuário */
+    border-radius: 5px; /* Bordas arredondadas */
+    /* Para futuras alterações, considere adaptar as cores para um tema específico */
+}
+
+/* Efeito hover para o botão calcular frete */
+#calcularFrete:hover {
+    background-color: #ff6f43b2; /* Escurece o azul ao passar o mouse */
+    /* Modifique o efeito para incluir transições suaves, se necessário */
+}
+
+/* Resultado do cálculo de frete */
+#resultadoFrete {
+    margin-top: 10px; /* Espaço acima do resultado */
+    font-weight: bold; /* Destaca visualmente o texto */
+    /* Adicionar uma cor específica ou ícone, caso queira mais destaque */
+}
+
 /* Media query para responsividade */
 @media (max-width: 768px) {
     .content {
