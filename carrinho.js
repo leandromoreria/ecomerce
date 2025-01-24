@@ -214,52 +214,42 @@ document.addEventListener("DOMContentLoaded", function () {
 // Função para calcular o frete
 async function calcularFrete() {
     const cepDestino = document.getElementById("cep").value;
-    const cepOrigem = "16201-169"; // CEP de origem (defina o CEP da sua empresa)
+    const cepOrigem = "16201-169"; // CEP da sua empresa
     const peso = 2; // Peso do pacote em kg
-    const formato = 1; // Caixa/Pacote
     const comprimento = 20; // Comprimento em cm
     const altura = 10; // Altura em cm
     const largura = 15; // Largura em cm
-    const diametro = 0; // Diâmetro (para formato 1, pode ser 0)
-    const servico = "04014"; // SEDEX (código dos Correios para o serviço)
+    const servico = "04014"; // Código Sedex
 
-    const url = `https://viacep.com.br/ws/${cepDestino}/json/`; // URL para buscar detalhes do CEP
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.erro) {
-        document.getElementById("resultadoFrete").innerText = "CEP inválido!";
-        return;
-    }
-
-    // Parâmetros para a API de preços dos Correios
     const params = new URLSearchParams({
-        nCdEmpresa: "",
-        sDsSenha: "",
+        nCdEmpresa: "", // Deixe vazio se não tiver contrato
+        sDsSenha: "", // Deixe vazio se não tiver contrato
         nCdServico: servico,
         sCepOrigem: cepOrigem,
         sCepDestino: cepDestino,
         nVlPeso: peso,
-        nCdFormato: formato,
+        nCdFormato: 1, // 1 = Caixa
         nVlComprimento: comprimento,
         nVlAltura: altura,
         nVlLargura: largura,
-        nVlDiametro: diametro,
+        nVlDiametro: 0,
         sCdMaoPropria: "N",
         nVlValorDeclarado: 0,
         sCdAvisoRecebimento: "N",
         StrRetorno: "xml",
     });
 
-    const apiUrl = `http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?${params}`;
-    const freteResponse = await fetch(apiUrl);
-    const freteText = await freteResponse.text();
+    try {
+        const response = await fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?${params}`);
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, "application/xml");
+        const valor = xmlDoc.getElementsByTagName("Valor")[0].childNodes[0].nodeValue;
+        const prazo = xmlDoc.getElementsByTagName("PrazoEntrega")[0].childNodes[0].nodeValue;
 
-    // Parse do XML para obter o valor
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(freteText, "application/xml");
-    const valor = xmlDoc.getElementsByTagName("Valor")[0].childNodes[0].nodeValue;
-
-    document.getElementById("resultadoFrete").innerText = `Frete: R$ ${valor}`;
+        document.getElementById("resultadoFrete").innerText = `Frete: R$ ${valor} | Prazo: ${prazo} dias úteis`;
+    } catch (error) {
+        document.getElementById("resultadoFrete").innerText = "Erro ao calcular o frete.";
+        console.error("Erro ao calcular frete:", error);
+    }
 }
-
