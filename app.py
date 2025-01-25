@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import mysql.connector
+import requests
 from bcrypt import hashpw, gensalt, checkpw
 from werkzeug.security import generate_password_hash, check_password_hash
 
