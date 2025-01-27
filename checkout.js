@@ -428,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
     atualizarConfirmacao();
 });
 
-    // Finaliza a compra
+   // Finaliza a compra
 document.getElementById('finalizar-compra').addEventListener('click', async function () {
     try {
         // Coleta as informações do pedido
@@ -481,7 +481,7 @@ document.getElementById('finalizar-compra').addEventListener('click', async func
         await enviarNotaFiscal(data.pedidoId);
 
         // Redireciona para a página principal
-        window.location.href = '/';
+        window.location.href = 'index.html';
     } catch (error) {
         console.error('Erro ao finalizar a compra:', error);
         alert('Ocorreu um erro ao finalizar a compra. Tente novamente.');
