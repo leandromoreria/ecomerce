@@ -1,93 +1,119 @@
-// checkout.js
-
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     carregarInformacoesDoCarrinho();
     carregarEndereco();
 });
 
-function carregarInformacoesDoCarrinho() {
-    const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-    const produtosList = document.getElementById('products-list');
-    const totalPriceElement = document.getElementById('total-price');
-    let subtotal = 0;
+async function carregarInformacoesDoCarrinho() {
+    try {
+        const response = await fetch('/api/carrinho'); // Chamada para buscar o carrinho do backend
+        const carrinho = await response.json();
 
-    produtosList.innerHTML = ''; // Limpa a lista
+        const produtosList = document.getElementById('products-list');
+        const totalPriceElement = document.getElementById('total-price');
+        let subtotal = 0;
 
-    if (carrinho.length === 0) {
-        produtosList.innerHTML = '<p>O carrinho está vazio.</p>';
-    } else {
-        carrinho.forEach(item => {
-            const totalItem = item.preco * item.quantidade;
-            subtotal += totalItem;
+        produtosList.innerHTML = ''; // Limpa a lista
 
-            const produtoDiv = document.createElement('div');
-            produtoDiv.innerHTML = `
-                <div class="product">
-                    <img src="${item.imagem}" alt="${item.nome}" style="width: 80px; height: auto;" />
-                    <div class="info">
-                        <div class="name">${item.nome}</div>
-                        <div class="category">${item.descricao}</div>
-                        <div class="quantity">Quantidade: ${item.quantidade}</div>
-                        <div class="total">Total: R$ ${totalItem.toFixed(2)}</div>
-                    </div>
-                </div>
-            `;
-            produtosList.appendChild(produtoDiv);
-        });
-
-        // Atualiza o total na página
-        totalPriceElement.textContent = subtotal.toFixed(2);
-
-        // Salva o subtotal no localStorage para usar na confirmação
-        localStorage.setItem('subtotal', subtotal.toFixed(2));
-    }
-}  
-
-    let currentStep = 0; // Variável para rastrear o passo atual
-
-    const steps = document.querySelectorAll('.checkout-step');
-
-    function nextStep() {
-        if (currentStep < steps.length - 1) {
-            steps[currentStep].classList.add('hidden'); // Oculta o passo atual
-            currentStep++; // Avança para o próximo passo
-            steps[currentStep].classList.remove('hidden'); // Mostra o próximo passo
-            atualizarPassoNaLinhaDoTempo();
-            atualizarConfirmacao();
-        }
-    }
-
-    function prevStep() {
-        if (currentStep > 0) {
-            steps[currentStep].classList.add('hidden'); // Oculta o passo atual
-            currentStep--; // Volta para o passo anterior
-            steps[currentStep].classList.remove('hidden'); // Mostra o passo anterior
-            atualizarPassoNaLinhaDoTempo();
-        }
-    }
-
-    function atualizarPassoNaLinhaDoTempo() {
-        const timelineSteps = document.querySelectorAll('.step');
-        timelineSteps.forEach((step, index) => {
-            step.classList.remove('active');
-            if (index === currentStep) {
-                step.classList.add('active'); // Adiciona a classe 'active' ao passo atual
-            }
-        });
-    }
-
-    function toggleAddressFields() {
-        const newAddressFields = document.getElementById('new-address-fields');
-        const existingAddress = document.getElementById('existing-address');
-
-        if (document.getElementById('new-address').checked) {
-            newAddressFields.classList.remove('hidden'); // Mostra campos para novo endereço
-            existingAddress.classList.add('hidden'); // Esconde o endereço existente
+        if (carrinho.length === 0) {
+            produtosList.innerHTML = '<p>O carrinho está vazio.</p>';
         } else {
-            newAddressFields.classList.add('hidden'); // Esconde campos para novo endereço
-            existingAddress.classList.remove('hidden'); // Mostra o endereço existente
+            carrinho.forEach(item => {
+                const totalItem = item.preco * item.quantidade;
+                subtotal += totalItem;
+
+                const produtoDiv = document.createElement('div');
+                produtoDiv.innerHTML = `
+                    <div class="product">
+                        <img src="${item.imagem}" alt="${item.nome}" style="width: 80px; height: auto;" />
+                        <div class="info">
+                            <div class="name">${item.nome}</div>
+                            <div class="category">${item.descricao}</div>
+                            <div class="quantity">Quantidade: ${item.quantidade}</div>
+                            <div class="total">Total: R$ ${totalItem.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+                produtosList.appendChild(produtoDiv);
+            });
+
+            // Atualiza o total na página
+            totalPriceElement.textContent = subtotal.toFixed(2);
+
+            // Envia o subtotal para o backend
+            await fetch('/api/carrinho/subtotal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ subtotal }),
+            });
         }
+    } catch (error) {
+        console.error('Erro ao carregar informações do carrinho:', error);
     }
+}
+
+async function carregarEndereco() {
+    try {
+        const response = await fetch('/api/endereco'); // Busca o endereço do backend
+        const endereco = await response.json();
+
+        const existingAddress = document.getElementById('existing-address');
+        if (endereco) {
+            existingAddress.innerHTML = `
+                <p>${endereco.rua}, ${endereco.numero} - ${endereco.bairro}</p>
+                <p>${endereco.cidade} - ${endereco.estado}, ${endereco.cep}</p>
+            `;
+        } else {
+            existingAddress.innerHTML = '<p>Nenhum endereço cadastrado.</p>';
+        }
+    } catch (error) {
+        console.error('Erro ao carregar endereço:', error);
+    }
+}
+
+let currentStep = 0; // Variável para rastrear o passo atual
+const steps = document.querySelectorAll('.checkout-step');
+
+function nextStep() {
+    if (currentStep < steps.length - 1) {
+        steps[currentStep].classList.add('hidden'); // Oculta o passo atual
+        currentStep++; // Avança para o próximo passo
+        steps[currentStep].classList.remove('hidden'); // Mostra o próximo passo
+        atualizarPassoNaLinhaDoTempo();
+        atualizarConfirmacao();
+    }
+}
+
+function prevStep() {
+    if (currentStep > 0) {
+        steps[currentStep].classList.add('hidden'); // Oculta o passo atual
+        currentStep--; // Volta para o passo anterior
+        steps[currentStep].classList.remove('hidden'); // Mostra o passo anterior
+        atualizarPassoNaLinhaDoTempo();
+    }
+}
+
+function atualizarPassoNaLinhaDoTempo() {
+    const timelineSteps = document.querySelectorAll('.step');
+    timelineSteps.forEach((step, index) => {
+        step.classList.remove('active');
+        if (index === currentStep) {
+            step.classList.add('active'); // Adiciona a classe 'active' ao passo atual
+        }
+    });
+}
+
+function toggleAddressFields() {
+    const newAddressFields = document.getElementById('new-address-fields');
+    const existingAddress = document.getElementById('existing-address');
+
+    if (document.getElementById('new-address').checked) {
+        newAddressFields.classList.remove('hidden'); // Mostra campos para novo endereço
+        existingAddress.classList.add('hidden'); // Esconde o endereço existente
+    } else {
+        newAddressFields.classList.add('hidden'); // Esconde campos para novo endereço
+        existingAddress.classList.remove('hidden'); // Mostra o endereço existente
+    }
+}
 
     // Função para enviar os dados do carrinho ao servidor
 async function enviarDadosParaServidor() {
@@ -150,48 +176,39 @@ function carregarEndereco() {
     });
 }
 
-
     // Alterna entre os formulários de Cartão e Pix
-    function showCardForm() {
-        document.getElementById('card-form').classList.remove('hidden');
-        document.getElementById('pix-form').classList.add('hidden');
-        localStorage.setItem('metodoPagamento', 'cartao'); // Armazena o método de pagamento
-    }
-    
-    function showPixForm() {
-        document.getElementById('pix-form').classList.remove('hidden');
-        document.getElementById('card-form').classList.add('hidden');
-        localStorage.setItem('metodoPagamento', 'pix'); // Armazena o método de pagamento
-    }
-    
+function showCardForm() {
+    document.getElementById('card-form').classList.remove('hidden');
+    document.getElementById('pix-form').classList.add('hidden');
+}
+
+function showPixForm() {
+    document.getElementById('pix-form').classList.remove('hidden');
+    document.getElementById('card-form').classList.add('hidden');
+}
 
 // Detecta a bandeira do cartão
 function detectarBandeira(numeroCartao) {
     const bandeiraImagem = document.getElementById('card-flag');
     const cardNumberDisplay = document.getElementById('card-number-display');
-
-    // Atualiza o número do cartão no cartão virtual
-    cardNumberDisplay.textContent = numeroCartao; // Mostra o número completo
+    cardNumberDisplay.textContent = numeroCartao || '**** **** **** ****';
 
     const bandeiras = [
         { regex: /^4[0-9]{0,}/, imagem: 'cartoes/visa.png' }, // Visa
         { regex: /^5[1-5][0-9]{0,}/, imagem: 'cartoes/mastercard.png' }, // Mastercard
         { regex: /^3[47][0-9]{0,}/, imagem: 'cartoes/amex.png' }, // American Express
-        { regex: /^4011[0-9]{0,}/, imagem: 'cartoes/elo.png' }, // Elo (exemplo)
+        { regex: /^4011[0-9]{0,}/, imagem: 'cartoes/elo.png' }, // Elo
     ];
 
-    // Limpa a bandeira se o número for apagado
     if (numeroCartao.length === 0) {
         bandeiraImagem.style.display = 'none';
         bandeiraImagem.src = '';
-        cardNumberDisplay.textContent = ''; // Limpa o display quando não há número
         return;
     }
 
-    // Verifica as bandeiras
     const bandeira = bandeiras.find(b => b.regex.test(numeroCartao));
     if (bandeira) {
-        bandeiraImagem.src = bandeira.imagem; // Caminho da imagem da bandeira
+        bandeiraImagem.src = bandeira.imagem;
         bandeiraImagem.style.display = 'inline';
     } else {
         bandeiraImagem.style.display = 'none';
@@ -199,41 +216,20 @@ function detectarBandeira(numeroCartao) {
     }
 }
 
-// Atualiza o nome do titular e a validade ao preencher
-document.getElementById('cardholder').addEventListener('input', function() {
+// Atualiza o nome do titular e validade no cartão virtual
+document.getElementById('cardholder').addEventListener('input', function () {
     document.getElementById('cardholder-name').textContent = this.value || 'Nome do Cartão';
 });
 
-document.getElementById('validade').addEventListener('input', function(e) {
-    let input = e.target.value;
+document.getElementById('validade').addEventListener('input', function (e) {
+    let input = e.target.value.replace(/[^0-9\/]/g, '');
 
-    // Remove caracteres inválidos
-    input = input.replace(/[^0-9\/]/g, ''); 
-
- // Detecta se o usuário está apagando a barra junto com o mês
- if (input.length === 2 && e.inputType === 'deleteContentBackward') {
-    input = input.substring(0, 1); // Permite apagar a barra junto com o mês
-} else if (input.length === 2 && !input.includes('/')) {
-    input = input + '/'; // Adiciona a barra após o segundo número
-}
+    if (input.length === 2 && !input.includes('/')) {
+        input = input + '/';
+    }
 
     e.target.value = input;
     document.getElementById('card-validade-display').textContent = input || 'MM/AA';
-
-    if (input.length === 5) {
-        const [mes, ano] = input.split('/');
-        const anoAtual = new Date().getFullYear().toString().slice(2);
-
-        if (parseInt(mes) < 1 || parseInt(mes) > 12) {
-            alert('Mês inválido. Deve estar entre 01 e 12.');
-            e.target.value = '';
-            document.getElementById('card-validade-display').textContent = 'MM/AA';
-        } else if (parseInt(ano) < parseInt(anoAtual)) {
-            alert('Ano inválido. Deve ser igual ou maior que o atual.');
-            e.target.value = '';
-            document.getElementById('card-validade-display').textContent = 'MM/AA';
-        }
-    }
 });
 
 // Envia informações ao backend
@@ -250,8 +246,9 @@ async function enviarDadosPagamento(metodo, dados) {
         const resultado = await response.json();
         if (resultado.sucesso) {
             alert('Pagamento processado com sucesso!');
+            window.location.href = '/confirmacao_pedido'; // Redireciona para confirmação
         } else {
-            alert('Erro ao processar pagamento.');
+            alert('Erro ao processar pagamento: ' + resultado.mensagem);
         }
     } catch (error) {
         console.error('Erro na requisição:', error);
@@ -259,11 +256,11 @@ async function enviarDadosPagamento(metodo, dados) {
     }
 }
 
-// Exemplo de chamada ao enviar o formulário
-document.getElementById('payment-form').addEventListener('submit', function(e) {
+// Submissão do formulário de pagamento
+document.getElementById('payment-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const metodo = localStorage.getItem('metodoPagamento');
+    const metodo = document.querySelector('input[name="metodo"]:checked').value;
     const dados = metodo === 'cartao'
         ? {
             numero: document.getElementById('card-number').value,
@@ -271,62 +268,45 @@ document.getElementById('payment-form').addEventListener('submit', function(e) {
             validade: document.getElementById('validade').value,
             cvv: document.getElementById('cvv').value
         }
-        : { chavePix: 'Chave do Pix' }; // Substituir pela chave real
+        : { chavePix: document.getElementById('pix-key').textContent };
 
     enviarDadosPagamento(metodo, dados);
 });
 
-    
-    // Verificação do qrCode
-function showPixForm() {
-    document.getElementById('pix-form').classList.remove('hidden'); // Mostra o formulário do Pix
-    document.getElementById('card-form').classList.add('hidden'); // Esconde o formulário do cartão
-}
-
-// Atribuição da chave Pix
+// Gera o QR Code Pix
 function generatePix() {
-    // Defina o link de pagamento e a chave Pix (CPF)
-    const paymentLink = 'https://nubank.com.br/pagar/4d5h5/rJH800hpkD';
-    const cpf = '38386620838'; // CPF que será incluído no QR Code
+    const cpf = '38386620838';
+    const qrCodeText = `https://nubank.com.br/pagar/4d5h5/rJH800hpkD?cpf=${cpf}`;
 
-    // Combine o link de pagamento e o CPF em um formato que o Nubank aceite
-    const qrCodeText = `${paymentLink}?cpf=${cpf}`; // Formato para gerar o QR Code
-
-    // Gera o QR Code usando a biblioteca jQuery.qrcode
-    $('#qrcode').empty(); // Limpa o container do QR Code existente
-
-    // Gera o QR Code a partir do link de pagamento
+    $('#qrcode').empty();
     $('#qrcode').qrcode({
-        text: qrCodeText, // Use o link de pagamento com CPF como texto do QR Code
+        text: qrCodeText,
         width: 128,
         height: 128
     });
 
-    // Exibe o container e a chave Pix
-    document.getElementById('pix-code').classList.remove('hidden'); // Mostra o código Pix gerado
-    document.getElementById('pix-key').textContent = cpf; // Exibe o CPF como chave Pix
+    document.getElementById('pix-code').classList.remove('hidden');
+    document.getElementById('pix-key').textContent = cpf;
 
-    // Enviar a chave Pix para o servidor Flask e MySQL
     sendPixKeyToServer(cpf);
 }
 
-// Função para enviar a chave Pix para o servidor Flask
-function sendPixKeyToServer(cpf) {
-    // Enviar a chave Pix para o Flask através de uma requisição POST
-    fetch('/save_pix_key', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ cpf: cpf })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Chave Pix salva no servidor:', data);
-    })
-    .catch((error) => {
+// Envia a chave Pix para o backend
+async function sendPixKeyToServer(cpf) {
+    try {
+        const response = await fetch('/save_pix_key', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ cpf })
+        });
+
+        const resultado = await response.json();
+        console.log('Chave Pix salva no servidor:', resultado);
+    } catch (error) {
         console.error('Erro ao salvar a chave Pix:', error);
-    });
+    }
 }
 
 // Copia a chave Pix para a área de transferência
@@ -341,236 +321,196 @@ function copyPix() {
         });
 }
 
-    // Atualiza a confirmação
-function atualizarConfirmacao() {
-    // Recupera o carrinho do localStorage
-    const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-    const produtosList = document.getElementById('final-products-list');
-    const enderecoSalvo = localStorage.getItem('endereco');
-    const metodoPagamento = localStorage.getItem('metodoPagamento');
-    const subtotal = localStorage.getItem('subtotal');
+   // Atualiza a confirmação
+async function atualizarConfirmacao() {
+    // Recupera o carrinho do backend
+    try {
+        const response = await fetch('/api/carrinho');
+        if (!response.ok) throw new Error('Erro ao obter o carrinho do servidor');
+        const carrinho = await response.json();
 
-    // Limpa a lista de produtos para garantir que será preenchida corretamente
-    produtosList.innerHTML = '';
+        const produtosList = document.getElementById('final-products-list');
+        const responseDados = await fetch('/api/dados_confirmacao');
+        if (!responseDados.ok) throw new Error('Erro ao obter os dados de confirmação');
+        const { endereco, metodoPagamento, subtotal } = await responseDados.json();
 
-    if (carrinho.length === 0) {
-        produtosList.innerHTML = '<p>Não há produtos no carrinho.</p>';
-    } else {
-        carrinho.forEach(item => {
-            const totalItem = item.preco * item.quantidade;
+        // Limpa a lista de produtos para garantir que será preenchida corretamente
+        produtosList.innerHTML = '';
 
-            const produtoDiv = document.createElement('div');
-            produtoDiv.classList.add('product');
+        if (carrinho.length === 0) {
+            produtosList.innerHTML = '<p>Não há produtos no carrinho.</p>';
+        } else {
+            carrinho.forEach(item => {
+                const totalItem = item.preco * item.quantidade;
 
-            produtoDiv.innerHTML = `
-                <img src="${item.imagem}" alt="${item.nome}" style="width: 80px; height: auto;" />
-                <div class="info">
-                    <div class="name">${item.nome}</div>
-                    <div class="quantity">Quantidade: ${item.quantidade}</div>
-                    <div class="total">Total: R$ ${totalItem.toFixed(2)}</div>
-                </div>
-            `;
+                const produtoDiv = document.createElement('div');
+                produtoDiv.classList.add('product');
 
-            produtosList.appendChild(produtoDiv);
-        });
+                produtoDiv.innerHTML = `
+                    <img src="${item.imagem}" alt="${item.nome}" style="width: 80px; height: auto;" />
+                    <div class="info">
+                        <div class="name">${item.nome}</div>
+                        <div class="quantity">Quantidade: ${item.quantidade}</div>
+                        <div class="total">Total: R$ ${totalItem.toFixed(2)}</div>
+                    </div>
+                `;
 
-        // Envia os dados para o backend Flask
+                produtosList.appendChild(produtoDiv);
+            });
+
+            // Exibe o endereço salvo
+            const confirmationAddress = document.getElementById('confirmation-address');
+            confirmationAddress.textContent = endereco || 'Endereço não informado.';
+
+            // Exibe o método de pagamento
+            const confirmationPayment = document.getElementById('confirmation-payment');
+            confirmationPayment.textContent =
+                metodoPagamento === 'cartao' ? 'Cartão de Crédito/Débito' : 'Pix';
+
+            // Atualiza o total
+            const finalTotalPrice = document.getElementById('final-total-price');
+            finalTotalPrice.textContent = subtotal || '0.00';
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar a confirmação:', error);
+    }
+}
+
+// Função para finalizar o pedido
+async function finalizarPedido() {
+    try {
+        // Verifica se os elementos necessários estão presentes
+        const newAddressCheckbox = document.getElementById('new-address');
+        const ruaInput = document.getElementById('rua');
+        const numeroInput = document.getElementById('numero');
+        const bairroInput = document.getElementById('bairro');
+        const cepInput = document.getElementById('cep');
+        const cidadeInput = document.getElementById('cidade');
+        const confirmationAddress = document.getElementById('confirmation-address');
+
+        // Define o endereço a ser enviado
+        const endereco =
+            newAddressCheckbox && newAddressCheckbox.checked
+                ? `Rua: ${ruaInput.value}, Número: ${numeroInput.value}, Bairro: ${bairroInput.value}, CEP: ${cepInput.value}, Cidade: ${cidadeInput.value}`
+                : confirmationAddress.textContent;
+
+        // Define o método de pagamento
+        const metodoPagamento = document.querySelector('input[name="payment"]:checked')?.id;
+
+        // Cria o objeto com os dados que serão enviados para o Flask
         const data = {
-            carrinho: carrinho,
-            subtotal: subtotal,
-            endereco: enderecoSalvo,
-            metodoPagamento: metodoPagamento
+            endereco: endereco,
+            metodoPagamento: metodoPagamento,
         };
 
-        fetch('/atualizar_confirmacao', {
+        // Envia as informações para o backend
+        const response = await fetch('/api/finalizar_pedido', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) throw new Error('Erro ao finalizar o pedido');
+
+        const result = await response.json();
+        alert('Compra finalizada com sucesso! Pedido ID: ' + result.pedidoId);
+        window.location.href = '/pagina_confirmacao'; // Redireciona para a página de confirmação
+    } catch (error) {
+        console.error('Erro ao finalizar o pedido:', error);
+        alert('Ocorreu um erro ao finalizar a compra. Tente novamente.');
+    }
+}
+
+// Chama a função para atualizar as informações da confirmação
+document.addEventListener('DOMContentLoaded', () => {
+    atualizarConfirmacao();
+});
+
+    // Finaliza a compra
+document.getElementById('finalizar-compra').addEventListener('click', async function () {
+    try {
+        // Coleta as informações do pedido
+        const produtos = JSON.parse(localStorage.getItem('carrinho')) || [];  // Produtos do carrinho
+        const endereco = document.getElementById('endereco-input')?.value || 'Endereço não informado';  // Endereço informado pelo cliente
+        const metodoPagamento = document.querySelector('input[name="payment"]:checked')?.value || 'Não informado';  // Método de pagamento escolhido
+        const subtotal = produtos.reduce((acc, item) => acc + (item.preco * item.quantidade), 0).toFixed(2); // Calcula o subtotal baseado nos produtos
+
+        // Verifica se os campos obrigatórios estão preenchidos
+        if (!produtos.length) {
+            alert('O carrinho está vazio! Adicione produtos antes de finalizar a compra.');
+            return;
+        }
+        if (endereco === 'Endereço não informado') {
+            alert('Informe um endereço válido para entrega.');
+            return;
+        }
+        if (metodoPagamento === 'Não informado') {
+            alert('Selecione um método de pagamento.');
+            return;
+        }
+
+        // Cria o objeto com os dados do pedido
+        const data = {
+            produtos: produtos,
+            endereco: endereco,
+            metodoPagamento: metodoPagamento,
+            subtotal: subtotal,
+            pedidoId: new Date().getTime() // Gera um ID único para o pedido
+        };
+
+        // Envia as informações do pedido para o backend
+        const response = await fetch('/finalizar_pedido', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);  // Exibe a mensagem de sucesso ou erro
-        })
-        .catch(error => {
-            console.error('Erro ao enviar os dados para o servidor:', error);
         });
-    }
-    
-        // Exibe o endereço salvo (ou um padrão, caso não tenha sido informado)
-        const confirmationAddress = document.getElementById('confirmation-address');
-        confirmationAddress.textContent = enderecoSalvo || 'Endereço não informado.';
-    
-        // Exibe o método de pagamento
-        const confirmationPayment = document.getElementById('confirmation-payment');
-        if (metodoPagamento) {
-            confirmationPayment.textContent = metodoPagamento === 'cartao' ? 'Cartão de Crédito/Débito' : 'Pix';
-        } else {
-            confirmationPayment.textContent = 'Método de pagamento não selecionado.';
+
+        if (!response.ok) {
+            throw new Error('Erro ao enviar os dados para o servidor. Verifique sua conexão.');
         }
-    
-        // Atualiza o total
-        const finalTotalPrice = document.getElementById('final-total-price');
-        finalTotalPrice.textContent = subtotal || '0.00';
-    }
-    
-    // Envia as informações para o backend Flask
-const data = {
-    endereco: enderecoSalvo,
-    metodoPagamento: metodoPagamento,
-    subtotal: subtotal,
-    pedidoId: localStorage.getItem('pedidoId')  // Presumindo que o ID do pedido esteja no localStorage
-};
 
-fetch('/atualizar_endereco_pagamento', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-})
-.then(response => response.json())
-.then(data => {
-    alert(data.message);  // Exibe a mensagem de sucesso ou erro
-})
-.catch(error => {
-    console.error('Erro ao enviar os dados para o servidor:', error);
-});
-
-    // Chama a função para atualizar as informações da confirmação antes de finalizar o pedido
-function finalizarPedido() {
-    // Verifica se os elementos necessários estão presentes
-    const productsList = document.getElementById('products-list');
-    const newAddressCheckbox = document.getElementById('new-address');
-    const ruaInput = document.getElementById('rua');
-    const numeroInput = document.getElementById('numero');
-    const bairroInput = document.getElementById('bairro');
-    const cepInput = document.getElementById('cep');
-    const cidadeInput = document.getElementById('cidade');
-    const confirmationAddress = document.getElementById('confirmation-address');
-    const finalProductsList = document.getElementById('final-products-list');
-    const finalTotalPrice = document.getElementById('final-total-price');
-
-    if (!productsList || !confirmationAddress || !finalProductsList || !finalTotalPrice) {
-        console.error("Um ou mais elementos necessários não foram encontrados.");
-        return;
-    }
-
-    // Obtenha a lista de produtos e endereço conforme selecionado
-    const produtos = productsList.innerHTML;
-    const endereco = newAddressCheckbox && newAddressCheckbox.checked ? 
-        `Rua: ${ruaInput.value}, Número: ${numeroInput.value}, Bairro: ${bairroInput.value}, CEP: ${cepInput.value}, Cidade: ${cidadeInput.value}` : 
-        localStorage.getItem('endereco'); // Usa o endereço do localStorage
-
-    const metodoPagamento = document.querySelector('input[name="payment"]:checked')?.id;
-
-    // Armazena o endereço no localStorage para futuras referências
-    if (newAddressCheckbox && newAddressCheckbox.checked) {
-        localStorage.setItem('endereco', endereco);
-    }
-
-    // Atualiza a confirmação com os dados do pedido
-    finalProductsList.innerHTML = produtos; // Certifique-se de que 'produtos' contém a informação correta
-    confirmationAddress.textContent = endereco; // O endereço deve estar definido
-    finalTotalPrice.textContent = localStorage.getItem('subtotal'); // Certifique-se de que o subtotal está salvo corretamente
-
-    // Salve informações necessárias para o acompanhamento do pedido (se necessário)
-    localStorage.setItem('pedidoFinalizado', JSON.stringify({
-        produtos: produtos,
-        endereco: endereco,
-        subtotal: localStorage.getItem('subtotal')
-    }));
-
-    // Cria o objeto com os dados que serão enviados para o Flask
-    const data = {
-        produtos: produtos,
-        endereco: endereco,
-        metodoPagamento: metodoPagamento,
-        subtotal: localStorage.getItem('subtotal'),
-        pedidoId: localStorage.getItem('pedidoId')  // Presumindo que o ID do pedido esteja no localStorage
-    };
-
-    // Envia as informações para o backend Flask
-    fetch('/finalizar_pedido', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert('Compra finalizada com sucesso!');  // Mensagem de sucesso ao usuário
-        nextStep();  // Passa para a próxima etapa do pedido
-    })
-    .catch(error => {
-        console.error('Erro ao enviar os dados para o servidor:', error);
-        alert('Ocorreu um erro ao finalizar a compra. Tente novamente.');
-    });
-}
-
-    // Finaliza a compra
-document.getElementById('finalizar-compra').addEventListener('click', function() {
-    // Coleta as informações do pedido, como produtos, endereço, método de pagamento, e subtotal
-    const produtos = JSON.parse(localStorage.getItem('carrinho')) || [];  // Exemplo, pegue os dados do carrinho
-    const endereco = localStorage.getItem('endereco') || 'Endereço não informado';  // Endereço do localStorage
-    const metodoPagamento = document.querySelector('input[name="payment"]:checked')?.id || 'Não informado';  // Método de pagamento
-    const subtotal = localStorage.getItem('subtotal') || '0.00';  // Subtotal do localStorage
-
-    // Cria o objeto com os dados que serão enviados para o Flask
-    const data = {
-        produtos: produtos,
-        endereco: endereco,
-        metodoPagamento: metodoPagamento,
-        subtotal: subtotal,
-        pedidoId: localStorage.getItem('pedidoId')  // ID do pedido no localStorage
-    };
-
-    // Envia as informações do pedido para o backend Flask para armazenamento no banco de dados
-    fetch('/finalizar_pedido', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Pedido finalizado com sucesso:', data);
+        const result = await response.json();
+        console.log('Pedido finalizado com sucesso:', result);
         alert('Compra finalizada com sucesso!');
-        // Chama a função de upload da NF-e
-        finalizarCompra();
-    })
-    .catch(error => {
-        console.error('Erro ao enviar os dados para o servidor:', error);
-        alert('Ocorreu um erro ao finalizar a compra. Tente novamente.');
-    });
 
-    // Redireciona para a página principal do site
-    window.location.href = 'index.html'; // Substitua 'index.html' pela URL desejada
+        // Chama a função para enviar a NF-e
+        await enviarNotaFiscal(data.pedidoId);
+
+        // Redireciona para a página principal
+        window.location.href = '/';
+    } catch (error) {
+        console.error('Erro ao finalizar a compra:', error);
+        alert('Ocorreu um erro ao finalizar a compra. Tente novamente.');
+    }
 });
 
-// Função para finalizar a compra e enviar a NF-e para o servidor
-function finalizarCompra() {
-    // Simulação de NF-e gerada (substitua isso com sua lógica para gerar a NF-e)
-    const nfeFile = new File(["<xml da NF-e>"], "nota-fiscal.xml", { type: "application/xml" });
+// Função para gerar e enviar a NF-e para o servidor
+async function enviarNotaFiscal(pedidoId) {
+    try {
+        // Simulação de geração de NF-e (substitua isso pela lógica real do backend para gerar a NF-e)
+        const nfeContent = `<nfe><id>${pedidoId}</id><status>aprovado</status></nfe>`;
+        const nfeFile = new File([nfeContent], `nota-fiscal-${pedidoId}.xml`, { type: 'application/xml' });
 
-    // Aqui você faria o upload da NF-e para o servidor
-    const formData = new FormData();
-    formData.append('nfe', nfeFile);
-    
-    // Envio para o servidor (exemplo usando fetch)
-    fetch('/api/upload-nfe', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('NF-e enviada com sucesso:', data);
-        // Aqui você pode redirecionar o usuário para uma página de sucesso
-    })
-    .catch(error => {
+        // Envia a NF-e para o servidor
+        const formData = new FormData();
+        formData.append('nfe', nfeFile);
+
+        const response = await fetch('/api/upload-nfe', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao enviar a NF-e.');
+        }
+
+        const result = await response.json();
+        console.log('NF-e enviada com sucesso:', result);
+    } catch (error) {
         console.error('Erro ao enviar a NF-e:', error);
-    });
+    }
 }
