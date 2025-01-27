@@ -474,20 +474,14 @@ document.getElementById('finalizar-compra').addEventListener('click', async func
         }
 
         const result = await response.json();
-        if (result.success) {
-            alert(`Compra finalizada com sucesso!\n\nEndereço de Entrega: ${endereco}\nMétodo de Pagamento: ${metodoPagamento}`);
-            console.log('Pedido finalizado com sucesso:', result);
+        console.log('Pedido finalizado com sucesso:', result);
+        alert('Compra finalizada com sucesso!');
 
-            // Chama a função para enviar a NF-e
-            await enviarNotaFiscal(data.pedidoId);
+        // Chama a função para enviar a NF-e
+        await enviarNotaFiscal(data.pedidoId);
 
-            // Limpa o carrinho e redireciona para a página principal
-            localStorage.removeItem('carrinho');
-            localStorage.removeItem('subtotal');
-            window.location.href = '/';
-        } else {
-            throw new Error(result.message || 'Erro ao finalizar a compra. Tente novamente.');
-        }
+        // Redireciona para a página principal
+        window.location.href = '/';
     } catch (error) {
         console.error('Erro ao finalizar a compra:', error);
         alert('Ocorreu um erro ao finalizar a compra. Tente novamente.');
