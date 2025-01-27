@@ -259,34 +259,47 @@ def aplicar_cupom():
 @app.route('/api/checkout', methods=['POST'])
 def checkout():
     try:
+        # Recebe os dados enviados pelo frontend
         dados = request.get_json()
         cliente_id = dados.get('cliente_id')
         endereco = dados.get('endereco')
         pagamento = dados.get('pagamento')
 
+        # Validação básica
         if not cliente_id or not endereco or not pagamento:
             return jsonify({"error": "Todos os campos são obrigatórios!"}), 400
 
+        # Conexão com o banco de dados
         conn = conectar_db()
         cursor = conn.cursor()
+
+        # Insere o pedido na tabela de pedidos
         cursor.execute("""
             INSERT INTO pedidos (cliente_id, endereco, pagamento)
             VALUES (%s, %s, %s)
         """, (cliente_id, endereco, pagamento))
-        pedido_id = cursor.lastrowid
+        pedido_id = cursor.lastrowid  # Obtém o ID do pedido inserido
 
+        # Move os itens do carrinho para a tabela de produtos_pedido
         cursor.execute("""
             INSERT INTO produtos_pedido (pedido_id, produto_id, quantidade)
             SELECT %s, produto_id, quantidade FROM carrinho WHERE cliente_id = %s
         """, (pedido_id, cliente_id))
 
+        # Remove os itens do carrinho após o checkout
         cursor.execute("DELETE FROM carrinho WHERE cliente_id = %s", (cliente_id,))
+
+        # Confirma a transação no banco de dados
         conn.commit()
 
-        return jsonify({"message": "Checkout realizado com sucesso!"}), 201
+        return jsonify({"message": "Checkout realizado com sucesso!", "pedido_id": pedido_id}), 201
+
+    except mysql.connector.Error as err:
+        return jsonify({"error": f"Erro no banco de dados: {str(err)}"}), 500
     except Exception as err:
         return jsonify({"error": f"Erro no checkout: {str(err)}"}), 500
     finally:
+        # Fecha a conexão com o banco de dados
         if 'conn' in locals() and conn.is_connected():
             conn.close()
 

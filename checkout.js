@@ -477,6 +477,15 @@ document.getElementById('finalizar-compra').addEventListener('click', async func
         console.log('Pedido finalizado com sucesso:', result);
         alert('Compra finalizada com sucesso!');
 
+        // Exibe mensagem de sucesso e redireciona
+        alert('Compra finalizada com sucesso!');
+        window.location.href = 'resumo.html';
+    } catch (error) {
+        console.error('Erro ao finalizar a compra:', error);
+        alert('Ocorreu um erro ao finalizar a compra. Tente novamente.');
+    }
+});
+
         // Chama a função para enviar a NF-e
         await enviarNotaFiscal(data.pedidoId);
 
