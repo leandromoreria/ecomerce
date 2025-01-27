@@ -432,10 +432,10 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('finalizar-compra').addEventListener('click', async function () {
     try {
         // Coleta as informações do pedido
-        const produtos = JSON.parse(localStorage.getItem('carrinho')) || [];  // Produtos do carrinho
-        const endereco = document.getElementById('endereco-input')?.value || 'Endereço não informado';  // Endereço informado pelo cliente
-        const metodoPagamento = document.querySelector('input[name="payment"]:checked')?.value || 'Não informado';  // Método de pagamento escolhido
-        const subtotal = produtos.reduce((acc, item) => acc + (item.preco * item.quantidade), 0).toFixed(2); // Calcula o subtotal baseado nos produtos
+        const produtos = JSON.parse(localStorage.getItem('carrinho')) || []; // Produtos do carrinho
+        const endereco = document.getElementById('endereco-input')?.value || 'Endereço não informado'; // Endereço informado pelo cliente
+        const metodoPagamento = document.querySelector('input[name="payment"]:checked')?.value || 'Não informado'; // Método de pagamento escolhido
+        const subtotal = produtos.reduce((acc, item) => acc + (item.preco * item.quantidade), 0).toFixed(2); // Calcula o subtotal
 
         // Verifica se os campos obrigatórios estão preenchidos
         if (!produtos.length) {
@@ -475,21 +475,14 @@ document.getElementById('finalizar-compra').addEventListener('click', async func
 
         const result = await response.json();
         console.log('Pedido finalizado com sucesso:', result);
+
+        // Exibe mensagem de sucesso
         alert('Compra finalizada com sucesso!');
 
-        // Exibe mensagem de sucesso e redireciona
-        alert('Compra finalizada com sucesso!');
-        window.location.href = 'resumo.html';
-    } catch (error) {
-        console.error('Erro ao finalizar a compra:', error);
-        alert('Ocorreu um erro ao finalizar a compra. Tente novamente.');
-    }
-});
-
-        // Chama a função para enviar a NF-e
+        // Chama a função para enviar a NF-e (caso aplicável)
         await enviarNotaFiscal(data.pedidoId);
 
-        // Redireciona para a página principal
+        // Redireciona para a página de resumo
         window.location.href = 'index.html';
     } catch (error) {
         console.error('Erro ao finalizar a compra:', error);
