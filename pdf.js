@@ -1,4 +1,4 @@
-// Função para enviar o arquivo para o servidor Flask
+// Função para enviar o arquivo e o ID do pedido para o servidor Flask
 function uploadInvoice(file, orderId) {
     const formData = new FormData();
     formData.append('file', file); // Adiciona o arquivo ao FormData
@@ -13,9 +13,11 @@ function uploadInvoice(file, orderId) {
         if (data.success) {
             console.log('Arquivo enviado com sucesso!');
             console.log('URL da NF-e:', data.pdfUrl);
-            // Armazena a URL da NF-e, pode ser usada em outro lugar ou exibida
+            // Exibe a URL ou usa ela em outro lugar
+            alert('Nota Fiscal enviada com sucesso!');
         } else {
             console.error('Erro ao enviar arquivo:', data.message);
+            alert('Erro ao enviar a Nota Fiscal.');
         }
     })
     .catch(error => {
@@ -23,16 +25,18 @@ function uploadInvoice(file, orderId) {
     });
 }
 
-// Função para obter a URL da NF-e
-function getInvoiceUrl() {
-    fetch('http://localhost:5000/api/getInvoiceUrl')
+// Função para obter a URL da NF-e com base no pedido
+function getInvoiceUrl(orderId) {
+    fetch(`http://localhost:5000/api/getInvoiceUrl?order_id=${orderId}`)
         .then(response => response.json())
         .then(data => {
             if (data.pdfUrl) {
                 console.log('URL da NF-e:', data.pdfUrl);
-                // Aqui você pode fazer algo com a URL, como abrir o PDF ou fazer o download
+                // Exemplo: abre o PDF em uma nova aba
+                window.open(data.pdfUrl, '_blank');
             } else {
                 console.error('Erro ao obter URL da NF-e:', data.error);
+                alert('Nota Fiscal não encontrada para o pedido.');
             }
         })
         .catch(error => {
@@ -40,11 +44,11 @@ function getInvoiceUrl() {
         });
 }
 
-// Exemplo de como utilizar as funções
+// Integração com o formulário
 const inputFile = document.querySelector('#invoiceFileInput'); // Selecionando o input de arquivo
-const orderId = 12345; // Exemplo de ID do pedido
+const orderId = 12345; // Substitua pelo ID real do pedido
 
-// Quando o usuário selecionar um arquivo, chamamos a função de upload
+// Evento para enviar o arquivo ao selecionar
 inputFile.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -52,5 +56,5 @@ inputFile.addEventListener('change', (event) => {
     }
 });
 
-// Você pode também chamar a função para obter a URL da NF-e
-getInvoiceUrl();
+// Exemplo de uso: obter a URL da NF-e
+getInvoiceUrl(orderId);

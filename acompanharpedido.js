@@ -237,3 +237,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("Erro ao carregar a NF-e:", error);
     }
 });
+
+const finalizeButton = document.getElementById("finalizar-pedido");
+if (finalizeButton) {
+    finalizeButton.addEventListener("click", async () => {
+        try {
+            const response = await fetch('/api/finalize-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    orderId: 1, // Substitua com o ID real do pedido
+                    userId: 1,  // Substitua com o ID real do usuário
+                }),
+            });
+
+            if (!response.ok) throw new Error(`Erro: ${response.status}`);
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Pedido finalizado com sucesso!');
+            } else {
+                alert('Erro ao finalizar o pedido. Tente novamente.');
+            }
+        } catch (error) {
+            console.error("Erro ao finalizar o pedido:", error);
+            alert('Erro ao finalizar o pedido.');
+        }
+    });
+}

@@ -1,6 +1,12 @@
 // Função para carregar e exibir os produtos no carrinho
-function carregarCarrinho() {
-    const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+async function carregarCarrinho() {
+    const response = await fetch('/api/carrinho', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const carrinho = await response.json();
     const tbody = document.querySelector('tbody');
     tbody.innerHTML = ''; // Limpa a tabela antes de adicionar os itens
 
@@ -33,7 +39,6 @@ function carregarCarrinho() {
                     <button class="remove" data-index="${index}"><i class="bx bx-x"></i></button>
                 </td>
             `;
-
             tbody.appendChild(linha);
         });
     }
@@ -43,12 +48,18 @@ function carregarCarrinho() {
 }
 
 // Função para atualizar o subtotal e total do carrinho
-function atualizarTotal() {
-    const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+async function atualizarTotal() {
+    const response = await fetch('/api/carrinho', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const carrinho = await response.json();
     let subtotal = 0;
 
     carrinho.forEach(item => {
-        subtotal += item.preco * item.quantidade; // Soma o total de cada item (preço * quantidade)
+        subtotal += item.preco * item.quantidade;
     });
 
     // Atualiza o subtotal e o total na página
@@ -69,27 +80,33 @@ function atualizarTotal() {
 }
 
 // Função para manipular a quantidade e remoção dos produtos
-function manipularCarrinho() {
-    document.querySelector('tbody').addEventListener('click', function(e) {
-        const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+async function manipularCarrinho() {
+    document.querySelector('tbody').addEventListener('click', async function(e) {
         const index = e.target.closest('button')?.dataset.index;
+        const action = e.target.closest('button')?.dataset.action;
+        const method = e.target.closest('.remove') ? 'DELETE' : 'PATCH';
+        let updatedItem;
 
         if (e.target.closest('.btn-quantidade')) {
-            const action = e.target.closest('button').dataset.action;
-
-            if (action === 'aumentar') {
-                carrinho[index].quantidade += 1;
-            } else if (action === 'diminuir' && carrinho[index].quantidade > 1) {
-                carrinho[index].quantidade -= 1;
-            }
-
-            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+            const response = await fetch('/api/carrinho/' + index, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ action })
+            });
+            updatedItem = await response.json();
             carregarCarrinho(); // Atualiza o carrinho e os valores
         }
 
         if (e.target.closest('.remove')) {
-            carrinho.splice(index, 1); // Remove o item do carrinho
-            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+            const response = await fetch('/api/carrinho/' + index, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            updatedItem = await response.json();
             carregarCarrinho(); // Atualiza o carrinho e os valores
         }
     });
@@ -137,6 +154,49 @@ addToCartButtons.forEach(button => {
         showMessage(productName); // Chama a função com o nome do produto
     });
 });
+
+// Função para calcular o frete
+async function calcularFrete() {
+    const cepDestino = document.getElementById("cep").value;
+    const cepOrigem = "16201-169"; // CEP da sua empresa
+    const peso = 2; // Peso do pacote em kg
+    const comprimento = 20; // Comprimento em cm
+    const altura = 10; // Altura em cm
+    const largura = 15; // Largura em cm
+    const servico = "04014"; // Código Sedex
+
+    const params = new URLSearchParams({
+        nCdEmpresa: "", // Deixe vazio se não tiver contrato
+        sDsSenha: "", // Deixe vazio se não tiver contrato
+        nCdServico: servico,
+        sCepOrigem: cepOrigem,
+        sCepDestino: cepDestino,
+        nVlPeso: peso,
+        nCdFormato: 1, // 1 = Caixa
+        nVlComprimento: comprimento,
+        nVlAltura: altura,
+        nVlLargura: largura,
+        nVlDiametro: 0,
+        sCdMaoPropria: "N",
+        nVlValorDeclarado: 0,
+        sCdAvisoRecebimento: "N",
+        StrRetorno: "xml",
+    });
+
+    try {
+        const response = await fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?${params}`);
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, "application/xml");
+        const valor = xmlDoc.getElementsByTagName("Valor")[0].childNodes[0].nodeValue;
+        const prazo = xmlDoc.getElementsByTagName("PrazoEntrega")[0].childNodes[0].nodeValue;
+
+        document.getElementById("resultadoFrete").innerText = `Frete: R$ ${valor} | Prazo: ${prazo} dias úteis`;
+    } catch (error) {
+        document.getElementById("resultadoFrete").innerText = "Erro ao calcular o frete.";
+        console.error("Erro ao calcular frete:", error);
+    }
+}
 
 // Selecionando os elementos do DOM
 document.addEventListener("DOMContentLoaded", function () {
@@ -210,46 +270,3 @@ document.addEventListener("DOMContentLoaded", function () {
         this.value = this.value.toUpperCase(); // Transforma o texto em maiúsculas
     });
 });
-
-// Função para calcular o frete
-async function calcularFrete() {
-    const cepDestino = document.getElementById("cep").value;
-    const cepOrigem = "16201-169"; // CEP da sua empresa
-    const peso = 2; // Peso do pacote em kg
-    const comprimento = 20; // Comprimento em cm
-    const altura = 10; // Altura em cm
-    const largura = 15; // Largura em cm
-    const servico = "04014"; // Código Sedex
-
-    const params = new URLSearchParams({
-        nCdEmpresa: "", // Deixe vazio se não tiver contrato
-        sDsSenha: "", // Deixe vazio se não tiver contrato
-        nCdServico: servico,
-        sCepOrigem: cepOrigem,
-        sCepDestino: cepDestino,
-        nVlPeso: peso,
-        nCdFormato: 1, // 1 = Caixa
-        nVlComprimento: comprimento,
-        nVlAltura: altura,
-        nVlLargura: largura,
-        nVlDiametro: 0,
-        sCdMaoPropria: "N",
-        nVlValorDeclarado: 0,
-        sCdAvisoRecebimento: "N",
-        StrRetorno: "xml",
-    });
-
-    try {
-        const response = await fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?${params}`);
-        const text = await response.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(text, "application/xml");
-        const valor = xmlDoc.getElementsByTagName("Valor")[0].childNodes[0].nodeValue;
-        const prazo = xmlDoc.getElementsByTagName("PrazoEntrega")[0].childNodes[0].nodeValue;
-
-        document.getElementById("resultadoFrete").innerText = `Frete: R$ ${valor} | Prazo: ${prazo} dias úteis`;
-    } catch (error) {
-        document.getElementById("resultadoFrete").innerText = "Erro ao calcular o frete.";
-        console.error("Erro ao calcular frete:", error);
-    }
-}

@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import mysql.connector
 import requests
+import os
 from bcrypt import hashpw, gensalt, checkpw
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -11,15 +12,16 @@ CORS(app)  # Habilita o CORS para todas as origens
 # Mock de banco de dados
 users = {}
 
-# Função para conectar ao banco de dados
+db_config = {
+    "host": "localhost",
+    "user": "root",
+    "password": "Leandro#fxx3207",
+    "database": "ecommerce"
+}
+
 def conectar_db():
     try:
-        return mysql.connector.connect(
-            host="localhost",
-            user="root",  # Substitua pelo usuário do MySQL
-            password="Leandro#fxx3207",  # Substitua pela senha do MySQL
-            database="ecommerce"  # Nome do banco de dados
-        )
+        return mysql.connector.connect(**db_config)
     except mysql.connector.Error as err:
         raise Exception(f"Erro ao conectar ao banco de dados: {str(err)}")
 
@@ -306,3 +308,57 @@ def checkout():
 if __name__ == '__main__':
     app.run(debug=True)
 
+# Rota para upload
+@app.route('/uploadInvoice', methods=['POST'])
+def upload_invoice():
+    file = request.files.get('file')
+    order_id = request.form.get('order_id')
+
+    if not file or not order_id:
+        return jsonify({'success': False, 'message': 'Arquivo ou ID do pedido ausente.'}), 400
+
+    # Salvando o arquivo
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(file_path)
+
+    # Salvando no banco de dados
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO invoices (order_id, file_path) VALUES (%s, %s)", 
+            (order_id, file_path)
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+    except mysql.connector.Error as err:
+        return jsonify({'success': False, 'message': str(err)}), 500
+
+    return jsonify({'success': True, 'pdfUrl': file_path})
+
+# Rota para obter a URL da NF-e
+@app.route('/api/getInvoiceUrl', methods=['GET'])
+def get_invoice_url():
+    order_id = request.args.get('order_id')  # ID do pedido fornecido pelo frontend
+
+    if not order_id:
+        return jsonify({'error': 'ID do pedido é obrigatório.'}), 400
+
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT file_path FROM invoices WHERE order_id = %s", (order_id,))
+        result = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if result:
+            return jsonify({'pdfUrl': result['file_path']})
+        else:
+            return jsonify({'error': 'NF-e não encontrada para o pedido.'}), 404
+    except mysql.connector.Error as err:
+        return jsonify({'error': str(err)}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
