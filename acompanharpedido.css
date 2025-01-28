@@ -234,7 +234,7 @@ button:hover {
 /* Estilos gerais para telas desktop grandes */
 @media (min-width: 1200px) {
     .acompanhamento-container {
-        max-width: 1100px; /* Largura maior para desktop */
+        width: 1100px; /* Largura fixa para desktop */
         padding: 30px; /* Aumenta o padding em telas grandes */
     }
     .order-details h2, .history h2, .faq-support h2 {
@@ -248,7 +248,8 @@ button:hover {
 /* Estilos para telas desktop e laptop (largura entre 992px e 1200px) */
 @media (min-width: 992px) and (max-width: 1199px) {
     .acompanhamento-container {
-        max-width: 900px; /* Ajusta a largura para monitores médios */
+        width: 90%; /* Ajusta a largura para monitores médios */
+        max-width: 900px; /* Max-width ajustado */
     }
     .order-details h2, .history h2, .faq-support h2 {
         font-size: 1.8rem; /* Títulos um pouco menores para adaptar à tela */
@@ -258,7 +259,7 @@ button:hover {
 /* Estilos para tablets (largura entre 768px e 991px) */
 @media (min-width: 768px) and (max-width: 991px) {
     .acompanhamento-container {
-        max-width: 700px; /* Ajusta o container para tablets */
+        width: 90%; /* Largura ajustada para tablets */
         padding: 15px; /* Ajusta o padding para tablets */
     }
     .step {
@@ -273,11 +274,11 @@ button:hover {
 /* Estilos para celulares grandes (largura entre 576px e 767px) */
 @media (min-width: 576px) and (max-width: 767px) {
     .acompanhamento-container {
-        max-width: 90%; /* Container ocupa 90% da largura em celulares grandes */
-        padding: 10px; /* Ajuste de padding para celulares */
+        width: 90%; /* O container ocupa 90% da largura da tela */
+        padding: 10px; /* Ajuste de padding para celulares grandes */
     }
     .step {
-        width: 70px; /* Passos ainda menores para caber melhor na tela */
+        width: 70px; /* Passos menores para caber melhor na tela */
         font-size: 0.8rem; /* Tamanho da fonte reduzido para celular */
     }
     .order-details h2, .history h2, .faq-support h2 {
@@ -288,7 +289,7 @@ button:hover {
 /* Estilos para celulares pequenos (largura menor que 576px) */
 @media (max-width: 575px) {
     .acompanhamento-container {
-        max-width: 100%; /* Container ocupa toda a largura da tela em celulares pequenos */
+        width: 100%; /* O container ocupa toda a largura da tela */
         padding: 5px; /* Ajuste de padding para celulares pequenos */
     }
     .step {

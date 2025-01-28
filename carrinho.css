@@ -277,26 +277,137 @@ aside button:hover {
     /* Adicionar uma cor específica ou ícone, caso queira mais destaque */
 }
 
-/* Media query para responsividade */
-@media (max-width: 768px) {
+/* Estilos gerais para telas desktop grandes */
+@media (min-width: 1200px) {
     .content {
-        flex-direction: column; /* Altera a direção do flex para coluna em telas menores */
+        display: flex;
+        flex-direction: row; /* Alinha os elementos em linha para telas grandes */
     }
 
     aside {
-        max-width: none; /* Remove a largura máxima do aside em telas menores */
+        width: 300px; /* Largura fixa para o aside em telas grandes */
     }
 
     header {
-        padding: 15px; /* Reduz o espaçamento do cabeçalho em telas menores */
+        padding: 20px 30px; /* Maior padding para o cabeçalho */
     }
 
     .page-title {
-        font-size: 1.5rem; /* Reduz o tamanho do título em telas menores */
+        font-size: 2rem; /* Tamanho de fonte maior para o título */
     }
 
     table th, table td {
-        font-size: 0.9rem; /* Reduz o tamanho da fonte na tabela em telas menores */
+        font-size: 1rem; /* Tamanho de fonte adequado para desktops */
     }
 }
-    
+
+/* Estilos para telas grandes (largura entre 992px e 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .content {
+        display: flex;
+        flex-direction: row; /* Alinha os elementos em linha para telas grandes */
+    }
+
+    aside {
+        width: 250px; /* Largura do aside para telas médias */
+    }
+
+    header {
+        padding: 15px 25px; /* Ajuste de padding para telas médias */
+    }
+
+    .page-title {
+        font-size: 1.8rem; /* Reduz um pouco o tamanho do título */
+    }
+
+    table th, table td {
+        font-size: 0.95rem; /* Tamanho de fonte ajustado para telas médias */
+    }
+}
+
+/* Estilos para tablets (largura entre 768px e 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .content {
+        display: flex;
+        flex-direction: column; /* Organiza os elementos em coluna em tablets */
+    }
+
+    aside {
+        width: 100%; /* O aside ocupa toda a largura em tablets */
+        margin-bottom: 20px; /* Espaçamento entre o aside e os outros elementos */
+    }
+
+    header {
+        padding: 15px; /* Ajuste de padding para tablets */
+    }
+
+    .page-title {
+        font-size: 1.6rem; /* Ajuste o tamanho do título para telas médias */
+    }
+
+    table th, table td {
+        font-size: 0.9rem; /* Tamanho de fonte reduzido para telas médias */
+    }
+}
+
+/* Estilos para celulares grandes (largura entre 576px e 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .content {
+        display: flex;
+        flex-direction: column; /* Organiza os elementos em coluna */
+    }
+
+    aside {
+        width: 100%; /* O aside ocupa toda a largura disponível */
+        margin-bottom: 15px; /* Ajuste de margem para o aside */
+    }
+
+    header {
+        padding: 10px 15px; /* Ajuste de padding para telas pequenas */
+    }
+
+    .page-title {
+        font-size: 1.5rem; /* Tamanho do título para telas pequenas */
+    }
+
+    table th, table td {
+        font-size: 0.9rem; /* Tamanho de fonte ajustado para celulares grandes */
+    }
+}
+
+/* Estilos para celulares pequenos (largura menor que 576px) */
+@media (max-width: 575px) {
+    .content {
+        display: flex;
+        flex-direction: column; /* Organiza os elementos em coluna */
+    }
+
+    aside {
+        width: 100%; /* O aside ocupa toda a largura disponível */
+        margin-bottom: 10px; /* Ajuste de margem para celulares pequenos */
+    }
+
+    header {
+        padding: 10px 15px; /* Ajuste de padding para telas muito pequenas */
+    }
+
+    .page-title {
+        font-size: 1.4rem; /* Tamanho de fonte ajustado para dispositivos móveis */
+    }
+
+    table th, table td {
+        font-size: 0.8rem; /* Tamanho de fonte ajustado para telas muito pequenas */
+        padding: 8px; /* Ajuste do padding das células */
+    }
+
+    table {
+        width: 100%; /* Garante que a tabela ocupe toda a largura */
+        overflow-x: auto; /* Permite rolagem horizontal se necessário */
+        -webkit-overflow-scrolling: touch; /* Melhora a rolagem em dispositivos móveis */
+    }
+
+    /* Caso a tabela tenha muitas colunas, pode ser interessante esconder algumas para telas pequenas */
+    table th:nth-child(n+4), table td:nth-child(n+4) {
+        display: none; /* Oculta colunas adicionais em telas pequenas */
+    }
+}

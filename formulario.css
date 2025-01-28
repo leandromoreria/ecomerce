@@ -125,23 +125,107 @@ input:focus {
     background-color: rgb(248, 187, 208, 0.5); /* Altera a cor ao passar o mouse (opcional) */
 }
 
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
+/* Estilos para telas grandes (1200px e acima) */
+@media (min-width: 1200px) {
     .container-formulario {
-        flex-direction: column; /* Empilha logo e formulário em telas pequenas */
-        padding: 1rem; /* Diminui o padding para melhor ajuste */
+        flex-direction: row; /* Organiza logo e formulário lado a lado */
+        padding: 2rem; /* Maior padding para telas grandes */
     }
 
-    .form-iamge {
-        width: 100%; /* A imagem ocupa toda a largura em telas pequenas */
-        margin-bottom: 1rem; /* Espaçamento inferior entre a logo e o formulário */
+    .form-image {
+        width: 40%; /* A imagem ocupa 40% da largura da tela */
+        margin-right: 2rem; /* Espaçamento entre a imagem e o formulário */
     }
 
     .form {
-        width: 100%; /* O formulário ocupa toda a largura em telas pequenas */
+        width: 60%; /* O formulário ocupa 60% da largura da tela */
     }
 
     .input-box {
-        width: 100%; /* Inputs ocupam toda a largura em telas menores */
+        width: 100%; /* Os inputs ocupam toda a largura do formulário */
+    }
+}
+
+/* Estilos para telas médias (992px a 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .container-formulario {
+        flex-direction: row; /* Organiza logo e formulário lado a lado */
+        padding: 1.5rem; /* Padding ajustado para telas médias */
+    }
+
+    .form-image {
+        width: 45%; /* A imagem ocupa 45% da largura da tela */
+        margin-right: 1.5rem; /* Espaçamento ajustado entre a imagem e o formulário */
+    }
+
+    .form {
+        width: 55%; /* O formulário ocupa 55% da largura da tela */
+    }
+
+    .input-box {
+        width: 100%; /* Inputs continuam ocupando toda a largura */
+    }
+}
+
+/* Estilos para tablets (768px a 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container-formulario {
+        flex-direction: column; /* Empilha logo e formulário em telas menores */
+        padding: 1.2rem; /* Padding ajustado para tablets */
+    }
+
+    .form-image {
+        width: 80%; /* A imagem ocupa 80% da largura da tela */
+        margin-bottom: 1.5rem; /* Espaçamento maior entre a imagem e o formulário */
+    }
+
+    .form {
+        width: 100%; /* O formulário ocupa toda a largura da tela */
+    }
+
+    .input-box {
+        width: 100%; /* Inputs continuam ocupando toda a largura */
+    }
+}
+
+/* Estilos para celulares grandes (576px a 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .container-formulario {
+        flex-direction: column; /* Empilha logo e formulário */
+        padding: 1rem; /* Menos padding em celulares grandes */
+    }
+
+    .form-image {
+        width: 100%; /* A imagem ocupa toda a largura da tela */
+        margin-bottom: 1.2rem; /* Espaçamento menor entre a imagem e o formulário */
+    }
+
+    .form {
+        width: 100%; /* O formulário ocupa toda a largura da tela */
+    }
+
+    .input-box {
+        width: 100%; /* Inputs ocupam toda a largura */
+    }
+}
+
+/* Estilos para celulares pequenos (menos de 576px) */
+@media (max-width: 575px) {
+    .container-formulario {
+        flex-direction: column; /* Empilha logo e formulário */
+        padding: 0.8rem; /* Menos padding em telas muito pequenas */
+    }
+
+    .form-image {
+        width: 100%; /* A imagem ocupa toda a largura */
+        margin-bottom: 1rem; /* Menos espaçamento entre a imagem e o formulário */
+    }
+
+    .form {
+        width: 100%; /* O formulário ocupa toda a largura da tela */
+    }
+
+    .input-box {
+        width: 100%; /* Inputs continuam ocupando toda a largura */
     }
 }

@@ -460,10 +460,74 @@ body {
     margin: 0; /* Remove a margem */
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
+/* Estilos para telas grandes (1200px e acima) */
+@media (min-width: 1200px) {
     .checkout-container {
-        padding: 10px; /* Menos espaçamento em telas menores */
+        padding: 30px; /* Aumenta o padding em telas grandes */
+    }
+
+    .timeline {
+        flex-direction: row; /* Alinha os itens em linha */
+    }
+
+    .step {
+        margin-bottom: 30px; /* Espaçamento maior entre as etapas */
+    }
+
+    .checkout-panel {
+        margin-top: 30px; /* Maior espaçamento entre a linha do tempo e o painel */
+    }
+
+    .input-fields input {
+        font-size: 16px; /* Tamanho maior para entradas */
+    }
+
+    .btn {
+        font-size: 16px; /* Botões com tamanho de fonte maior */
+        padding: 12px 24px; /* Mais padding nos botões */
+    }
+
+    .order-summary {
+        font-size: 14px; /* Tamanho de fonte ajustado para o resumo */
+    }
+}
+
+/* Estilos para telas médias (992px a 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .checkout-container {
+        padding: 20px; /* Padding médio para telas médias */
+    }
+
+    .timeline {
+        flex-direction: row; /* Alinha a linha do tempo em linha */
+    }
+
+    .step {
+        margin-bottom: 25px; /* Espaçamento entre as etapas */
+    }
+
+    .checkout-panel {
+        margin-top: 25px; /* Espaçamento médio entre a linha do tempo e o painel */
+    }
+
+    .input-fields input {
+        font-size: 15px; /* Tamanho de fonte médio para entradas */
+    }
+
+    .btn {
+        font-size: 15px; /* Ajuste de fonte nos botões */
+        padding: 10px 20px; /* Padding médio para botões */
+    }
+
+    .order-summary {
+        font-size: 13px; /* Resumo com tamanho de fonte médio */
+    }
+}
+
+/* Estilos para tablets (768px a 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .checkout-container {
+        padding: 15px; /* Padding reduzido para tablets */
     }
 
     .timeline {
@@ -471,7 +535,7 @@ body {
     }
 
     .step {
-        margin-bottom: 20px; /* Espaçamento inferior entre as etapas */
+        margin-bottom: 20px; /* Espaçamento entre as etapas */
     }
 
     .checkout-panel {
@@ -479,29 +543,80 @@ body {
     }
 
     .input-fields input {
-        font-size: 14px; /* Ajuste no tamanho da fonte para inputs */
+        font-size: 14px; /* Tamanho de fonte ajustado para entradas */
     }
 
     .btn {
         font-size: 14px; /* Ajuste no tamanho da fonte para botões */
-        padding: 8px 16px; /* Menos padding em botões */
+        padding: 8px 16px; /* Padding reduzido para botões */
+    }
+
+    .order-summary {
+        font-size: 12px; /* Tamanho reduzido do resumo */
     }
 }
 
-@media (max-width: 480px) {
+/* Estilos para celulares grandes (576px a 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .checkout-container {
+        padding: 10px; /* Menos padding em telas menores */
+    }
+
+    .timeline {
+        flex-direction: column; /* Linha do tempo em coluna */
+    }
+
+    .step {
+        margin-bottom: 15px; /* Espaçamento entre as etapas */
+    }
+
+    .checkout-panel {
+        margin-top: 15px; /* Menos espaço entre a linha do tempo e o painel */
+    }
+
+    .input-fields input {
+        font-size: 13px; /* Fonte ajustada para celular */
+    }
+
+    .btn {
+        font-size: 13px; /* Ajuste no tamanho da fonte para botões */
+        padding: 7px 14px; /* Ajuste no padding para botões */
+    }
+
+    .order-summary {
+        font-size: 11px; /* Resumo com fonte reduzida */
+    }
+}
+
+/* Estilos para celulares pequenos (menos de 576px) */
+@media (max-width: 575px) {
     .checkout-container {
         padding: 5px; /* Menos padding em telas muito pequenas */
     }
 
+    .timeline {
+        flex-direction: column; /* Organiza a linha do tempo em coluna */
+    }
+
+    .step {
+        margin-bottom: 10px; /* Espaçamento reduzido entre as etapas */
+    }
+
+    .checkout-panel {
+        margin-top: 10px; /* Menos espaço entre a linha do tempo e o painel */
+    }
+
     .input-fields input {
-        padding: 8px; /* Menos padding para inputs */
+        font-size: 12px; /* Fonte ainda menor para entradas */
+        padding: 8px; /* Menos padding nos campos de entrada */
     }
 
     .btn {
-        padding: 6px 12px; /* Menos padding em botões */
+        font-size: 12px; /* Tamanho de fonte reduzido para botões */
+        padding: 6px 12px; /* Padding reduzido para botões */
     }
 
     .order-summary {
-        font-size: 12px; /* Reduz o tamanho da fonte no resumo */
+        font-size: 10px; /* Resumo com fonte muito menor */
     }
 }
