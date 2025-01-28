@@ -82,14 +82,21 @@ def login():
     email = data.get('username')
     password = data.get('password')
 
-    user = users.get(email)
-    if not user or not check_password_hash(user['password'], password):
-        return jsonify({'success': False, 'message': 'Credenciais inválidas.'}), 401
+    try:
+        conn = conectar_db()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
+        user = cursor.fetchone()
 
-    return jsonify({'success': True, 'name': user['name']}), 200
+        if not user or not checkpw(password.encode('utf-8'), user['senha'].encode('utf-8')):
+            return jsonify({'success': False, 'message': 'Credenciais inválidas.'}), 401
 
-if __name__ == '__main__':
-    app.run(debug=True)
+        return jsonify({'success': True, 'name': user['nome']}), 200
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            conn.close()
 
 @app.route('/api/redefinir-senha', methods=['POST'])
 def redefinir_senha():
