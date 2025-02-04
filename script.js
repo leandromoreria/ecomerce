@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             {
                 nome: 'Bolsa Isis',
-                descricao: 'Peça confeccionada em fio de malha com alã em madeira',
+                descricao: 'Peça confeccionada em fio de malha com alça em madeira',
                 preco: 129.00,
                 imagem: ['bolsas/Bolsa Isis 1.png', 'bolsas/Bolsa Isis 2.png']
             },
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             {
                 nome: 'Carteira Linha Encanto',
-                descricao: 'Peça confeccionada em fio náutico com laça de níquel',
+                descricao: 'Peça confeccionada em fio náutico com alça de níquel',
                 preco: 99.00,
                 imagem: ['bolsas/Carteira Linha Encanto.png']
             },
