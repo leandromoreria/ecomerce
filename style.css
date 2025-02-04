@@ -169,6 +169,86 @@ body.modal-open .my_account_info:hover .dropdown-menu {
     align-items: center; /* Centraliza o conteúdo verticalmente */
 }
 
+/* Slider das fotos dos produtos - Container principal do slider */
+.slider {
+    position: relative; /* Necessário para posicionar os botões prev e next de forma absoluta */
+    display: flex; /* Coloca o conteúdo do slider em um layout flexível */
+    align-items: center; /* Centraliza verticalmente as imagens */
+    justify-content: center; /* Centraliza horizontalmente as imagens */
+    max-width: 300px; /* Define a largura máxima do slider */
+    margin: 20px auto; /* Centraliza o slider horizontalmente e adiciona margem vertical */
+    overflow: hidden; /* Esconde a parte das imagens que ultrapassam o container */
+    /* OBS: Ajuste max-width se quiser aumentar/diminuir o tamanho do slider */
+}
+
+.slider img {
+    width: 100%; /* A imagem ocupa toda a largura disponível */
+    max-width: 300px; /* Limita a largura máxima da imagem */
+    border-radius: 10px; /* Adiciona cantos arredondados à imagem */
+    transition: 0.5s ease-in-out; /* Anima a troca de imagem com suavidade */
+    /* OBS: Altere o valor de transition para mudar a duração do efeito de troca */
+}
+
+.slider button {
+    position: absolute; /* Posiciona os botões livremente dentro do slider */
+    background: transparent; /*Fundo transparente */
+    color: #000; /* Cor das setas */
+    border: none; /* Remove a borda padrão do botão */
+    padding: 10px; /* Define o tamanho interno do botão */
+    cursor: pointer; /* Aponta que o botão é clicável */
+    font-size: 12px; /* Tamano das setas */
+    z-index: 10; /* Garante que o botão fique acima da imagem */
+    border-radius: 50%; /* Deixa os botões em formato circular */
+    /* OBS: Modifique padding e font-size para ajustar o tamanho dos botões */
+}
+
+.prev {
+    left: 10px; /* Posiciona o botão prev no lado esquerdo do slider */
+    top: 50%; /* Centraliza o botão verticalmente */
+    transform: translateY(-50%); /* Garante que o botão esteja alinhado ao centro vertical */
+    /* OBS: Ajuste left para mudar a distância do botão em relação à borda esquerda */
+}
+
+.next {
+    right: 10px; /* Posiciona o botão next no lado direito do slider */
+    top: 50%; /* Centraliza o botão verticalmente */
+    transform: translateY(-50%); /* Garante que o botão esteja alinhado ao centro vertical */
+    /* OBS: Ajuste right para mudar a distância do botão em relação à borda direita */
+}
+
+.produto-item {
+    text-align: center; /* Centraliza todo o conteúdo dentro de cada item */
+    margin-bottom: 20px; /* Adiciona espaço entre os produtos */
+    /* OBS: Ajuste margin-bottom para reduzir ou aumentar o espaço vertical entre os produtos */
+}
+
+.produto-item h3 {
+    margin: 10px 0; /* Adiciona margem vertical ao título */
+    /* OBS: Modifique margin para ajustar o espaçamento acima e abaixo do título */
+}
+
+.produto-item p {
+    margin: 5px 0; /* Adiciona margem vertical aos parágrafos */
+    /* OBS: Modifique margin para controlar o espaçamento entre as descrições e o preço */
+}
+
+.produto-item .btn {
+    display: inline-block; /* Garante que o botão seja exibido como bloco inline */
+    padding: 10px 20px; /* Adiciona espaçamento interno no botão */
+    background: #007BFF; /* Cor de fundo do botão */
+    color: white; /* Cor do texto */
+    text-decoration: none; /* Remove o sublinhado do texto */
+    border-radius: 5px; /* Deixa o botão com bordas arredondadas */
+    transition: 0.3s; /* Suaviza a mudança de fundo no hover */
+    /* OBS: Modifique background para mudar a cor padrão do botão */
+}
+
+.produto-item .btn:hover {
+    background: #0056b3; /* Cor do botão ao passar o mouse */
+    /* OBS: Altere essa cor para personalizar o efeito hover */
+}
+
+
 /*icones da rede social*/
 .btn-social button {
     background: none; /* Remove o fundo padrão */
