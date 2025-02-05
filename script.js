@@ -196,6 +196,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 preco: 299.00,
                 imagem: ['bolsas/Bolsa Melani 1.png',' bolsas/Bolsa Melani 2.png']
             },
+            {
+                nome: 'Bolsa Tiphani',
+                descricao: 'Peça confeccionada em fio náutico com fecho da vovó com peróla e ferragens douradas moderna e elegante',
+                preco: 299.00,
+                imagem: ['bolsas/Bolsa Tiphani 1.png', 'bolsas/Bolsa Tiphani 2.png']
+            },
+            {
+                nome: 'Bolsa Sophie',
+                descricao: 'Peça confeccionada em fio de malha de algodão, com alça em resina e ferragens em níquel, cores delicadas e apaixonantes',
+                preco: 249.00,
+                imagem: ['bolsas/Bolsa Sophie 1.png2','bolsas/Bolsa Sophie 2.png']
+            },
             
             // Adicione mais produtos conforme necessário
         ];
