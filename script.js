@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 nome: 'Bolsa Sophie',
                 descricao: 'Peça confeccionada em fio de malha de algodão, com alça em resina e ferragens em níquel, cores delicadas e apaixonantes',
                 preco: 249.00,
-                imagem: ['bolsas/Bolsa Sophie 1.png2', 'bolsas/Bolsa Sophie 2.png']
+                imagem: ['bolsas/Bolsa Sophie 1.png', 'bolsas/Bolsa Sophie 2.png']
             },
             
             // Adicione mais produtos conforme necessário
