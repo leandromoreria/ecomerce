@@ -27,6 +27,11 @@ async function enviarCadastro() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData)
         });
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new TypeError("A resposta não está no formato JSON!");
+        }
 
         const data = await response.json();
 
