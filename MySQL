@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS ecommerce;
-DROP TABLE IF EXISTS categorias, usuarios, produtos, pedidos, itens_pedido, pagamentos, enderecos, rastreamento_pedidos, invoices;
 USE ecommerce;
+
+DROP TABLE IF EXISTS invoices, rastreamento_pedidos, enderecos, pagamentos, itens_pedido, pedidos, produtos, usuarios, categorias;
 
 -- Tabela de categorias
 CREATE TABLE categorias (
@@ -72,7 +73,7 @@ CREATE TABLE enderecos (
     endereco VARCHAR(225) NOT NULL,
     cidade VARCHAR(100),
     estado VARCHAR(50),
-    cep VARCHAR(20),  -- Considerando o formato do CEP
+    cep VARCHAR(20),
     pais VARCHAR(50),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
@@ -92,5 +93,5 @@ CREATE TABLE invoices (
     order_id INT NOT NULL,
     file_path VARCHAR(255) NOT NULL,
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (order_id) REFERENCES pedidos(id) -- Relacionando a fatura ao pedido
+    FOREIGN KEY (order_id) REFERENCES pedidos(id)
 );
