@@ -2,9 +2,20 @@
 document.getElementById('cadastroForm').addEventListener('submit', function (e) {
     e.preventDefault();
     
-    const nome = document.getElementById('nome').value;
-    const email = document.getElementById('email').value;
+    const nome = document.getElementById('nome').value.trim();
+    const email = document.getElementById('email').value.trim();
     const senha = document.getElementById('senha').value;
+
+    // Validações básicas
+    if (!nome || !email || !senha) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
+    if (!email.includes('@') || !email.includes('.')) {
+        alert('Por favor, insira um email válido.');
+        return;
+    }
 
     const dadosCadastro = {
         nome: nome,
@@ -20,13 +31,19 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
         },
         body: JSON.stringify(dadosCadastro)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro na resposta do servidor');
+        }
+        return response.json();
+    })
     .then(data => {
         alert(data.message);  // Exibe a resposta do backend (sucesso ou erro)
+        document.getElementById('cadastroForm').reset(); // Limpa o formulário após sucesso
     })
     .catch(error => {
         console.error('Erro:', error);  // Trata qualquer erro
-        alert('Ocorreu um erro ao salvar os dados.');
+        alert('Ocorreu um erro ao salvar os dados. Por favor, tente novamente.');
     });
 });
 
@@ -36,7 +53,23 @@ document.getElementById('senhaForm').addEventListener('submit', function (e) {
 
     const novaSenha = document.getElementById('novaSenha').value;
     const confirmarSenha = document.getElementById('confirmarSenha').value;
-    const email = document.getElementById('email').value;  // Supondo que o email também seja enviado
+    const email = document.getElementById('email').value.trim();
+
+    // Validações
+    if (!email || !novaSenha || !confirmarSenha) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
+    if (!email.includes('@') || !email.includes('.')) {
+        alert('Por favor, insira um email válido.');
+        return;
+    }
+
+    if (novaSenha.length < 6) {
+        alert('A senha deve ter pelo menos 6 caracteres.');
+        return;
+    }
 
     // Verifica se as senhas são iguais
     if (novaSenha === confirmarSenha) {
@@ -53,13 +86,19 @@ document.getElementById('senhaForm').addEventListener('submit', function (e) {
             },
             body: JSON.stringify(dadosSenha)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na resposta do servidor');
+            }
+            return response.json();
+        })
         .then(data => {
             alert(data.message);  // Exibe a resposta do backend (sucesso ou erro)
+            document.getElementById('senhaForm').reset(); // Limpa o formulário após sucesso
         })
         .catch(error => {
             console.error('Erro:', error);  // Trata qualquer erro
-            alert('Ocorreu um erro ao alterar a senha.');
+            alert('Ocorreu um erro ao alterar a senha. Por favor, tente novamente.');
         });
     } else {
         alert('As senhas não coincidem!');

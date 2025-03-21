@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     carregarInformacoesDoCarrinho();
-    carregarEndereco();
+    carregarEnderecoInicial();
 });
 
 async function carregarInformacoesDoCarrinho() {
@@ -51,7 +51,7 @@ async function carregarInformacoesDoCarrinho() {
     }
 }
 
-async function carregarEndereco() {
+async function carregarEnderecoInicial() {
     try {
         const response = await fetch('/api/endereco'); // Busca o endereço do backend
         const endereco = await response.json();
@@ -142,6 +142,10 @@ async function enviarDadosParaServidor() {
             const resultado = await response.json();
             alert('Pedido finalizado com sucesso!');
             console.log(resultado);
+            localStorage.removeItem('carrinho');
+            localStorage.removeItem('subtotal');
+            localStorage.removeItem('metodoPagamento');
+            window.location.href = '/confirmacao';
         } else {
             alert('Erro ao finalizar pedido. Tente novamente.');
         }
@@ -151,32 +155,7 @@ async function enviarDadosParaServidor() {
     }
 }
 
-   // Verifica se já existe um endereço salvo no banco de dados
-function carregarEndereco() {
-    fetch('/api/carregar-endereco', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao carregar o endereço.');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.endereco) {
-            document.getElementById('registered-address').textContent = data.endereco;
-        } else {
-            document.getElementById('registered-address').textContent = 'Nenhum endereço cadastrado.';
-        }
-    })
-    .catch(error => {
-        console.error('Erro:', error);
-        document.getElementById('registered-address').textContent = 'Erro ao carregar o endereço.';
-    });
-}
-
-    // Alterna entre os formulários de Cartão e Pix
+// Alterna entre os formulários de Cartão e Pix
 function showCardForm() {
     document.getElementById('card-form').classList.remove('hidden');
     document.getElementById('pix-form').classList.add('hidden');
@@ -194,10 +173,10 @@ function detectarBandeira(numeroCartao) {
     cardNumberDisplay.textContent = numeroCartao || '**** **** **** ****';
 
     const bandeiras = [
-        { regex: /^4[0-9]{0,}/, imagem: 'cartoes/visa.png' }, // Visa
-        { regex: /^5[1-5][0-9]{0,}/, imagem: 'cartoes/mastercard.png' }, // Mastercard
-        { regex: /^3[47][0-9]{0,}/, imagem: 'cartoes/amex.png' }, // American Express
-        { regex: /^4011[0-9]{0,}/, imagem: 'cartoes/elo.png' }, // Elo
+        { regex: /^4[0-9]{0,}/, imagem: 'cartoes/visa.png' },
+        { regex: /^5[1-5][0-9]{0,}/, imagem: 'cartoes/mastercard.png' },
+        { regex: /^3[47][0-9]{0,}/, imagem: 'cartoes/amex.png' },
+        { regex: /^4011[0-9]{0,}/, imagem: 'cartoes/elo.png' },
     ];
 
     if (numeroCartao.length === 0) {

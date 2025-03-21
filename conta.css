@@ -1,6 +1,5 @@
-/* Estilo geral do corpo 
-   Define o plano de fundo e centraliza o conteúdo da página */
-   body {
+/* Estilo geral do corpo */
+body {
     background-color: #F8BBD0;
     padding: 20px;
     display: flex;
@@ -11,8 +10,7 @@
     font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
 }
 
-/* Container principal 
-   Estilo da caixa principal, com fundo branco, borda azul e sombra */
+/* Container principal */
 .container {
     background-color: #ffffff;
     border-radius: 10px; /* Cantos arredondados */
@@ -23,8 +21,7 @@
     border: 1px solid #F8BBD0; /* Borda do conteiner */
 }
 
-/* Estilo para títulos 
-   Centraliza o texto dos títulos e define a cor azul */
+/* Estilo para títulos */
 h2, h3 {
     text-align: center;
     color: #000;
@@ -36,8 +33,7 @@ h2, h3 {
     margin-bottom: 30px; /* Margem inferior para espaçamento entre as seções */
 }
 
-/* Estilo para o grupo de inputs 
-   Define o layout flexível para organizar os inputs lado a lado */
+/* Estilo para o grupo de inputs */
 .form-group {
     display: flex;
     justify-content: space-between; /* Espaço entre os elementos */
@@ -45,14 +41,12 @@ h2, h3 {
     margin-bottom: 15px; /* Espaçamento inferior entre os grupos de inputs */
 }
 
-/* Reduz a largura dos inputs 
-   Define a largura dos inputs para ocuparem metade do contêiner */
+/* Estilo para os grupos de input */
 .input-group {
     flex-basis: 48%; /* Largura de 48% para que os inputs fiquem lado a lado */
 }
 
-/* Rótulos e inputs 
-   Estiliza os rótulos e os inputs com cores e espaçamento */
+/* Rótulos e inputs */
 .input-group label {
     display: block;
     margin-bottom: 5px; /* Espaçamento inferior para separar o rótulo do input */
@@ -78,14 +72,12 @@ input:focus, select:focus {
     outline: none; /* Remove a borda azul extra ao focar */
 }
 
-/* Estilo dos inputs de senha 
-   Aplica o mesmo espaçamento entre "Digite sua senha", "Nova senha" e "Confirme sua senha" */
+/* Estilo dos inputs de senha */
 #senhaAtual, #novaSenha, #confirmarSenha {
     margin-bottom: 20px; /* Mantém o espaçamento entre os inputs de senha e o salvar*/
 }
 
-/* Botão de envio 
-   Centraliza o botão e aplica estilo azul */
+/* Botão de envio */
 .continue-button {
     text-align: center; /* Centraliza o botão */
     margin-top: 20px; /* Espaçamento superior para separar o botao salvar do cpf */

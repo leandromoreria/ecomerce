@@ -1,148 +1,179 @@
 // Função para carregar e exibir os produtos no carrinho
 async function carregarCarrinho() {
-    const response = await fetch('/api/carrinho', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-    const carrinho = await response.json();
-    const tbody = document.querySelector('tbody');
-    tbody.innerHTML = ''; // Limpa a tabela antes de adicionar os itens
-
-    if (carrinho.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5">O carrinho está vazio.</td></tr>';
-    } else {
-        carrinho.forEach((item, index) => {
-            const linha = document.createElement('tr');
-            
-            linha.innerHTML = `
-                <td>
-                    <div class="product">
-                        <img src="${item.imagem}" alt="${item.nome}" />
-                        <div class="info">
-                            <div class="name">${item.nome}</div>
-                            <div class="category">${item.descricao}</div>
-                        </div>
-                    </div>
-                </td>
-                <td>R$ ${item.preco.toFixed(2)}</td>
-                <td>
-                    <div class="qty">
-                        <button class="btn-quantidade" data-index="${index}" data-action="diminuir"><i class="bx bx-minus"></i></button>
-                        <span>${item.quantidade}</span>
-                        <button class="btn-quantidade" data-index="${index}" data-action="aumentar"><i class="bx bx-plus"></i></button>
-                    </div>
-                </td>
-                <td>R$ ${(item.preco * item.quantidade).toFixed(2)}</td>
-                <td>
-                    <button class="remove" data-index="${index}"><i class="bx bx-x"></i></button>
-                </td>
-            `;
-            tbody.appendChild(linha);
+    try {
+        const response = await fetch('/api/carrinho', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
-    }
 
-    // Chama a função para atualizar o total
-    atualizarTotal();
+        if (!response.ok) {
+            throw new Error('Erro ao carregar carrinho');
+        }
+
+        const carrinho = await response.json();
+        const tbody = document.querySelector('tbody');
+        tbody.innerHTML = ''; // Limpa a tabela antes de adicionar os itens
+
+        if (carrinho.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5">O carrinho está vazio.</td></tr>';
+        } else {
+            carrinho.forEach((item, index) => {
+                const linha = document.createElement('tr');
+                
+                linha.innerHTML = `
+                    <td>
+                        <div class="product">
+                            <img src="${item.imagem}" alt="${item.nome}" />
+                            <div class="info">
+                                <div class="name">${item.nome}</div>
+                                <div class="category">${item.descricao}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>R$ ${item.preco.toFixed(2)}</td>
+                    <td>
+                        <div class="qty">
+                            <button class="btn-quantidade" data-index="${index}" data-action="diminuir"><i class="bx bx-minus"></i></button>
+                            <span>${item.quantidade}</span>
+                            <button class="btn-quantidade" data-index="${index}" data-action="aumentar"><i class="bx bx-plus"></i></button>
+                        </div>
+                    </td>
+                    <td>R$ ${(item.preco * item.quantidade).toFixed(2)}</td>
+                    <td>
+                        <button class="remove" data-index="${index}"><i class="bx bx-x"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(linha);
+            });
+        }
+
+        // Chama a função para atualizar o total
+        await atualizarTotal();
+
+    } catch (error) {
+        console.error('Erro ao carregar carrinho:', error);
+        alert('Ocorreu um erro ao carregar o carrinho. Por favor, tente novamente.');
+    }
 }
 
 // Função para atualizar o subtotal e total do carrinho
 async function atualizarTotal() {
-    const response = await fetch('/api/carrinho', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+    try {
+        const response = await fetch('/api/carrinho', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao atualizar total');
         }
-    });
-    const carrinho = await response.json();
-    let subtotal = 0;
 
-    carrinho.forEach(item => {
-        subtotal += item.preco * item.quantidade;
-    });
+        const carrinho = await response.json();
+        let subtotal = 0;
 
-    // Atualiza o subtotal e o total na página
-    const subtotalElement = document.querySelector('.info div:nth-child(1) span:last-child');
-    const totalElement = document.querySelector('footer span:last-child');
-    
-    if (subtotalElement) {
-        subtotalElement.textContent = `R$ ${subtotal.toFixed(2)}`;
-    } else {
-        console.error("Elemento subtotal não encontrado!");
-    }
+        carrinho.forEach(item => {
+            subtotal += item.preco * item.quantidade;
+        });
 
-    if (totalElement) {
-        totalElement.textContent = `R$ ${subtotal.toFixed(2)}`;
-    } else {
-        console.error("Elemento total não encontrado!");
+        const subtotalElement = document.querySelector('.info div:nth-child(1) span:last-child');
+        const totalElement = document.querySelector('footer span:last-child');
+        
+        if (subtotalElement && totalElement) {
+            subtotalElement.textContent = `R$ ${subtotal.toFixed(2)}`;
+            totalElement.textContent = `R$ ${subtotal.toFixed(2)}`;
+            localStorage.setItem('subtotal', subtotal.toFixed(2));
+        } else {
+            console.warn("Elementos de total não encontrados na página");
+        }
+
+    } catch (error) {
+        console.error('Erro ao atualizar total:', error);
     }
 }
 
 // Função para manipular a quantidade e remoção dos produtos
 async function manipularCarrinho() {
     document.querySelector('tbody').addEventListener('click', async function(e) {
-        const index = e.target.closest('button')?.dataset.index;
-        const action = e.target.closest('button')?.dataset.action;
-        const method = e.target.closest('.remove') ? 'DELETE' : 'PATCH';
-        let updatedItem;
+        try {
+            const button = e.target.closest('button');
+            if (!button) return;
 
-        if (e.target.closest('.btn-quantidade')) {
-            const response = await fetch('/api/carrinho/' + index, {
-                method: method,
+            const index = button.dataset.index;
+            const action = button.dataset.action;
+            const isRemove = button.classList.contains('remove');
+            const method = isRemove ? 'DELETE' : 'PATCH';
+
+            const response = await fetch(`/api/carrinho/${index}`, {
+                method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ action })
+                ...(action && {body: JSON.stringify({ action })})
             });
-            updatedItem = await response.json();
-            carregarCarrinho(); // Atualiza o carrinho e os valores
-        }
 
-        if (e.target.closest('.remove')) {
-            const response = await fetch('/api/carrinho/' + index, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            updatedItem = await response.json();
-            carregarCarrinho(); // Atualiza o carrinho e os valores
+            if (!response.ok) {
+                throw new Error(`Erro ao ${isRemove ? 'remover' : 'atualizar'} item`);
+            }
+
+            await response.json();
+            await carregarCarrinho();
+
+        } catch (error) {
+            console.error('Erro ao manipular carrinho:', error);
+            alert('Ocorreu um erro ao atualizar o carrinho. Por favor, tente novamente.');
         }
     });
 }
 
 // Função para redirecionar para a página de checkout
 function finalizarCompra() {
-    const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
-    if (carrinho.length > 0) {
-        window.location.href = 'checkout.html'; // Altere 'checkout.html' para o caminho correto do seu HTML de checkout
-    } else {
-        alert('O carrinho está vazio. Adicione produtos antes de finalizar a compra.');
+    try {
+        const subtotal = localStorage.getItem('subtotal');
+        if (!subtotal || parseFloat(subtotal) === 0) {
+            alert('O carrinho está vazio. Adicione produtos antes de finalizar a compra.');
+            return;
+        }
+        window.location.href = 'checkout.html';
+    } catch (error) {
+        console.error('Erro ao finalizar compra:', error);
+        alert('Ocorreu um erro ao finalizar a compra. Por favor, tente novamente.');
     }
 }
 
 // Carrega o carrinho ao carregar a página
 document.addEventListener('DOMContentLoaded', function() {
-    carregarCarrinho();
-    manipularCarrinho();
-    
-    // Adiciona o evento para o botão de finalizar compra
-    document.querySelector('.finalizar-compra').addEventListener('click', finalizarCompra);
+    try {
+        carregarCarrinho();
+        manipularCarrinho();
+        
+        const finalizarCompraBtn = document.querySelector('.finalizar-compra');
+        if (finalizarCompraBtn) {
+            finalizarCompraBtn.addEventListener('click', finalizarCompra);
+        }
+    } catch (error) {
+        console.error('Erro ao inicializar página:', error);
+    }
 });
 
 // Função para exibir mensagem ao adicionar produto
 function showMessage(productName) {
-    const messageContainer = document.querySelector('.message-container');
-    messageContainer.innerText = `Produto adicionado ${productName} ao seu carrinho com sucesso!`;
-    
-    // Exibir contêiner de mensagem
-    messageContainer.style.display = 'block';
-    
-    // Ocultar contêiner após 3 segundos
-    setTimeout(() => {
-        messageContainer.style.display = 'none';
-    }, 3000);
+    try {
+        const messageContainer = document.querySelector('.message-container');
+        if (!messageContainer) return;
+
+        messageContainer.innerText = `Produto ${productName} adicionado ao seu carrinho com sucesso!`;
+        messageContainer.style.display = 'block';
+        
+        setTimeout(() => {
+            messageContainer.style.display = 'none';
+        }, 3000);
+    } catch (error) {
+        console.error('Erro ao exibir mensagem:', error);
+    }
 }
 
 // Seletor dos botões
@@ -150,123 +181,123 @@ const addToCartButtons = document.querySelectorAll('.add-to-cart-button');
 
 addToCartButtons.forEach(button => {
     button.addEventListener('click', (event) => {
-        const productName = event.target.dataset.productName; // Supondo que você tenha um atributo data-product-name no botão
-        showMessage(productName); // Chama a função com o nome do produto
+        try {
+            const productName = event.target.dataset.productName;
+            if (productName) {
+                showMessage(productName);
+            }
+        } catch (error) {
+            console.error('Erro ao adicionar ao carrinho:', error);
+        }
     });
 });
 
 // Função para calcular o frete
 async function calcularFrete() {
-    const cepDestino = document.getElementById("cep").value;
-    const cepOrigem = "16201-169"; // CEP da sua empresa
-    const peso = 2; // Peso do pacote em kg
-    const comprimento = 20; // Comprimento em cm
-    const altura = 10; // Altura em cm
-    const largura = 15; // Largura em cm
-    const servico = "04014"; // Código Sedex
-
-    const params = new URLSearchParams({
-        nCdEmpresa: "", // Deixe vazio se não tiver contrato
-        sDsSenha: "", // Deixe vazio se não tiver contrato
-        nCdServico: servico,
-        sCepOrigem: cepOrigem,
-        sCepDestino: cepDestino,
-        nVlPeso: peso,
-        nCdFormato: 1, // 1 = Caixa
-        nVlComprimento: comprimento,
-        nVlAltura: altura,
-        nVlLargura: largura,
-        nVlDiametro: 0,
-        sCdMaoPropria: "N",
-        nVlValorDeclarado: 0,
-        sCdAvisoRecebimento: "N",
-        StrRetorno: "xml",
-    });
-
     try {
+        const cepDestino = document.getElementById("cep")?.value;
+        if (!cepDestino) {
+            throw new Error('CEP não informado');
+        }
+
+        const params = new URLSearchParams({
+            nCdEmpresa: "",
+            sDsSenha: "",
+            nCdServico: "04014",
+            sCepOrigem: "16201-169",
+            sCepDestino: cepDestino,
+            nVlPeso: "2",
+            nCdFormato: "1",
+            nVlComprimento: "20",
+            nVlAltura: "10",
+            nVlLargura: "15",
+            nVlDiametro: "0",
+            sCdMaoPropria: "N",
+            nVlValorDeclarado: "0",
+            sCdAvisoRecebimento: "N",
+            StrRetorno: "xml"
+        });
+
         const response = await fetch(`http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?${params}`);
+        if (!response.ok) {
+            throw new Error('Erro na consulta aos Correios');
+        }
+
         const text = await response.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "application/xml");
-        const valor = xmlDoc.getElementsByTagName("Valor")[0].childNodes[0].nodeValue;
-        const prazo = xmlDoc.getElementsByTagName("PrazoEntrega")[0].childNodes[0].nodeValue;
+        
+        const valor = xmlDoc.getElementsByTagName("Valor")[0]?.childNodes[0]?.nodeValue;
+        const prazo = xmlDoc.getElementsByTagName("PrazoEntrega")[0]?.childNodes[0]?.nodeValue;
 
-        document.getElementById("resultadoFrete").innerText = `Frete: R$ ${valor} | Prazo: ${prazo} dias úteis`;
+        if (!valor || !prazo) {
+            throw new Error('Dados de frete não encontrados');
+        }
+
+        const resultadoElement = document.getElementById("resultadoFrete");
+        if (resultadoElement) {
+            resultadoElement.innerText = `Frete: R$ ${valor} | Prazo: ${prazo} dias úteis`;
+        }
+
     } catch (error) {
-        document.getElementById("resultadoFrete").innerText = "Erro ao calcular o frete.";
         console.error("Erro ao calcular frete:", error);
+        const resultadoElement = document.getElementById("resultadoFrete");
+        if (resultadoElement) {
+            resultadoElement.innerText = "Erro ao calcular o frete. Verifique o CEP informado.";
+        }
     }
 }
 
 // Selecionando os elementos do DOM
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOM completamente carregado e analisado.");
+    try {
+        const subtotalElement = document.querySelector('.subtotal');
+        const totalElement = document.querySelector('.total');
+        const couponInput = document.getElementById("couponCode");
+        const applyCouponButton = document.getElementById("applyCouponButton");
 
-    const subtotalElement = document.querySelector('.subtotal');
-    const totalElement = document.querySelector('.total');
-    const couponInput = document.getElementById("couponCode");
-    const applyCouponButton = document.getElementById("applyCouponButton");
-
-    console.log("subtotalElement:", subtotalElement);
-    console.log("totalElement:", totalElement);
-    console.log("couponInput:", couponInput);
-    console.log("applyCouponButton:", applyCouponButton);
-
-    // Verifica se os elementos existem antes de tentar acessá-los
-    if (!subtotalElement || !totalElement) {
-        console.error("Elemento subtotal ou total não encontrado!");
-        return; // Para evitar erros futuros
-    }
-
-    // Define o subtotal a partir do elemento HTML
-    let subtotal = parseFloat(subtotalElement.innerText.replace("R$ ", "").replace(",", "."));
-
-    // Função para aplicar o desconto
-    applyCouponButton.addEventListener("click", function () {
-        const couponCode = couponInput.value.trim().toUpperCase();
-        console.log("Cupom inserido:", couponCode); // Log do cupom inserido
-
-        const coupons = {
-            "DESCONTO10": 0.10, // 10% de desconto
-            "DESCONTO20": 0.20, // 20% de desconto
-            "FRETEGRATIS": 5.00 // R$ 5,00 de desconto
-        };
-
-        // Inicializa o valor do desconto
-        let discountAmount = 0;
-
-        // Verifica se o cupom é válido
-        if (coupons[couponCode]) {
-            const discount = coupons[couponCode];
-            // Calcula o valor do desconto com base no tipo
-            if (discount < 1) {
-                discountAmount = subtotal * discount; // Para porcentagem
-            } else {
-                discountAmount = discount; // Para valor fixo
-            }
-
-            // Atualiza o total
-            const total = subtotal - discountAmount;
-            console.log("Subtotal:", subtotal);
-            console.log("Desconto:", discountAmount);
-            console.log("Total após desconto:", total);
-
-            // Atualiza os elementos no HTML
-            totalElement.innerText = `R$ ${total.toFixed(2)}`;
-            alert(`Cupom aplicado! Você economizou R$ ${discountAmount.toFixed(2)}`);
-
-            // Armazenar total no localStorage
-            localStorage.setItem('total', total.toFixed(2));
-        } else {
-            // Se o cupom não for válido, mostra uma mensagem de erro somente se o valor for inserido
-            if (couponCode.length > 0) { // Verifica se o campo não está vazio
-                alert("Cupom inválido!"); // Mensagem se o cupom não for válido
-            }
+        if (!subtotalElement || !totalElement || !couponInput || !applyCouponButton) {
+            throw new Error('Elementos necessários não encontrados');
         }
-    });
 
-    // Função para converter o texto do input em maiúsculas ao digitar
-    couponInput.addEventListener("input", function () {
-        this.value = this.value.toUpperCase(); // Transforma o texto em maiúsculas
-    });
+        let subtotal = parseFloat(subtotalElement.innerText.replace("R$ ", "").replace(",", ".")) || 0;
+
+        applyCouponButton.addEventListener("click", function () {
+            try {
+                const couponCode = couponInput.value.trim().toUpperCase();
+                
+                const coupons = {
+                    "DESCONTO10": 0.10,
+                    "DESCONTO20": 0.20,
+                    "FRETEGRATIS": 5.00
+                };
+
+                if (!couponCode) return;
+
+                const discount = coupons[couponCode];
+                if (!discount) {
+                    alert("Cupom inválido!");
+                    return;
+                }
+
+                const discountAmount = discount < 1 ? subtotal * discount : discount;
+                const total = subtotal - discountAmount;
+
+                totalElement.innerText = `R$ ${total.toFixed(2)}`;
+                localStorage.setItem('total', total.toFixed(2));
+                alert(`Cupom aplicado! Você economizou R$ ${discountAmount.toFixed(2)}`);
+
+            } catch (error) {
+                console.error('Erro ao aplicar cupom:', error);
+                alert('Erro ao aplicar o cupom. Por favor, tente novamente.');
+            }
+        });
+
+        couponInput.addEventListener("input", function () {
+            this.value = this.value.toUpperCase();
+        });
+
+    } catch (error) {
+        console.error('Erro ao inicializar elementos do DOM:', error);
+    }
 });

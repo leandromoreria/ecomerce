@@ -6,7 +6,6 @@
     font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
     text-decoration: none;
     list-style: none;
-   
 }
 
 :root {
@@ -37,7 +36,7 @@ header {
     border-bottom: 4px solid rgb(255, 112, 67); /* Coral */
 }
 
-/*alteração da logo do cabeçalho*/
+/* Logo do cabeçalho */
 header .logo {
     display: flex; /* Torna o container flexível */
     align-items: center; /* Centraliza verticalmente a logo e o texto */
@@ -48,12 +47,11 @@ header .logo {
     text-decoration: none; /* Remove sublinhado do texto */  
 }
 
-/* espaçamento entre a logo e o nome*/
 header .logo img {
     margin-right: 10px; /* Adiciona espaço entre a logo e o texto */
 }
 
-/*estilização do menu de navegação*/
+/* Menu de navegação */
 header .navegação {
     list-style: none; /* Remove marcadores da lista */
     display: flex; /* Usa flexbox para layout horizontal */
@@ -77,7 +75,7 @@ header .navegação li a:hover {
     transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
 }
 
-/* Estilização dos ícones no cabeçalho */
+/* Ícones do cabeçalho */
 .header-icons {
     display: flex; /* Usa flexbox para layout horizontal */
     gap: 20px; /* Espaçamento entre ícones */
@@ -89,7 +87,7 @@ header .navegação li a:hover {
     cursor: pointer; /* Cursor de ponteiro ao passar o mouse */
 }
 
-/* Estilos principais do contêiner da conta do usuário */
+/* Conta do usuário */
 .my_account_info {
     position: relative; /* Necessário para o posicionamento absoluto do dropdown */
     display: inline-block; /* Garante que o dropdown se alinha corretamente com o restante do layout */
@@ -115,7 +113,7 @@ header .navegação li a:hover {
     text-decoration: none; /* Remove o sublinhado */
 }
 
-/* Estilos do menu dropdown */
+/* Menu dropdown */
 .dropdown-menu {
     display: none; /* Esconde o menu por padrão */
     position: absolute; /* Posiciona o menu em relação ao contêiner pai */
@@ -216,6 +214,7 @@ body.modal-open .my_account_info:hover .dropdown-menu {
     /* OBS: Ajuste right para mudar a distância do botão em relação à borda direita */
 }
 
+/* Produtos */
 .produto-item {
     text-align: center; /* Centraliza todo o conteúdo dentro de cada item */
     margin-bottom: 20px; /* Adiciona espaço entre os produtos */
@@ -236,7 +235,7 @@ body.modal-open .my_account_info:hover .dropdown-menu {
     display: inline-block; /* Garante que o botão seja exibido como bloco inline */
     padding: 10px 20px; /* Adiciona espaçamento interno no botão */
     background: #007BFF; /* Cor de fundo do botão */
-    color: white; /* Cor do texto */
+    color: #ffffff; /* Cor do texto */
     text-decoration: none; /* Remove o sublinhado do texto */
     border-radius: 5px; /* Deixa o botão com bordas arredondadas */
     transition: 0.3s; /* Suaviza a mudança de fundo no hover */
@@ -247,7 +246,6 @@ body.modal-open .my_account_info:hover .dropdown-menu {
     background: #0056b3; /* Cor do botão ao passar o mouse */
     /* OBS: Altere essa cor para personalizar o efeito hover */
 }
-
 
 /*icones da rede social*/
 .btn-social button {
@@ -362,7 +360,7 @@ body.modal-open .my_account_info:hover .dropdown-menu {
     text-align: center; /* Centraliza o texto dentro do parágrafo */
 }
 
-/* Estilo para a primeira linha de .texto-grande */
+/* Estilo para a primeira linha de texto-grande */
 .texto-grande::first-line {
     font-size: 1.2em; /* ou qualquer tamanho que você desejar */
     font-weight: bold; /* se desejar que a primeira linha seja em negrito */
@@ -380,8 +378,8 @@ body.modal-open .my_account_info:hover .dropdown-menu {
 }
 
 .slider-content {
-    width: 400px; /*teste*/
-    height: auto; /*teste*/
+    width: 100vw; /*teste*/
+    height: 100%; /*teste*/
     position: relative; /* Permite que elementos filhos sejam posicionados em relação a este contêiner */
     width: auto; /* Garante que o contêiner ocupe 100% da largura disponível */
     overflow: hidden; /* Impede que o conteúdo transborde do contêiner */
@@ -400,7 +398,7 @@ body.modal-open .my_account_info:hover .dropdown-menu {
 }
 
 .slide-box img { 
-    width: 100%; /* Garante que a imagem ocupe 100% da largura do contêiner */
+    width: 100vw; /* Garante que a imagem ocupe 100% da largura do contêiner */
     height: 100%; /* Mantém a proporção da imagem para evitar distorção */
     display: block; /* Remove espaços em branco ao redor das imagens */
     object-fit: contain; /* Cobre totalmente o container mantendo proporção */
@@ -581,7 +579,7 @@ body.modal-open .my_account_info:hover .dropdown-menu {
     height: auto; /* Mantém a proporção da altura da imagem */
 }
 
-/* Estilização para o botão de rolar para o topo */
+/* Botão Voltar ao Topo */
 .scroll-to-top {
     display: none; /* Inicialmente oculto */
     position: fixed;
@@ -658,8 +656,7 @@ body.modal-open .my_account_info:hover .dropdown-menu {
     color: #000; /* Cor do botão "X" de fechar */
     float: right; /* Alinha o botão à direita */
     font-size: 22px; /* Tamanho da fonte do botão de fechar */
-    font-weight: bold; /* Fonte em negrito */
-    
+    font-weight: bold; /* Fonte em negrito */   
 }
 
 .closeBtn:hover, .closeBtn:focus {
@@ -806,7 +803,7 @@ a:hover {
     text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
 }
 
-/* CSS para o contêiner de mensagem */
+/* Message Container */
 .message-container {
     display: none; /* Oculto inicialmente */
     position: fixed; /* Manter visível ao rolar */
@@ -824,7 +821,7 @@ a:hover {
     font-weight: bold; /* Deixa o texto em negrito */
 }
 
-/* Estilização do Container Principal */
+/* Container Principal */
 .container .formulario {
     display: flex; /* Alinha a logo e o formulário lado a lado */
     justify-content: space-between;
@@ -840,112 +837,115 @@ a:hover {
 
 /* Ajuste da Imagem da Logo */
 .container .form-image {
-    width: 45%; /* Define a largura da seção da imagem */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 2rem; /* Espaçamento à direita da logo */
+    width: 45%; /* Define a largura da seção da imagem em relação ao container */
+    display: flex; /* Usa flexbox para centralizar o conteúdo */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    margin-right: 2rem; /* Adiciona um espaçamento à direita da imagem */
 }
 
 .container .form-image img {
-    width: 100%; /* A imagem ocupa toda a largura disponível */
-    height: auto; /* Mantém a proporção da imagem */
+    width: 100%; /* A imagem ocupará toda a largura disponível do contêiner */
+    height: auto; /* Mantém a proporção original da imagem */
 }
 
 /* Estilização do Formulário */
 .container .form {
-    width: 100%; /* Define a largura do formulário */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 2rem;
-    background-color: #ffffff; /* Fundo branco */
-    border-radius: 8px; /* Bordas arredondadas */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra leve */
+    width: 100%; /* Define que o formulário ocupa toda a largura disponível */
+    display: flex; /* Usa flexbox para alinhar os elementos */
+    flex-direction: column; /* Organiza os elementos em coluna */
+    justify-content: center; /* Centraliza verticalmente */
+    align-items: flex-start; /* Alinha os itens à esquerda */
+    padding: 2rem; /* Adiciona espaçamento interno */
+    background-color: #ffffff; /* Define um fundo branco */
+    border-radius: 8px; /* Aplica bordas arredondadas ao formulário */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Aplica uma leve sombra para efeito de profundidade */
 }
 
 /* Estilização do Cabeçalho do Formulário */
 .container .form-header {
-    margin-bottom: 3rem;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    margin-bottom: 3rem; /* Espaçamento inferior para separar do restante do formulário */
+    display: flex; /* Usa flexbox para organizar os itens */
+    justify-content: space-between; /* Alinha os elementos com espaço entre eles */
+    width: 100%; /* Faz com que o cabeçalho ocupe toda a largura do formulário */
 }
 
 /* Adiciona uma linha decorativa abaixo do título */
 .container .form-header h1::after {
-    content: '';
-    display: block;
-    width: 5rem;
-    height: 0.3rem;
-    background-color: #F8BBD0;
-    margin: 0.5rem auto 0;
-    border-radius: 10px;
+    content: ''; /* Adiciona um elemento vazio para a linha decorativa */
+    display: block; /* Permite definir largura e altura */
+    width: 5rem; /* Define a largura da linha */
+    height: 0.3rem; /* Define a altura da linha */
+    background-color: #F8BBD0; /* Define a cor da linha */
+    margin: 0.5rem auto 0; /* Posiciona a linha abaixo do título */
+    border-radius: 10px; /* Arredonda as extremidades da linha */
 }
 
 /* Estilização dos Grupos de Input */
 .container .input-group {
-    width: 100%; /* O input group ocupa toda a largura */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    width: 100%; /* Garante que o grupo de inputs ocupe toda a largura */
+    display: flex; /* Usa flexbox para organizar os inputs */
+    flex-wrap: wrap; /* Permite que os inputs quebrem linha conforme necessário */
+    justify-content: space-between; /* Distribui os inputs de forma equilibrada */
 }
 
 /* Estilização de cada Campo de Input */
 .container .input-box {
-    width: 100%; /* Define a largura de cada campo para caber dois por linha */
-    margin-bottom: 1.5rem; /* Espaçamento entre os campos */
-    display: flex;
-    flex-direction: column;
+    width: 100%; /* Cada input ocupa toda a largura disponível */
+    margin-bottom: 1.5rem; /* Adiciona um espaçamento entre os campos */
+    display: flex; /* Usa flexbox para alinhar o label e o input */
+    flex-direction: column; /* Organiza os elementos verticalmente */
 }
 
 .container .input-box input {
-    width: 100%;
-    padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
+    width: 100%; /* Faz com que o input ocupe toda a largura do contêiner */
+    padding: 0.8rem; /* Adiciona um espaçamento interno para melhor usabilidade */
+    border: 1px solid #ccc; /* Adiciona uma borda cinza ao redor do campo */
+    border-radius: 5px; /* Arredonda as bordas do campo de entrada */
+    font-size: 1rem; /* Define um tamanho adequado para o texto */
 }
 
 .container .input-box label {
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #333;
+    font-size: 0.9rem; /* Define um tamanho menor para o label */
+    margin-bottom: 0.5rem; /* Adiciona espaçamento entre o label e o input */
+    font-weight: 600; /* Define uma espessura média para o texto */
+    color: #333; /* Define uma cor escura para melhor legibilidade */
 }
 
 /* Estilização do Placeholder */
 .container .input-box input::placeholder {
-    color: #aaa;
+    color: #aaa; /* Define uma cor cinza para o placeholder */
 }
 
 /* Botão Enviar */
 .container .continue-button {
-    width: 100%;
-    margin-top: 2rem;
+    width: 100%; /* Garante que o botão ocupe toda a largura disponível */
+    margin-top: 2rem; /* Adiciona um espaçamento acima do botão */
 }
 
 .container .continue-button button {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: #F8BBD0;
-    border: none;
-    border-radius: 5px;
-    color: #ffffff;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    width: 100%; /* Faz com que o botão ocupe toda a largura do contêiner */
+    padding: 0.8rem; /* Adiciona um espaçamento interno para melhor usabilidade */
+    background-color: #F8BBD0; /* Define um tom rosa para o botão */
+    border: none; /* Remove a borda do botão */
+    border-radius: 5px; /* Arredonda as bordas do botão */
+    color: #ffffff; /* Define a cor do texto como branco */
+    font-size: 1rem; /* Define um tamanho adequado para o texto do botão */
+    cursor: pointer; /* Muda o cursor para indicar que o botão é clicável */
+    transition: background-color 0.3s ease; /* Adiciona uma transição suave ao passar o mouse */
 }
 
+/* Efeito de Hover no Botão */
 .container .continue-button button:hover {
-    background-color: #f879a5;
+    background-color: #f879a5; /* Altera a cor do botão ao passar o mouse */
 }
 
+/* Remover sublinhado e definir cor do link dentro do botão */
 .container .continue-button button a {
-    text-decoration: none;
-    color: #fff;
+    text-decoration: none; /* Remove o sublinhado dos links */
+    color: #fff; /* Define a cor do texto como branco */
 }
+
 
 /* ================= MEDIA QUERIES ================= */
 

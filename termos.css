@@ -9,68 +9,81 @@ body {
 }
 
 /* Estilo do cabeçalho */
-header {
-    color: #000; /* Cor do texto do cabeçalho */
-    padding: 20px; /* Espaçamento interno do cabeçalho */
-    text-align: center; /* Centraliza o texto do cabeçalho */
+.termos-header {
+    color: #000;
+    padding: 2rem;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilo do contêiner */
-.container {
-    padding: 50px; /* Reduzindo o padding para 30px */
-    max-width: 1750px; /* Definindo uma largura máxima */
-    background-color: #ffffff; /* Cor de fundo do contêiner */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para destaque */
-    margin: 20px auto; /* Margem externa para espaçamento em relação ao restante da página */
-    border-radius: 10px; /* Bordas arredondadas para um visual mais suave */
+.termos-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 3rem;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
 }
 
 /* Estilo dos títulos principais */
 h1 {
-    font-size: 2em; /* Tamanho da fonte para o título principal */
-    margin-bottom: 10px; /* Espaçamento inferior do título */
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #222;
 }
 
 /* Estilo dos subtítulos */
 h2 {
-    font-size: 1.5em; /* Tamanho da fonte para subtítulos */
-    margin-top: 20px; /* Espaçamento superior dos subtítulos */
-    margin-bottom: 10px; /* Espaçamento inferior dos subtítulos */
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #222;
 }
 
 /* Estilo dos subtítulos de terceiro nível */
 h3 {
-    font-size: 1.2em; /* Tamanho da fonte para subtítulos de terceiro nível */
-    margin-top: 15px; /* Espaçamento superior dos subtítulos de terceiro nível */
-    margin-bottom: 5px; /* Espaçamento inferior dos subtítulos de terceiro nível */
+    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
 }
 
 /* Estilo dos parágrafos */
 p {
-    margin: 15px 0; /* Margem superior e inferior dos parágrafos */
-    text-align: justify; /* Justifica o texto dos parágrafos */
+    margin: 1.2rem 0;
+    text-align: justify;
+    color: #444;
+    font-size: 1rem;
 }
 
 /* Estilo das listas ordenadas */
 ol {
-    margin: 10px 0 20px 20px; /* Margem para a lista ordenada (superior, inferior, esquerda) */
+    margin: 1.2rem 0;
+    padding-left: 2rem;
+}
+
+ol li {
+    margin-bottom: 0.8rem;
+    color: #444;
 }
 
 /* Estilo do rodapé */
-footer {
-    color: #000; /* Cor do texto do rodapé */
-    text-align: center; /* Centraliza o texto do rodapé */
-    padding: 30px; /* Espaçamento interno do rodapé */
-    position: relative; /* Posicionamento relativo para o rodapé */
-    bottom: 0; /* Alinha o rodapé ao fundo da página */
-    width: 100%; /* Largura total do rodapé */
-    margin-top: 20px; /* Margem superior do rodapé */
-    margin-left: 750px; /* Ajuste o valor conforme necessário */
+.termos-footer {
+    text-align: center;
+    padding: 2rem;
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 3rem;
 }
 
 /* Estilo adicional para a data de atualização */
-header p {
-    margin: 0; /* Remove a margem padrão */
-    font-size: 1em; /* Tamanho da fonte para a data de atualização */
-    text-align: center; /* Centraliza a data de atualização */
+.termos-header p {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    color: #666;
 }

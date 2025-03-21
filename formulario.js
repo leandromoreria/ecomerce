@@ -4,10 +4,11 @@ async function enviarCadastro() {
     const firstname = document.getElementById('firstname').value.trim();
     const number = document.getElementById('number').value.trim();
     const email = document.getElementById('email').value.trim();
+    const confirmemail = document.getElementById('confirmemail').value.trim();
     const password = document.getElementById('password').value.trim();
 
     // Validação básica no frontend
-    if (!firstname || !number || !email || !password) {
+    if (!firstname || !number || !email || !confirmemail || !password) {
         alert('Todos os campos são obrigatórios!');
         return;
     }
@@ -17,28 +18,39 @@ async function enviarCadastro() {
         return;
     }
 
+    if (email !== confirmemail) {
+        alert('Os e-mails não correspondem.');
+        return;
+    }
+
+    // Validação do número de telefone (formato brasileiro)
+    const phoneRegex = /^\(\d{2}\)\s\d{5}-\d{4}$/;
+    if (!phoneRegex.test(number)) {
+        alert('Por favor, insira um número de telefone válido no formato (XX) XXXXX-XXXX');
+        return;
+    }
+
+    // Validação de senha
+    if (password.length < 6) {
+        alert('A senha deve ter pelo menos 6 caracteres.');
+        return;
+    }
+
     // Dados do formulário
     const userData = { firstname, number, email, password };
 
     try {
         // Envia os dados para o backend Flask via fetch
-        const response = await fetch('/api/cadastro', {
+        const response = await fetch('http://127.0.0.1:5000/cadastro', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData)
         });
         
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new TypeError("A resposta não está no formato JSON!");
-        }
-
         const data = await response.json();
 
-        if (response.ok && data.success) {
+        if (response.ok) {
             console.log('Cadastro bem-sucedido:', data);
-
-            // Redireciona para a página principal
             alert(`Bem-vindo, ${firstname}! Cadastro realizado com sucesso.`);
             window.location.href = 'index.html';
         } else {
@@ -68,8 +80,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form'); // Seleciona o formulário
     if (form) {
         form.addEventListener('submit', function (event) {
-            event.preventDefault(); // Impede o envio padrão
-            enviarCadastro(); // Chama a função de envio
+            event.preventDefault();
+            enviarCadastro();
+        });
+    }
+
+    // Adiciona máscara para o campo de telefone
+    const phoneInput = document.getElementById('number');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+                e.target.value = value;
+            }
         });
     }
 });

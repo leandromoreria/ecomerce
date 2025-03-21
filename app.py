@@ -9,9 +9,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 CORS(app)  # Habilita o CORS para todas as origens
 
-# Mock de banco de dados
-users = {}
+# Configuração do upload de arquivos
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Configuração do banco de dados
 db_config = {
     "host": "localhost",
     "user": "root",
@@ -48,6 +52,11 @@ def cadastrar_cliente():
         conn = conectar_db()
         cursor = conn.cursor()
 
+        # Verificar se o email já existe
+        cursor.execute("SELECT id FROM clientes WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return jsonify({"success": False, "message": "Email já cadastrado."}), 400
+
         # Inserção dos dados
         cursor.execute("""
             INSERT INTO clientes (firstname, number, email, senha)
@@ -60,21 +69,8 @@ def cadastrar_cliente():
         return jsonify({"success": False, "message": f"Erro ao cadastrar cliente: {str(e)}"}), 500
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
-
-# Endpoint para login
-@app.route('/api/cadastro', methods=['POST'])
-def cadastro():
-    data = request.json
-    email = data.get('email')
-    if email in users:
-        return jsonify({'success': False, 'message': 'Usuário já cadastrado.'}), 400
-
-    users[email] = {
-        'name': data.get('firstname'),
-        'password': generate_password_hash(data.get('password'))
-    }
-    return jsonify({'success': True}), 201
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -82,20 +78,24 @@ def login():
     email = data.get('username')
     password = data.get('password')
 
+    if not email or not password:
+        return jsonify({'success': False, 'message': 'Email e senha são obrigatórios.'}), 400
+
     try:
         conn = conectar_db()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM usuarios WHERE email = %s", (email,))
+        cursor.execute("SELECT * FROM clientes WHERE email = %s", (email,))
         user = cursor.fetchone()
 
         if not user or not checkpw(password.encode('utf-8'), user['senha'].encode('utf-8')):
             return jsonify({'success': False, 'message': 'Credenciais inválidas.'}), 401
 
-        return jsonify({'success': True, 'name': user['nome']}), 200
+        return jsonify({'success': True, 'name': user['firstname']}), 200
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
 @app.route('/api/redefinir-senha', methods=['POST'])
@@ -109,16 +109,16 @@ def redefinir_senha():
             return jsonify({"error": "Email e nova senha são obrigatórios!"}), 400
 
         conn = conectar_db()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
         # Verificar se o email existe no banco
-        cursor.execute("SELECT id FROM usuarios WHERE email = %s", (email,))
+        cursor.execute("SELECT id FROM clientes WHERE email = %s", (email,))
         usuario = cursor.fetchone()
 
         if usuario:
             nova_senha_hashed = hashpw(nova_senha.encode('utf-8'), gensalt()).decode('utf-8')
             cursor.execute("""
-                UPDATE usuarios
+                UPDATE clientes
                 SET senha = %s
                 WHERE id = %s
             """, (nova_senha_hashed, usuario['id']))
@@ -132,6 +132,7 @@ def redefinir_senha():
         return jsonify({"error": f"Erro ao redefinir a senha: {str(err)}"}), 500
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
 # Endpoint para gerenciar o carrinho de compras
@@ -160,6 +161,7 @@ def add_to_carrinho():
         return jsonify({"error": f"Erro ao adicionar ao carrinho: {str(err)}"}), 500
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
 # Função para calcular o frete utilizando a API dos Correios
@@ -251,17 +253,18 @@ def aplicar_cupom():
 
         conn = conectar_db()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT desconto FROM cupons WHERE codigo = %s", (cupom,))
+        cursor.execute("SELECT desconto FROM cupons WHERE codigo = %s AND ativo = 1", (cupom,))
         cupom_data = cursor.fetchone()
 
         if cupom_data:
             return jsonify({"message": "Cupom aplicado!", "desconto": cupom_data['desconto']}), 200
         else:
-            return jsonify({"error": "Cupom inválido!"}), 404
+            return jsonify({"error": "Cupom inválido ou expirado!"}), 404
     except Exception as err:
         return jsonify({"error": f"Erro ao aplicar cupom: {str(err)}"}), 500
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
 # Endpoint para checkout
@@ -282,90 +285,113 @@ def checkout():
         conn = conectar_db()
         cursor = conn.cursor()
 
-        # Insere o pedido na tabela de pedidos
-        cursor.execute("""
-            INSERT INTO pedidos (cliente_id, endereco, pagamento)
-            VALUES (%s, %s, %s)
-        """, (cliente_id, endereco, pagamento))
-        pedido_id = cursor.lastrowid  # Obtém o ID do pedido inserido
+        # Verifica se existem itens no carrinho
+        cursor.execute("SELECT COUNT(*) FROM carrinho WHERE cliente_id = %s", (cliente_id,))
+        if cursor.fetchone()[0] == 0:
+            return jsonify({"error": "Carrinho vazio!"}), 400
 
-        # Move os itens do carrinho para a tabela de produtos_pedido
-        cursor.execute("""
-            INSERT INTO produtos_pedido (pedido_id, produto_id, quantidade)
-            SELECT %s, produto_id, quantidade FROM carrinho WHERE cliente_id = %s
-        """, (pedido_id, cliente_id))
+        # Inicia a transação
+        conn.start_transaction()
 
-        # Remove os itens do carrinho após o checkout
-        cursor.execute("DELETE FROM carrinho WHERE cliente_id = %s", (cliente_id,))
+        try:
+            # Insere o pedido
+            cursor.execute("""
+                INSERT INTO pedidos (cliente_id, endereco, pagamento, status)
+                VALUES (%s, %s, %s, 'pendente')
+            """, (cliente_id, endereco, pagamento))
+            pedido_id = cursor.lastrowid
 
-        # Confirma a transação no banco de dados
-        conn.commit()
+            # Move os itens do carrinho para produtos_pedido
+            cursor.execute("""
+                INSERT INTO produtos_pedido (pedido_id, produto_id, quantidade, preco)
+                SELECT %s, produto_id, quantidade, preco FROM carrinho WHERE cliente_id = %s
+            """, (pedido_id, cliente_id))
 
-        return jsonify({"message": "Checkout realizado com sucesso!", "pedido_id": pedido_id}), 201
+            # Limpa o carrinho
+            cursor.execute("DELETE FROM carrinho WHERE cliente_id = %s", (cliente_id,))
 
-    except mysql.connector.Error as err:
-        return jsonify({"error": f"Erro no banco de dados: {str(err)}"}), 500
+            # Confirma a transação
+            conn.commit()
+
+            return jsonify({"message": "Pedido realizado com sucesso!", "pedido_id": pedido_id}), 201
+
+        except Exception as err:
+            conn.rollback()
+            raise err
+
     except Exception as err:
         return jsonify({"error": f"Erro no checkout: {str(err)}"}), 500
     finally:
         # Fecha a conexão com o banco de dados
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
-# Rota para upload
+# Rota para upload de nota fiscal
 @app.route('/uploadInvoice', methods=['POST'])
 def upload_invoice():
-    file = request.files.get('file')
-    order_id = request.form.get('order_id')
-
-    if not file or not order_id:
-        return jsonify({'success': False, 'message': 'Arquivo ou ID do pedido ausente.'}), 400
-
-    # Salvando o arquivo
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-    file.save(file_path)
-
-    # Salvando no banco de dados
     try:
-        conn = mysql.connector.connect(**db_config)
+        if 'file' not in request.files:
+            return jsonify({'success': False, 'message': 'Nenhum arquivo enviado.'}), 400
+        
+        file = request.files['file']
+        order_id = request.form.get('order_id')
+
+        if not file or not order_id:
+            return jsonify({'success': False, 'message': 'Arquivo ou ID do pedido ausente.'}), 400
+
+        if file.filename == '':
+            return jsonify({'success': False, 'message': 'Nenhum arquivo selecionado.'}), 400
+
+        if not file.filename.endswith('.pdf'):
+            return jsonify({'success': False, 'message': 'Apenas arquivos PDF são permitidos.'}), 400
+
+        filename = f"nf_{order_id}_{file.filename}"
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+
+        conn = conectar_db()
         cursor = conn.cursor()
+
         cursor.execute(
             "INSERT INTO invoices (order_id, file_path) VALUES (%s, %s)", 
             (order_id, file_path)
         )
         conn.commit()
-        cursor.close()
-        conn.close()
-    except mysql.connector.Error as err:
-        return jsonify({'success': False, 'message': str(err)}), 500
 
-    return jsonify({'success': True, 'pdfUrl': file_path})
+        return jsonify({'success': True, 'pdfUrl': file_path})
+
+    except Exception as err:
+        return jsonify({'success': False, 'message': str(err)}), 500
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            cursor.close()
+            conn.close()
 
 # Rota para obter a URL da NF-e
 @app.route('/api/getInvoiceUrl', methods=['GET'])
 def get_invoice_url():
-    order_id = request.args.get('order_id')  # ID do pedido fornecido pelo frontend
+    order_id = request.args.get('order_id')
 
     if not order_id:
         return jsonify({'error': 'ID do pedido é obrigatório.'}), 400
 
     try:
-        conn = mysql.connector.connect(**db_config)
+        conn = conectar_db()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT file_path FROM invoices WHERE order_id = %s", (order_id,))
         result = cursor.fetchone()
-        cursor.close()
-        conn.close()
 
         if result:
-            return jsonify({'pdfUrl': result['file_path']})
+            return jsonify({'success': True, 'pdfUrl': result['file_path']})
         else:
             return jsonify({'error': 'NF-e não encontrada para o pedido.'}), 404
-    except mysql.connector.Error as err:
+    except Exception as err:
         return jsonify({'error': str(err)}), 500
+    finally:
+        if 'conn' in locals() and conn.is_connected():
+            cursor.close()
+            conn.close()
 
 if __name__ == '__main__':
     app.run(debug=True)

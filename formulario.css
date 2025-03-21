@@ -21,20 +21,20 @@ body {
     max-width: 1400px; /* Limita a largura máxima */
     padding: 5rem; /* Espaçamento interno do container */
     border: 1px solid #F8BBD0; /* Borda do container */
-    box-shadow: 0px 8px 20px rgb(248, 187, 208, 0.8); /* Sombra ao redor */
+    box-shadow: 0px 8px 20px rgba(248, 187, 208, 0.8); /* Sombra ao redor - corrigido formato rgba */
     background-color: #ffffff; /* Cor de fundo branco */
     border-radius: 10px; /* Arredonda os cantos do container */
 }
 
 /* Estiliza a imagem da logo */
-.form-iamge {
+.form-image { /* Corrigido nome da classe */
     width: 40%; /* Ajuste da largura da logo */
     display: flex; /* Flexbox para centralizar a imagem */
     justify-content: center; /* Centraliza horizontalmente */
     align-items: center; /* Centraliza verticalmente */
 }
 
-.form-iamge img {
+.form-image img { /* Corrigido nome da classe */
     width: 100%; /* A imagem ocupa toda a largura do container */
     height: auto; /* Mantém a proporção da altura */
     border-radius: 10px; /* Arredonda os cantos da imagem */
@@ -70,7 +70,7 @@ body {
 .input-box input {
     width: 100%; /* O input ocupa toda a largura da caixa */
     padding: 0.8rem; /* Espaçamento interno dos inputs */
-    border: 1px solid rgb(248, 187, 208, 0.8); /* Borda leve ao redor dos inputs */
+    border: 1px solid rgba(248, 187, 208, 0.8); /* Borda leve ao redor dos inputs - corrigido formato rgba */
     border-radius: 5px; /* Arredonda os cantos dos inputs */
     font-size: 1rem; /* Tamanho da fonte dos inputs */
 }
@@ -88,22 +88,22 @@ input:focus {
 /* Estiliza o ícone de olho mágico */
 .toggle-password {
     position: absolute;
-    right: 10px;  /* Ajusta o ícone para o canto direito */
+    right: 10px; /* Ajusta o ícone para o canto direito */
     top: 50%;
     transform: translateY(-50%); /* Centraliza verticalmente */
     cursor: pointer; /* Indica que é interativo */
-    color: #333;  /* Cor padrão do ícone */
+    color: #333; /* Cor padrão do ícone */
     font-size: 10px; /* Tamanho do ícone */
 }
 
 /* Muda a cor do ícone quando o mouse passa sobre ele */
 .toggle-password:hover {
-    color: rgb(248, 187, 208, 0.5); /* Altera a cor para azul ao passar o mouse */
+    color: rgba(248, 187, 208, 0.5); /* Altera a cor ao passar o mouse - corrigido formato rgba */
 }
 
 /* Adiciona padding no input para acomodar o ícone de olho mágico */
 .password-container input {
-    padding-right: 10px; /* Adiciona espaço à direita para o ícone */
+    padding-right: 30px; /* Aumentado espaço à direita para o ícone */
 }
 
 /* .continue-button - Botão de envio */
@@ -114,7 +114,7 @@ input:focus {
 .continue-button button {
     width: 100%; /* O botão ocupa toda a largura do container */
     padding: 0.8rem; /* Espaçamento interno do botão */
-    background-color: #F8BBD0; /* Cor de fundo azul */
+    background-color: #F8BBD0; /* Cor de fundo */
     color: #ffffff; /* Cor do texto */
     border: none; /* Remove a borda padrão */
     border-radius: 5px; /* Arredonda os cantos do botão */
@@ -122,7 +122,7 @@ input:focus {
 }
 
 .continue-button button:hover {
-    background-color: rgb(248, 187, 208, 0.5); /* Altera a cor ao passar o mouse (opcional) */
+    background-color: rgba(248, 187, 208, 0.5); /* Altera a cor ao passar o mouse - corrigido formato rgba */
 }
 
 /* Estilos para telas grandes (1200px e acima) */

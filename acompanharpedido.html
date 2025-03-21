@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="acompanharpedido.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
 <body>
@@ -34,7 +34,6 @@
             </div>
             <button id="download-pdf">Baixar NF-e</button>
         </div>
-        
 
         <!-- Histórico de Pedidos -->
         <div class="history">
@@ -46,7 +45,6 @@
         <div class="faq-support">
             <h2>FAQ e Suporte</h2>
             <div id="faq-list">
-
                 <div class="faq-item">
                     <button class="faq-question">Qual o prazo de entrega?</button>
                     <div class="faq-answer">O prazo de entrega varia de acordo com sua região, mas em média é de 5 a 10 dias úteis.</div>
@@ -54,7 +52,7 @@
 
                 <div class="faq-item">
                     <button class="faq-question">Como rastrear meu pedido?</button>
-                    <div class="faq-answer">Você pode rastrear seu pedido usando o código de rastreamento enviado para seu e-mail ou whatsapp cadastrado em nosso site após a sua compra fornecido pelos Correios.</div>
+                    <div class="faq-answer">Você pode rastrear seu pedido usando o código de rastreamento enviado para seu e-mail ou WhatsApp cadastrado em nosso site após a sua compra fornecido pelos Correios.</div>
                 </div>
 
                 <div class="faq-item">
@@ -66,19 +64,20 @@
                     <button class="faq-question">O que faço em caso de troca?</button>
                     <div class="faq-answer">Se precisar trocar seu produto, entre em contato com nosso suporte para instruções sobre o procedimento.</div>
                 </div>
-
             </div>
             
-            
-            <a href="https://wa.me/message/7XS7DGTNCKBWG1" target="_blank" rel="external"><button><i class='bx bxl-whatsapp'>Entrar em Contato com o Suporte</i></button></a>
-                        
+            <a href="https://wa.me/message/7XS7DGTNCKBWG1" target="_blank" rel="external" class="whatsapp-button">
+                <button>
+                    <i class='bx bxl-whatsapp'></i>
+                    Entrar em Contato com o Suporte
+                </button>
+            </a>
         </div>
     </div>
 
     <script src="acompanharpedido.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="pdf.js"></script>
-
 
 </body>
 </html>

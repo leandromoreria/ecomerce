@@ -1,27 +1,30 @@
 /* Estilos para a Política de Cookies */
 body {
-    font-family: 'Poppins', sans-serif; /* Define a fonte padrão */
-    line-height: 1.6; /* Aumenta o espaçamento entre linhas */
-    margin: 0; /* Remove margens padrão */
-    padding: 0; /* Remove preenchimento padrão */
-    background: linear-gradient(135deg, #E0F7FA, #f4f4f48e); /* Degradê do azul claro para o cinza */
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #E0F7FA, #f4f4f48e);
+    min-height: 100vh; /* Garante altura mínima para conteúdo */
 }
 
 /* Cabeçalho da Política de Cookies */
 .cookies-header {
-    color: #000; /* Cor do texto */
-    padding: 20px; /* Espaçamento interno */
-    text-align: center; /* Centraliza o texto */
+    color: #000;
+    padding: 2rem;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* Container principal */
 .cookies-container {
-    max-width: 1750px; /* Largura máxima */
-    margin: 20px auto; /* Centraliza o container */
-    padding: 50px; /* Espaçamento interno */
-    background-color: #ffffff; /* Fundo branco */
-    border-radius: 8px; /* Cantos arredondados */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    max-width: 1200px; /* Largura mais adequada para leitura */
+    margin: 2rem auto;
+    padding: 3rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 /* Estilos para a seção de política de cookies */
@@ -31,29 +34,52 @@ body {
 
 /* Títulos das seções */
 .politica-cookies h2 {
-    color: #333; /* Cor do título */
-    margin-top: 20px; /* Margem acima do título */
-    margin-bottom: 10px; /* Margem abaixo do título */
+    color: #222;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
 /* Parágrafos */
 .politica-cookies p {
-    margin-bottom: 15px; /* Espaçamento abaixo dos parágrafos */
+    margin-bottom: 1.2rem;
+    color: #444;
+    font-size: 1rem;
 }
 
 /* Lista não ordenada */
 .politica-cookies ul {
-    margin: 10px 0; /* Margem acima e abaixo da lista */
-    padding-left: 20px; /* Espaçamento interno à esquerda */
+    margin: 1.2rem 0;
+    padding-left: 2rem;
+    list-style-type: disc;
+}
+
+.politica-cookies li {
+    margin-bottom: 0.8rem;
+    color: #444;
 }
 
 /* Rodapé */
 .cookies-footer {
-    text-align: center; /* Centraliza o texto */
-    padding: 20px; /* Espaçamento interno */
-    color: #000; /* Cor do texto */
-    position: relative; /* Posição relativa */
-    bottom: 0; /* Alinha ao fundo */
-    width: 100%; /* Largura total */
+    text-align: center;
+    padding: 2rem;
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.9);
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 3rem;
 }
 
+/* Responsividade */
+@media (max-width: 768px) {
+    .cookies-container {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .cookies-header {
+        padding: 1.5rem;
+    }
+}

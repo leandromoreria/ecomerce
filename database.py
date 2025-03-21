@@ -12,8 +12,8 @@ def conectar():
     try:
         conn = mysql.connector.connect(
             host=os.getenv("DB_HOST", "localhost"),
-            user=os.getenv("DB_USER", "root"),
-            password=os.getenv("DB_PASSWORD", "senha"),
+            user=os.getenv("DB_USER", "root"), 
+            password=os.getenv("DB_PASSWORD", "Leandro#fxx3207"),
             database=os.getenv("DB_NAME", "ecommerce")
         )
         return conn
@@ -21,91 +21,97 @@ def conectar():
         raise Exception(f"Erro ao conectar ao banco de dados: {str(err)}")
 
 
-# Função para listar todos os usuários
-def listar_usuarios():
+# Função para listar todos os clientes
+def listar_clientes():
     """
-    Lista todos os usuários da tabela `usuarios`.
+    Lista todos os clientes da tabela `clientes`.
     """
     try:
         conn = conectar()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id, nome, email FROM usuarios")
-        usuarios = cursor.fetchall()
-        return usuarios
+        cursor.execute("SELECT id, firstname, email FROM clientes")
+        clientes = cursor.fetchall()
+        return clientes
     except mysql.connector.Error as err:
-        raise Exception(f"Erro ao listar usuários: {str(err)}")
+        raise Exception(f"Erro ao listar clientes: {str(err)}")
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
 
-# Função para inserir um novo usuário
-def inserir_usuario(nome, email, senha):
+# Função para inserir um novo cliente
+def inserir_cliente(firstname, number, email, senha):
     """
-    Insere um novo usuário na tabela `usuarios`.
+    Insere um novo cliente na tabela `clientes`.
 
-    :param nome: Nome do usuário
-    :param email: Email do usuário
-    :param senha: Senha do usuário (já com hash aplicado)
+    :param firstname: Nome do cliente
+    :param number: Número de telefone do cliente
+    :param email: Email do cliente
+    :param senha: Senha do cliente (já com hash aplicado)
     """
     try:
         conn = conectar()
         cursor = conn.cursor()
-        query = "INSERT INTO usuarios (nome, email, senha) VALUES (%s, %s, %s)"
-        cursor.execute(query, (nome, email, senha))
+        query = "INSERT INTO clientes (firstname, number, email, senha) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (firstname, number, email, senha))
         conn.commit()
     except mysql.connector.Error as err:
-        raise Exception(f"Erro ao inserir usuário: {str(err)}")
+        raise Exception(f"Erro ao inserir cliente: {str(err)}")
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
 
-# Função para atualizar os dados de um usuário
-def atualizar_usuario(id, novo_nome, novo_email, nova_senha):
+# Função para atualizar os dados de um cliente
+def atualizar_cliente(id, novo_firstname, novo_number, novo_email, nova_senha):
     """
-    Atualiza os dados de um usuário existente na tabela `usuarios`.
+    Atualiza os dados de um cliente existente na tabela `clientes`.
 
-    :param id: ID do usuário a ser atualizado
-    :param novo_nome: Novo nome do usuário
-    :param novo_email: Novo email do usuário
-    :param nova_senha: Nova senha do usuário (com hash)
+    :param id: ID do cliente a ser atualizado
+    :param novo_firstname: Novo nome do cliente
+    :param novo_number: Novo número de telefone do cliente
+    :param novo_email: Novo email do cliente
+    :param nova_senha: Nova senha do cliente (com hash)
     """
     try:
         conn = conectar()
         cursor = conn.cursor()
         query = """
-            UPDATE usuarios
-            SET nome = %s, email = %s, senha = %s
+            UPDATE clientes
+            SET firstname = %s, number = %s, email = %s, senha = %s
             WHERE id = %s
         """
-        cursor.execute(query, (novo_nome, novo_email, nova_senha, id))
+        cursor.execute(query, (novo_firstname, novo_number, novo_email, nova_senha, id))
         conn.commit()
     except mysql.connector.Error as err:
-        raise Exception(f"Erro ao atualizar usuário: {str(err)}")
+        raise Exception(f"Erro ao atualizar cliente: {str(err)}")
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
-# Função para excluir um usuário
-def excluir_usuario(id):
+# Função para excluir um cliente
+def excluir_cliente(id):
     """
-    Exclui um usuário da tabela `usuarios`.
+    Exclui um cliente da tabela `clientes`.
 
-    :param id: ID do usuário a ser excluído
+    :param id: ID do cliente a ser excluído
     """
     try:
         conn = conectar()
         cursor = conn.cursor()
-        query = "DELETE FROM usuarios WHERE id = %s"
+        query = "DELETE FROM clientes WHERE id = %s"
         cursor.execute(query, (id,))
         conn.commit()
         if cursor.rowcount == 0:
-            raise Exception("Usuário não encontrado para exclusão.")
+            raise Exception("Cliente não encontrado para exclusão.")
     except mysql.connector.Error as err:
-        raise Exception(f"Erro ao excluir usuário: {str(err)}")
+        raise Exception(f"Erro ao excluir cliente: {str(err)}")
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
 # Função para registrar um pedido
@@ -136,9 +142,12 @@ def registrar_pedido(cliente_id, endereco, pagamento, produtos):
         conn.commit()
         return pedido_id
     except mysql.connector.Error as err:
+        if 'conn' in locals() and conn.is_connected():
+            conn.rollback()
         raise Exception(f"Erro ao registrar pedido: {str(err)}")
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()
 
 
@@ -167,4 +176,5 @@ def rastrear_pedido(pedido_id):
         raise Exception(f"Erro ao rastrear pedido: {str(err)}")
     finally:
         if 'conn' in locals() and conn.is_connected():
+            cursor.close()
             conn.close()

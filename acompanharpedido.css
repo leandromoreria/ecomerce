@@ -1,18 +1,18 @@
 /* Estilos básicos */
 * {
-    font-family: 'Poppins', sans-serif; /* Aplica a fonte a todos os elementos */
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    
-    margin: 0;
-    padding: 0;
-    background: #E0F7FA; /* Cor do fundo*/
+    background: #E0F7FA;
     background-size: cover;
     background-attachment: fixed; /* Faz o fundo se manter fixo */
 }
 
-/* Container principal para a seção de acompanhamento */
+/* Container principal */
 .acompanharpedido-container {
     max-width: 900px; /* Largura máxima do container */
     margin: 50px auto; /* Centraliza o container na tela */
@@ -23,15 +23,33 @@ body {
     box-shadow: 0 6px 15px rgb(248, 187, 208, 0.9); /* Sombra para destaque */
    }
 
-/* Linha do tempo para acompanhamento do pedido */
+/* Timeline */
 .timeline {
     display: flex; /* Flexbox para alinhar os passos em linha */
     justify-content: space-between; /* Espaçamento igual entre os passos */
     align-items: center; /* Centraliza verticalmente os itens */
     margin-bottom: 60px; /* Espaçamento abaixo da linha do tempo */
+    position: relative;
 }
 
-/* Estilização das bolinhas da linha do tempo */
+.step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    padding: 0 10px;
+}
+
+.step::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 40px;
+    height: 2px;
+    background-color: #ccc;
+    width: 100%;
+    z-index: 1;
+}
+
 .step::after {
     content: "";
     width: 20px; /* Largura das bolinhas */
@@ -45,27 +63,6 @@ body {
     z-index: 2; /* Coloca a bolinha acima da linha */
 }
 
-/* Estilos para cada etapa da linha do tempo */
-.step {
-    flex: 1; /* Cada etapa ocupa espaço igual */
-    text-align: center; /* Centraliza o texto */
-    position: relative; /* Necessário para o posicionamento dos ícones */
-}
-
-/* Estilização da linha do tempo */
-.step:before {
-    content: ''; /* Adiciona um conteúdo vazio */
-    position: absolute; /* Posicionamento absoluto */
-    left: 0%; /* Centraliza horizontalmente */
-    top: 30px; /* Espaço acima do ícone */
-    height: 2px; /* Espessura da linha */
-    background-color: #ccc; /* Cor da linha */
-    width: 100%; /* Largura da linha */
-    z-index: 1; /* A linha fica atrás do ícone */
-    margin-top: 10px; /* Espaço entre a linha do tempo e os títulos */
-}
-
-/* Estilo para etapa ativa */
 .step.active::after {
     background-color: #F8BBD0; /* Cor das bolinhas ativas */
 }
@@ -76,149 +73,88 @@ body {
     color: #ffffff; /* Cor do texto para a etapa ativa */
 }
 
-/* Seção do resumo do pedido */
-.order-details {
-    margin-top: 20px; /* Espaçamento acima da seção de detalhes do pedido */
-    padding: 20px; /* Espaçamento interno da seção */
-    box-shadow: 0 2px 8px rgb(248, 187, 208, 0.9); /* Sombra leve para destaque */
-    border-radius: 10px; /* Bordas arredondadas para uma aparência moderna */
-}
-
-/* Título da seção do resumo do pedido */
-.order-details h2 {
-    color: #000; /* Cor do texto do título */
-    font-size: 1.5rem; /* Tamanho da fonte do título */
-}
-
-/* Resumo de cada produto */
-#products-summary div {
-    padding: 5px 0; /* Espaçamento vertical para cada produto */
-    font-weight: bold; /* Texto em negrito */
-    color: #333; /* Cor do texto */
-}
-
-/* Seção de histórico de pedidos */
-.history {
-    margin-top: 20px; /* Espaçamento acima da seção de histórico */
-    padding: 20px; /* Espaçamento interno da seção */
-    background-color: #ffffff; /* Fundo branco */
-    box-shadow: 0 2px 8px rgb(248, 187, 208, 0.9); /* Sombra leve para destaque */
-    border-radius: 10px; /* Bordas arredondadas para uma aparência moderna */
-}
-
-/* Título da seção de histórico de pedidos */
-.history h2 {
-    color: #000; /* Cor do texto do título */
-    font-size: 1.5rem; /* Tamanho da fonte do título */
-}
-
-/* Cada item do histórico de pedidos */
-#history-list div {
-    padding: 5px; /* Espaçamento interno para cada item */
-    margin: 5px 0; /* Margem vertical entre os itens */
-    background-color: #F8BBD0; /* Cor de fundo para os itens do histórico */
-    border-radius: 4px; /* Bordas arredondadas para itens do histórico */
-    transition: background-color 0.3s ease; /* Transição suave para mudança de cor */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-}
-
-/* Alteração de cor ao passar o cursor sobre um item do histórico */
-#history-list div:hover {
-    background-color: rgb(248, 187, 208, 0.9); /* Cor de fundo ao passar o mouse */
-}
-
-/* Seção FAQ e Suporte */
+/* Detalhes do pedido */
+.order-details,
+.history,
 .faq-support {
-    margin-top: 20px; /* Espaçamento acima da seção FAQ */
-    padding: 20px; /* Espaçamento interno da seção */
-    background-color: #ffffff; /* Fundo branco */
-    border-radius: 10px; /* Bordas arredondadas para uma aparência moderna */
-    box-shadow: 0 2px 8px rgb(248, 187, 208, 0.9); /* Sombra leve para destaque */
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(248, 187, 208, 0.9);
 }
 
-/* Título da seção FAQ e Suporte */
-.faq-support h2 {
-    color: #000; /* Cor do texto do título */
-    font-size: 1.5rem; /* Tamanho da fonte do título */
+h2 {
+    color: #000;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
 }
 
-/* Cada item do FAQ */
+/* Produtos */
+#products-summary div {
+    padding: 10px 0; /* Espaçamento vertical para cada produto */
+    border-bottom: 1px solid #eee;
+}
+
+/* FAQ */
 .faq-item {
-    margin: 8px 0; /* Margem vertical entre os itens do FAQ */
-    padding: 10px; /* Espaçamento interno para cada item */
-    color: #000; /* Cor do texto */
-    border-radius: 4px; /* Bordas arredondadas para itens do FAQ */
-    background-color: #F8BBD0; /* Cor de fundo semitransparente para itens do FAQ */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-    transition: background-color 0.3s ease; /* Transição suave para mudança de cor */
+    margin: 10px 0;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
-/* Alteração de cor ao passar o cursor sobre um item do FAQ */
-.faq-item:hover {
-    background-color: rgb(248, 187, 208, 0.5); /* Cor de fundo ao passar o mouse */
-}
-
-/* Respostas do FAQ */
-.faq-answer {
-    display: none; /* Inicialmente oculta as respostas */
-    padding: 10px; /* Adiciona um espaçamento interno às respostas */
-    background-color: #ffffff; /* Cor de fundo clara para as respostas */
-    border-radius: 4px; /* Bordas arredondadas para as respostas */
-    margin-top: 5px; /* Espaçamento acima da resposta */
-}
-
-/* Botão de pergunta no FAQ */
 .faq-question {
-    background-color: transparent; /* Cor de fundo inicial do botão */
-    color: #000; /* Cor do texto do botão */
-    border: none; /* Remove a borda padrão */
-    border-radius: 6px; /* Bordas arredondadas para o botão */
-    padding: 10px 20px; /* Aumenta o padding para mais conforto */
-    font-weight: bold; /* Texto em negrito */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-    transition: background-color 0.3s ease; /* Transição suave para a mudança de cor */
+    width: 100%;
+    padding: 15px;
+    background-color: #F8BBD0;
+    color: #000;
+    border: none;
+    text-align: left;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 /* Alteração de cor ao passar o cursor sobre o botão de pergunta */
 .faq-question:hover {
-    background-color: rgb(248, 187, 208, 0.9); /* Cor de fundo ao passar o mouse */
+    background-color: rgba(248, 187, 208, 0.9); /* Cor de fundo ao passar o mouse */
 }
 
-/* Botão de contato com o suporte */
-button {
-    display: inline-block; /* Define como bloco inline para alinhar corretamente */
-    margin-top: 10px; /* Margem acima do botão */
-    padding: 10px 20px; /* Espaçamento interno do botão */
-    background-color: #F8BBD0; /* Cor de fundo do botão */
-    color: #ffffff; /* Cor do texto do botão */
-    border: none; /* Remove a borda padrão */
-    border-radius: 4px; /* Bordas arredondadas para o botão */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-    transition: background-color 0.3s ease; /* Transição suave para mudança de cor */
+.faq-answer {
+    display: none;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #F8BBD0;
+    border-top: none;
 }
 
-/* Alteração de cor ao passar o cursor sobre o botão */
-button:hover {
-    background-color: rgb(248, 187, 208, 0.9); /* Cor de fundo ao passar o mouse */
-}
-
+/* Botões */
+button,
 .contact-support-button {
-    display: inline-block; /* Define como bloco inline */
-    margin-top: 10px; /* Margem acima do botão */
-    padding: 10px 20px; /* Espaçamento interno do botão */
-    background-color: #F8BBD0; /* Cor de fundo do botão */
-    color: #ffffff; /* Cor do texto do botão */
-    border: none; /* Remove a borda padrão */
-    border-radius: 4px; /* Bordas arredondadas para o botão */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-    text-decoration: none; /* Remove sublinhado do link */
-    transition: background-color 0.3s ease; /* Transição suave para mudança de cor */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #F8BBD0;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    font-weight: 500;
 }
 
+button:hover,
 .contact-support-button:hover {
-    background-color: rgb(248, 187, 208, 0.9); /* Cor de fundo ao passar o mouse */
+    background-color: rgba(248, 187, 208, 0.9); /* Cor de fundo ao passar o mouse */
 }
 
+button i {
+    margin-right: 8px;
+}
+
+/* Rastreamento */
 #tracking-info {
     margin-top: 20px; /* Define a margem superior para separar a seção do restante do conteúdo */
     padding: 10px; /* Adiciona um preenchimento interno para dar espaço ao conteúdo */
@@ -228,75 +164,50 @@ button:hover {
 }
 
 #tracking-info h3 {
-    margin-bottom: 10px; /* Adiciona espaço abaixo do título para separar do conteúdo */
+    margin-bottom: 10px;  /* Adiciona espaço abaixo do título para separar do conteúdo */
+    color: #000;
 }
 
-/* Estilos gerais para telas desktop grandes */
-@media (min-width: 1200px) {
-    .acompanhamento-container {
-        width: 1100px; /* Largura fixa para desktop */
-        padding: 30px; /* Aumenta o padding em telas grandes */
+/* Media Queries */
+@media (max-width: 768px) {
+    .timeline {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 20px;
     }
-    .order-details h2, .history h2, .faq-support h2 {
-        font-size: 2rem; /* Aumenta tamanho dos títulos para tela desktop */
-    }
+
     .step {
-        width: 120px; /* Etapas maiores para visualização mais ampla */
+        margin-bottom: 30px;
+        width: 100%;
+        text-align: left;
+    }
+
+    .step::before {
+        left: -20px;
+        top: 50%;
+        width: 2px;
+        height: 100%;
+    }
+
+    .step::after {
+        left: -20px;
+        top: 50%;
     }
 }
 
-/* Estilos para telas desktop e laptop (largura entre 992px e 1200px) */
-@media (min-width: 992px) and (max-width: 1199px) {
-    .acompanhamento-container {
-        width: 90%; /* Ajusta a largura para monitores médios */
-        max-width: 900px; /* Max-width ajustado */
+@media (max-width: 480px) {
+    .acompanharpedido-container {
+        margin: 20px 10px;
+        padding: 15px;
     }
-    .order-details h2, .history h2, .faq-support h2 {
-        font-size: 1.8rem; /* Títulos um pouco menores para adaptar à tela */
-    }
-}
 
-/* Estilos para tablets (largura entre 768px e 991px) */
-@media (min-width: 768px) and (max-width: 991px) {
-    .acompanhamento-container {
-        width: 90%; /* Largura ajustada para tablets */
-        padding: 15px; /* Ajusta o padding para tablets */
+    h2 {
+        font-size: 1.2rem;
     }
-    .step {
-        width: 80px; /* Passos menores para caber na tela de tablet */
-        font-size: 0.9rem; /* Tamanho da fonte reduzido */
-    }
-    .order-details h2, .history h2, .faq-support h2 {
-        font-size: 1.6rem; /* Tamanhos dos títulos ajustados */
-    }
-}
 
-/* Estilos para celulares grandes (largura entre 576px e 767px) */
-@media (min-width: 576px) and (max-width: 767px) {
-    .acompanhamento-container {
-        width: 90%; /* O container ocupa 90% da largura da tela */
-        padding: 10px; /* Ajuste de padding para celulares grandes */
-    }
-    .step {
-        width: 70px; /* Passos menores para caber melhor na tela */
-        font-size: 0.8rem; /* Tamanho da fonte reduzido para celular */
-    }
-    .order-details h2, .history h2, .faq-support h2 {
-        font-size: 1.4rem; /* Tamanhos dos títulos ajustados */
-    }
-}
-
-/* Estilos para celulares pequenos (largura menor que 576px) */
-@media (max-width: 575px) {
-    .acompanhamento-container {
-        width: 100%; /* O container ocupa toda a largura da tela */
-        padding: 5px; /* Ajuste de padding para celulares pequenos */
-    }
-    .step {
-        width: 60px; /* Passos ainda menores para caber na tela de celular pequeno */
-        font-size: 0.7rem; /* Tamanho da fonte reduzido para celular pequeno */
-    }
-    .order-details h2, .history h2, .faq-support h2 {
-        font-size: 1.2rem; /* Tamanhos dos títulos ajustados */
+    button,
+    .contact-support-button {
+        width: 100%;
+        margin-top: 10px;
     }
 }

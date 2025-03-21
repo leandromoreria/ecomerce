@@ -11,7 +11,7 @@ body {
     color: #333; /* Define a cor do texto */
 }
 
-/*cabeçalho*/
+/* Cabeçalho */
 header {
     background-color: #F8BBD0; /* Cor de fundo do cabeçalho */
     padding: 50px; /* Espaçamento interno do cabeçalho */
@@ -27,7 +27,7 @@ main {
     padding: 20px; /* Espaçamento interno da área principal */
 }
 
-/* Conteiner do título*/
+/* Container do título */
 .page-title {
     text-align: center; /* Centraliza o título da página */
     font-size: 2rem; /* Tamanho da fonte do título */
@@ -82,7 +82,7 @@ table thead {
 table th, table td {
     padding: 15px; /* Espaçamento interno das células da tabela */
     text-align: left; /* Alinhamento do texto à esquerda */
-    border-bottom: 2px solid rgb(255, 112, 67); /* Coral */
+    border-bottom: 2px solid #ff7043; /* Coral */
 }
 
 table tbody tr:nth-child(even) {
@@ -135,14 +135,14 @@ table tbody tr:nth-child(even) {
 }
 
 .qty button:hover {
-    background-color: rgb(255, 112, 67, 0.8); /* Cor de fundo do botão ao passar o mouse */
+    background-color: rgba(255, 112, 67, 0.8); /* Cor de fundo do botão ao passar o mouse */
 }
 
 .qty span {
     font-size: 1rem; /* Tamanho da fonte do número da quantidade */
 }
 
-/*estilização do botao remover*/
+/* Estilização do botão remover */
 button.remove {
     font-size: 1.5rem;
     background-color: transparent; /* Fundo transparente para o botão de remoção */
@@ -152,7 +152,7 @@ button.remove {
 }
 
 button.remove:hover {
-    color: rgb(255, 112, 67, 0.5); /* Cor do texto do botão de remoção ao passar o mouse */
+    color: rgba(255, 112, 67, 0.5); /* Cor do texto do botão de remoção ao passar o mouse */
 }
 
 /* Resumo da compra */
@@ -167,10 +167,14 @@ button.remove:hover {
 
 /* Resumo da compra */
 aside .box header {
-    font-size: 1.2rem; /* Tamanho da fonte do cabeçalho do resumo */
-    font-weight: bold; /* Define o cabeçalho como negrito */
-    margin-bottom: 15px; /* Espaço abaixo do cabeçalho do resumo */
-    color: #FF7043; /* Cor do texto do cabeçalho do resumo */
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #FF7043;
+    background-color: transparent;
+    box-shadow: none;
+    border-bottom: none;
+    padding: 0;
 }
 
 aside .box .info {
@@ -211,7 +215,6 @@ aside .box .info button input::placeholder {
     color: rgba(255, 255, 255, 0.9); /* Cor do texto do placeholder */
     font-size: 16px; /* Tamanho do placeholder */
 }
-
 
 aside .box .info button:hover {
     background-color: rgb(255, 112, 67, 0.8); /* Cor de fundo do botão de cupom ao passar o mouse */
@@ -266,15 +269,14 @@ aside button:hover {
 
 /* Efeito hover para o botão calcular frete */
 #calcularFrete:hover {
-    background-color: #ff6f43b2; /* Escurece o azul ao passar o mouse */
-    /* Modifique o efeito para incluir transições suaves, se necessário */
+    background-color: rgba(255, 112, 67, 0.8);
 }
 
 /* Resultado do cálculo de frete */
 #resultadoFrete {
-    margin-top: 10px; /* Espaço acima do resultado */
-    font-weight: bold; /* Destaca visualmente o texto */
-    /* Adicionar uma cor específica ou ícone, caso queira mais destaque */
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
 }
 
 /* Estilos gerais para telas desktop grandes */
@@ -304,7 +306,6 @@ aside button:hover {
 /* Estilos para telas grandes (largura entre 992px e 1199px) */
 @media (min-width: 992px) and (max-width: 1199px) {
     .content {
-        display: flex;
         flex-direction: row; /* Alinha os elementos em linha para telas grandes */
     }
 
@@ -328,13 +329,13 @@ aside button:hover {
 /* Estilos para tablets (largura entre 768px e 991px) */
 @media (min-width: 768px) and (max-width: 991px) {
     .content {
-        display: flex;
-        flex-direction: column; /* Organiza os elementos em coluna em tablets */
+        flex-direction: column;
     }
 
     aside {
-        width: 100%; /* O aside ocupa toda a largura em tablets */
-        margin-bottom: 20px; /* Espaçamento entre o aside e os outros elementos */
+        width: 100%;
+        max-width: none;
+        margin-bottom: 20px;
     }
 
     header {
@@ -353,13 +354,13 @@ aside button:hover {
 /* Estilos para celulares grandes (largura entre 576px e 767px) */
 @media (min-width: 576px) and (max-width: 767px) {
     .content {
-        display: flex;
-        flex-direction: column; /* Organiza os elementos em coluna */
+        flex-direction: column;
     }
 
     aside {
-        width: 100%; /* O aside ocupa toda a largura disponível */
-        margin-bottom: 15px; /* Ajuste de margem para o aside */
+        width: 100%;
+        max-width: none;
+        margin-bottom: 15px;
     }
 
     header {
@@ -378,21 +379,28 @@ aside button:hover {
 /* Estilos para celulares pequenos (largura menor que 576px) */
 @media (max-width: 575px) {
     .content {
-        display: flex;
-        flex-direction: column; /* Organiza os elementos em coluna */
+        flex-direction: column;
     }
 
     aside {
-        width: 100%; /* O aside ocupa toda a largura disponível */
-        margin-bottom: 10px; /* Ajuste de margem para celulares pequenos */
+        width: 100%;
+        max-width: none;
+        margin-bottom: 10px;
     }
 
     header {
-        padding: 10px 15px; /* Ajuste de padding para telas muito pequenas */
+        padding: 10px 15px;
+        font-size: 1.5rem;
     }
 
     .page-title {
-        font-size: 1.4rem; /* Tamanho de fonte ajustado para dispositivos móveis */
+        font-size: 1.4rem;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 
     table th, table td {
@@ -400,14 +408,12 @@ aside button:hover {
         padding: 8px; /* Ajuste do padding das células */
     }
 
-    table {
-        width: 100%; /* Garante que a tabela ocupe toda a largura */
-        overflow-x: auto; /* Permite rolagem horizontal se necessário */
-        -webkit-overflow-scrolling: touch; /* Melhora a rolagem em dispositivos móveis */
+    .product img {
+        width: 80px;
+        height: 100px;
     }
 
-    /* Caso a tabela tenha muitas colunas, pode ser interessante esconder algumas para telas pequenas */
-    table th:nth-child(n+4), table td:nth-child(n+4) {
-        display: none; /* Oculta colunas adicionais em telas pequenas */
+    .qty {
+        margin-left: 20px;
     }
 }
