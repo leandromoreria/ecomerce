@@ -73,3 +73,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+document.getElementById('number').addEventListener('input', function (e) {
+    let value = e.target.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+        
+    if (value.length > 11) value = value.slice(0, 11); // Limita a 11 dígitos
+
+    // Aplica a máscara (XX) XXXXX-XXXX automaticamente
+    if (value.length > 2) value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
+    if (value.length > 9) value = `${value.slice(0, 10)}-${value.slice(10)}`;
+
+     e.target.value = value; // Atualiza o campo com a formatação correta
+});
+
+
