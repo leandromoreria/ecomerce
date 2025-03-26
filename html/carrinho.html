@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Carrinho de Compras</title>
+    
+    <link rel="stylesheet" href="../css/carrinho.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+</head>
+
+    <body>
+        <header>
+            <span>Carrinho de compras</span>
+        </header>
+                            
+        <main>
+            <div class="page-title">Meus Pedidos</div>
+            <div class="content">
+                <section>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Preço</th>
+                                <th>Quantidade</th>
+                                <th>Total</th>
+                                <th>-</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody id="cart-items">
+                            <!-- As linhas dos produtos serão geradas dinamicamente pelo JavaScript -->
+                        </tbody>
+                    </table>
+                </section>
+
+                <aside>
+                    <div class="box">
+                        <div>Resumo da compra</div>
+                        <div class="info">
+                            <div>
+                                <span>Sub-total</span>
+                                <span id="subtotal" class="subtotal">R$ 0,00</span>
+                            </div>
+
+                            <div>
+                                <span>Frete</span>
+                                <span id="frete">R$ 0,00</span>
+                            </div>
+                            
+                            <div class="frete-calc">
+                                <label for="cep">Calcular Frete:</label>
+                                <input type="text" id="cep" placeholder="00000-000" maxlength="9" />
+                                <button id="calcularFrete">Calcular</button>
+                            </div>
+                            
+                            <div class="cupom">
+                                <input type="text" id="couponCode" placeholder="Digite seu cupom" />
+                                <button id="applyCouponButton">
+                                    <i class="bx bx-right-arrow-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <footer>
+                            <span>Total</span>
+                            <span id="total" class="total">R$ 0,00</span>
+                        </footer>
+                    </div>
+                    
+                    <button id="finalizar-compra" class="finalizar-compra">Finalizar Compra</button>
+                    
+                </aside>
+            </div>
+        </main>
+
+        <script src="../js/carrinho.js"></script>
+
+    </body>
+</html>

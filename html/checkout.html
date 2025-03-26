@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout</title>
+
+    <link rel="stylesheet" href="../css/checkout.css">
+        
+</head>
+    <body>
+        <div class="checkout-container">
+                <div class="timeline">
+                    <div class="step active">Resumo do Pedido</div>
+                    <div class="step">Endereço de Entrega</div>
+                    <div class="step">Pagamento</div>
+                    <div class="step">Confirmação</div>
+                </div>
+
+                <div class="checkout-panel">
+                    <div class="panel-body">
+
+                        <!-- Resumo do Pedido -->
+                        <div id="resumo-pedido" class="checkout-step">
+
+                            <h2 class="title">Resumo do Pedido</h2>
+                            <div class="order-summary">
+                                <div id="products-list"></div> <!-- Lista de produtos -->
+                                <p>Total: R$ <span id="total-price">0.00</span></p> <!-- Total do pedido -->
+                            </div>
+
+                            <button class="btn next-btn" onclick="nextStep()">Próximo</button>
+                        </div>
+
+                        <!-- Endereço de Entrega -->
+                        <div id="entrega" class="checkout-step hidden">
+                            <h2 class="title">Endereço de Entrega</h2>
+
+                            <div class="delivery-options">
+                                <label>
+                                    <input type="radio" name="delivery-option" id="same-address" checked onchange="toggleAddressFields()">
+                                    Entregar no endereço de cadastro
+                                </label>
+
+                                <label>
+                                    <input type="radio" name="delivery-option" id="new-address" onchange="toggleAddressFields()">
+                                    Cadastrar novo endereço
+                                </label>
+
+                            </div>
+
+                            <div id="existing-address">
+                                <div class="address-row">
+                                    <span id="rua-registered">Rua: Exemplo</span>
+                                    <span id="numero-registered">123</span>
+                                </div>
+
+                                <div class="zip-city-row">
+                                    <span id="bairro-registered">Bairro: Exemplo</span>
+                                    <span id="cep-registered">CEP: 12345-678</span>
+                                </div>
+
+                                <div id="cidade-registered">Cidade: Exemplo</div>
+                            </div>                 
+                            
+                            <div id="new-address-fields" class="hidden">
+                                <div class="input-fields">
+                                    <label for="rua">Rua:</label>
+                                    <input type="text" id="rua" placeholder="Digite sua rua" required>
+
+                                    <label for="numero">Número:</label>
+                                    <input type="text" id="numero" placeholder="Digite o número" required>
+
+                                    <label for="bairro">Bairro:</label>
+                                    <input type="text" id="bairro" placeholder="Digite seu bairro" required>
+
+                                    <label for="cep">CEP:</label>
+                                    <input type="text" id="cep" placeholder="Digite o CEP" required onblur="fetchAddress()">
+
+                                    <label for="cidade">Cidade:</label>
+                                    <input type="text" id="cidade" placeholder="Digite sua cidade" required>
+                                </div>
+                            </div>
+
+                            <button class="btn back-btn" onclick="prevStep()">Voltar</button>
+                            <button class="btn next-btn" onclick="nextStep()">Próximo</button>
+                        </div>
+
+                        <!-- Pagamento -->
+                        <div id="pagamento" class="checkout-step hidden">
+                            <h2 class="title">Método de Pagamento</h2>
+                            
+                            <div class="payment-method">
+                                <label for="card" class="method card">
+                                    <div class="radio-input">
+                                        <input id="card" type="radio" name="payment" onclick="showCardForm()"> Cartão de Crédito
+                                    </div>
+                                </label>
+
+                                <label for="pix" class="method pix">
+                                    <div class="radio-input">
+                                        <input id="pix" type="radio" name="payment" onclick="showPixForm()"> Pix
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div id="card-form" class="hidden">
+                                <div class="input-fields">
+                                    <label for="cardholder">Nome no Cartão:</label>
+                                    <input type="text" id="cardholder" placeholder="Nome no cartão" required>
+                                
+                                    <label for="cardnumber">Número do Cartão:</label>
+                                    <input type="text" id="cardnumber" oninput="detectarBandeira(this.value)" placeholder="XXXX XXXX XXXX XXXX" maxlength="16" required>
+                                
+                                    <label for="validade">Validade:</label>
+                                    <input type="text" id="validade" placeholder="MM/AA" required>
+                                
+                                    <label for="cvv">CVV:</label>
+                                    <input type="password" id="cvv" placeholder="XXX" required>
+                                </div>
+                                
+                                <div id="virtual-card" class="virtual-card">
+
+                                    <div class="card-header">
+                                        <img id="card-flag" src="" alt="Bandeira do Cartão" style="width: 50px; margin: 10px;">
+                                        <span id="cardholder-name" class="cardholder-name">Nome do Cartão</span>
+                                    </div>
+
+                                    <div class="card-number" id="card-number-display">XXXX XXXX XXXX XXXX</div>
+                                    
+                                    <div class="card-footer">
+                                        <span>Validade: <span id="card-validade-display">MM/AA</span></span>
+                                        <span id="card-cvv-display">CVV</span>
+                                    </div>
+
+                                </div>
+                            </div>                  
+
+                            <div id="pix-form">
+                                <h3>Gerar QR Code ou Chave Pix</h3>
+
+                                <button onclick="generatePix()">Gerar QR Code Pix</button>
+
+                                <div id="pix-code" class="hidden">
+                                    <p>Chave Pix: <span id="pix-key">123456789</span></p>
+                                    <div id="qrcode"></div> <!-- Container para o QR Code -->
+                                    <button onclick="copyPix()">Copiar Chave</button>
+                                </div>
+
+                            </div>                      
+
+                            <button class="btn back-btn" onclick="prevStep()">Voltar</button>
+                            <button class="btn next-btn" onclick="nextStep()">Próximo</button>
+
+                        </div>
+
+                        <!-- Confirmação do Pedido -->
+                        <div id="confirmacao-pedido" class="checkout-step hidden">
+                            <h3 class="title">Confirmação do Pedido</h3>
+
+                            <div class="confirmacao-pedido">
+                                <p>Resumo do seu pedido:</p>
+                                
+                                <!-- Lista final de produtos -->
+                                <div id="final-products-list">
+                                    <!-- Lista final de produtos será preenchida aqui via JavaScript -->
+                                </div>
+                                
+                                <!-- Exibe o endereço de entrega -->
+                                <p>Endereço de entrega:</p>
+                                <div id="confirmation-address">
+                                    <!-- O endereço será preenchido via JavaScript -->
+                                </div>
+                                
+                                <!-- Método de pagamento -->
+                                <p>Método de Pagamento:</p>
+                                <p id="confirmation-payment">
+                                    <!-- Método de pagamento será preenchido aqui via JavaScript -->
+                                </p>
+                                
+                                <!-- Exibe o valor total -->
+                                <p>Total: R$ <span id="final-total-price">0.00</span></p>
+
+                                <!-- Seção para upload da NF-e (visível apenas internamente) -->
+                                <div id="upload-nfe-section" style="display: none;">
+                                    <h4>Upload da Nota Fiscal Eletrônica (NF-e)</h4>
+                                    <input type="file" id="nfe-upload" accept=".xml" />
+                                    <button class="btn" onclick="uploadNFe()">Subir NF-e</button>
+                                    <div id="nfe-status"></div>
+                                </div>
+
+                                <div class="button-container">
+                                    <button class="btn back-btn" onclick="prevStep()">Voltar</button>
+                                    <button id="finalizar-compra">Finalizar Compra</button>
+                                </div>
+                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+                        
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+            <script src="../js/checkout.js"></script>
+
+            
+    </body>
+</html>
